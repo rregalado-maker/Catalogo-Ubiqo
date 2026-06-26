@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catálogo de Instalaciones — Ubiqo</title>
+<style>
+  :root {
+    --green: #3C9A35;
+    --green-light: #e8f5e7;
+    --green-mid: #c5e3c3;
+    --green-dark: #2a6e25;
+    --gray: #f5f5f5;
+    --gray2: #eeeeee;
+    --text: #1a1a1a;
+    --text2: #555;
+    --border: #d0d0d0;
+    --white: #ffffff;
+    --warn: #f59e0b;
+    --warn-bg: #fffbeb;
+    --info-bg: #eff6ff;
+    --info-border: #3b82f6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; font-size: 13px; color: var(--text); background: #f0f0f0; }
+  .header { background: var(--white); border-bottom: 4px solid var(--green); padding: 0; display: flex; align-items: stretch; }
+  .header-logo { padding: 14px 28px; display: flex; align-items: center; border-right: 1px solid var(--border); }
+  .header-logo img { height: 40px; }
+  .header-info { padding: 14px 24px; display: flex; flex-direction: column; justify-content: center; }
+  .header-title { font-size: 18px; font-weight: bold; color: var(--text); letter-spacing: -.3px; }
+  .header-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .header-badge { margin-left: auto; padding: 14px 24px; display: flex; align-items: center; gap: 8px; }
+  .badge-smart { background: #dbeafe; color: #1d4ed8; font-size: 11px; font-weight: bold; padding: 3px 10px; border-radius: 99px; }
+  .badge-stack { background: var(--green-light); color: var(--green-dark); font-size: 11px; font-weight: bold; padding: 3px 10px; border-radius: 99px; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px 20px 40px; }
+  .tabs { display: flex; gap: 0; border-bottom: 2px solid var(--green); margin-bottom: 24px; }
+  .tab { font-size: 13px; font-weight: bold; padding: 10px 22px; cursor: pointer; color: var(--text2); background: var(--white); border: 1px solid var(--border); border-bottom: none; margin-bottom: -2px; border-radius: 6px 6px 0 0; transition: all .15s; }
+  .tab:hover { color: var(--green); }
+  .tab.active { background: var(--green); color: var(--white); border-color: var(--green); }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .sec-bar { background: var(--green); color: var(--white); font-size: 13px; font-weight: bold; padding: 8px 14px; border-radius: 6px 6px 0 0; margin-top: 24px; display: flex; align-items: center; gap: 8px; }
+  .sec-bar:first-child { margin-top: 0; }
+  .sec-bar .badge { background: rgba(255,255,255,.2); font-size: 10px; padding: 2px 8px; border-radius: 99px; font-weight: normal; }
+  .tbl-wrap { border: 1px solid var(--border); border-top: none; border-radius: 0 0 6px 6px; overflow: hidden; margin-bottom: 4px; }
+  table { width: 100%; border-collapse: collapse; }
+  th { background: #2a6e25; color: var(--white); font-size: 11px; font-weight: bold; padding: 8px 10px; text-align: left; text-transform: uppercase; letter-spacing: .04em; }
+  td { padding: 8px 10px; border-bottom: 1px solid var(--gray2); vertical-align: top; font-size: 12px; line-height: 1.6; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #fafafa; }
+  tr:hover td { background: var(--green-light); }
+  .id-cell { width: 64px; padding: 8px 6px !important; vertical-align: top; }
+  .id-pill { display: inline-block; font-family: Arial, sans-serif; font-weight: 900; font-size: 12px; color: #fff; background: var(--green-dark); padding: 3px 8px; border-radius: 6px; letter-spacing: 0.5px; white-space: nowrap; }
+  .name-cell { font-weight: bold; color: var(--text); }
+  .name-sub { font-size: 11px; font-weight: normal; color: var(--text2); margin-top: 2px; }
+  .generic-cell { font-size: 12px; color: var(--text); line-height: 1.5; }
+  .generic-item { display: flex; align-items: flex-start; gap: 5px; padding: 2px 0; }
+  .generic-label { font-size: 11px; font-weight: bold; color: var(--green-dark); white-space: nowrap; }
+  .generic-desc { font-size: 11px; color: var(--text2); }
+  .sku-item { font-family: 'Courier New', monospace; font-size: 11px; color: #333; display: flex; align-items: center; gap: 5px; padding: 2px 0; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .dot-base { background: #1d4ed8; }
+  .dot-acc { background: var(--green); }
+  .dot-kit { background: var(--warn); }
+  .dot-flag { background: #ef4444; }
+  .flag-txt { font-size: 11px; color: var(--warn); font-style: italic; }
+  .note-txt { font-size: 11px; color: var(--text2); }
+  .warn-note { font-size: 11px; color: #b45309; background: #fef3c7; border-left: 3px solid var(--warn); padding: 5px 8px; border-radius: 0 4px 4px 0; margin-top: 4px; }
+  .info-box { margin: 16px 0 4px; border: 1px solid var(--info-border); border-left: 4px solid var(--info-border); border-radius: 6px; padding: 10px 14px; background: var(--info-bg); }
+  .info-box-title { font-size: 12px; font-weight: bold; color: #1d4ed8; margin-bottom: 4px; }
+  .info-box p { font-size: 12px; color: #1e40af; margin: 2px 0; }
+  .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; align-items: center; }
+  .filter-label { font-size: 12px; color: var(--text2); font-weight: bold; }
+  .fbtn { font-size: 12px; padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border); background: var(--white); color: var(--text2); cursor: pointer; font-family: Arial, sans-serif; transition: all .15s; }
+  .fbtn:hover { border-color: var(--green); color: var(--green); }
+  .fbtn.fa { background: var(--gray2); color: var(--text); border-color: #aaa; font-weight: bold; }
+  .fbtn.fs { background: #dbeafe; color: #1d4ed8; border-color: #93c5fd; font-weight: bold; }
+  .fbtn.fk { background: var(--green-light); color: var(--green-dark); border-color: var(--green-mid); font-weight: bold; }
+  .flags-box { margin-top: 24px; border: 1px solid #fbbf24; border-left: 4px solid var(--warn); border-radius: 6px; padding: 12px 16px; background: var(--warn-bg); }
+  .flags-title { font-size: 12px; font-weight: bold; color: #92400e; margin-bottom: 6px; }
+  .flags-box ul { padding-left: 18px; }
+  .flags-box li { font-size: 12px; color: #92400e; margin: 4px 0; }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+  .leg { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text2); }
+  /* WIZARD */
+  .wiz-wrap { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 24px; }
+  .breadcrumb { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; min-height: 22px; margin-bottom: 18px; }
+  .crumb { font-size: 11px; color: var(--text2); }
+  .crumb.cur { color: var(--green-dark); font-weight: bold; }
+  .crumb-sep { font-size: 11px; color: var(--border); }
+  .wscreen { display: none; }
+  .wscreen.active { display: block; }
+  .wiz-title { font-size: 16px; font-weight: bold; color: var(--text); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--green-light); }
+  .opts { display: flex; flex-wrap: wrap; gap: 10px; }
+  .opt { flex: 1; min-width: 160px; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; cursor: pointer; background: var(--white); transition: all .15s; }
+  .opt:hover { border-color: var(--green); background: var(--green-light); box-shadow: 0 2px 8px rgba(60,154,53,.15); }
+  .opt-title { font-size: 13px; font-weight: bold; color: var(--text); }
+  .opt-sub { font-size: 11px; color: var(--text2); margin-top: 3px; }
+  .back-btn { font-size: 12px; color: var(--text2); cursor: pointer; border: 1px solid var(--border); background: var(--white); padding: 5px 14px; border-radius: 99px; margin-bottom: 16px; font-family: Arial, sans-serif; }
+  .back-btn:hover { border-color: var(--green); color: var(--green); }
+  .result-card { border: 2px solid var(--green); border-radius: 8px; padding: 16px; background: var(--white); }
+  .result-id { font-family: 'Courier New', monospace; font-size: 11px; font-weight: bold; color: var(--green-dark); background: var(--green-light); display: inline-block; padding: 2px 8px; border-radius: 4px; margin-bottom: 6px; }
+  .result-name { font-size: 15px; font-weight: bold; color: var(--text); margin-bottom: 4px; }
+  .result-generic { font-size: 12px; color: var(--text2); margin-bottom: 12px; font-style: italic; }
+  .sku-list { list-style: none; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .sku-list li { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-bottom: 1px solid var(--gray2); font-size: 12px; color: #333; }
+  .sku-list li:last-child { border-bottom: none; }
+  .sku-list li:nth-child(even) { background: #fafafa; }
+  .sku-code { font-family: 'Courier New', monospace; }
+  .sku-name { font-size: 11px; color: var(--text2); margin-left: 4px; }
+  .result-note { font-size: 11px; color: var(--text2); margin-top: 10px; padding: 8px 10px; background: var(--gray); border-radius: 4px; }
+  .result-flag { font-size: 11px; color: #92400e; margin-top: 6px; padding: 6px 10px; background: var(--warn-bg); border-left: 3px solid var(--warn); border-radius: 0 4px 4px 0; }
+  .result-warn { font-size: 11px; color: #b45309; margin-top: 6px; padding: 6px 10px; background: #fef3c7; border-left: 3px solid var(--warn); border-radius: 0 4px 4px 0; }
+  .restart-btn { margin-top: 16px; font-size: 12px; font-weight: bold; color: var(--green-dark); cursor: pointer; border: 1px solid var(--green); background: var(--green-light); padding: 7px 18px; border-radius: 99px; font-family: Arial, sans-serif; }
+  .restart-btn:hover { background: var(--green); color: var(--white); }
+  .footer { background: var(--white); border-top: 3px solid var(--green); padding: 12px 28px; font-size: 11px; color: var(--text2); display: flex; justify-content: space-between; align-items: center; margin-top: 32px; }
+  @media (max-width: 600px) { .header { flex-wrap: wrap; } .header-badge { display: none; } .opt { min-width: 140px; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">
+    <img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAA4AXADASIAAhEBAxEB/8QAGwABAAMBAQEBAAAAAAAAAAAAAAYHCAUCBAP/xABBEAABAwMCBAMEAw0JAQAAAAABAAIDBAUGBxEIEiExE0FRFCJhcTJ0kQkjMzU4dYGCkqGxsrMVFhgoNkJSYnK0/8QAGQEBAQEBAQEAAAAAAAAAAAAAAAEFBAID/8QAJhEBAAEDAgUEAwAAAAAAAAAAAAECAxEEIRIxQWGBEyJxoQUUsf/aAAwDAQACEQMRAD8A2WiIgIiICIiAiIgIiICIiAiIgIiICIiAiy9x/wBxuNus+Ivt9fV0bn1FUHGCZ0fN7sffYjdXfoZLLPo1h088r5ZZLNSue97i5ziY27kk9ygmSgGQ6oW2nuj7LjNtrMnuzCQ+GhH3uI/95NiB+jfbz2U7qoIqqmlpp2B8UrDHI0n6TSNiPsUEr434JRUON4Dh7qqprOZwmd7tPHy7bvnk7k9eg7kdj5Ln1FVcR7ZxHxmfEOLW13aaYmirhjrOMz2iI7+fh8ovGsdS0TQ4lj1Gw9fCqawvft6btdtuvyl1FyfHn82b4NVUdGCA6vt8oqImfFwH0R8zv8F9P929Uq0Coq9RKO2ykb+z0dpZJE0+nM8hx/SkN01Cxyvp6TJLbT5Na6l7YTW22HlmiLiBvJEehb16kdB6+S5c3Kd81R3nEx5iN/4zuK9RvxXKe8xTVHmI3j6TXH71ar/a4rnZ62KspJPoyRnsfQjuD8D1XQXHxzGLFjs9dNZbdFRurpRLOI9w0kDYbDs0d+g6dSuwtCji4ffzbVr1OCPUxxdcchERen0EREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBZz4g9V80w7XbFsTsVdTw2q409G+ojfTMe5xkqpI3bOI3HutHZaMWOeLj8qfBPqlv/8AumRYbGWZNWNYM6x7iWtuD2u4UsdkqKugjfE6kY53LKWc45iN+u5+S02sS6+flqWX69av4xoQl/3Q/wDEmHfWar+WNcy46uakYzj2C4Lp7YIbhUPxW31bpG0j6mY88Q6BrTs0DbuQe/kun90P/EuHfWar+WNXboDQ0cWkuJ3GOlhbWVNhoWTzhgEkjWRAMa53cgbnYeW5UOjOf+IfWvCK+B+oOGNNFMejaigko3O+DJPo79D0IK09pXn+P6j4pFkFgmcWE+HUU8mwlppAOrHgfaD2I6rr5dj1pyvHa2wXykjqqGsiMcjHAEjcdHNPk4dwR1BCx7wS11bjuuF/w4zGSlmp545WjsZaeTZr/sLx+sgurXTDdQMgzK312OSSyULIWsZ4dWIvZpA47uIJHfcHcbnpt5BXD47bZZRU3asia2lp+eqqXnlYOVu73n0HQlZ74rK2tpcztTaWsqYGut4JEcrmgnxH9dgV0ONrIKuz6HU1vpZHsN4rIaWZzTsTEGOkcN/iWNB9QSs/SzT+xdiM526sP8dNuddqYpznMZzOY68oxt9oRqBxVX25351k0rx8VbeYsjqp6d801Rtv1jhbtsPTm3O3cBcSXiG1zw6thnzXEmexyH8HWWySk5/g146A/MH5K3OCzCLTYdJ6LJm08Ul3vnPLNUloL2RB5ayJp8m+7zEeZPwG1z5DZrXkNlqrNeaKGtoKqMxzQyt3Dgf4EdwR1B6haDcRbRrU7HtUMaddrIXwTwOEdZRTEeLTvI3G+3dp67OHQ7HsQQOtqLmdhwLFanI8iqTDSQ7Na1g3kmefoxsb5uP8ASdgCVj7hl9pwPisrsNjqHupZJq22yczvwjY+Z8biO3N97H7RXU49LxW3PUfHcPhkIp4KNs4YXENdNNI5m5+QYOvlzFDG73W8SurWZXmWn06xFraaM7iOGifWzcvXYvcPdG4HYAfMr9sd4os/wAXvzLZqbigMJI8TlpX0lVG3f6Qa73XD4bDf1Wo9N8Os+CYfQY5ZqaOKKmiaJZGtAdPJt70jz5ucev7h0AUV4l8IteZ6TXoVdNE6vttJLW0FRyjnikjaXbA/wDFwHKR2679wENk6xS/2nKMdor/AGOrZV2+tiEkMrem48wR3BB3BB6gghdNZc+57XqrqsYymwyyufTUFVT1ELSd+QzNkDgPQfegdvUn1Wo1UkREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBY546aO62XVTE85hp+ejipIoYnkHlE8E8kvK4+W4eNvXZ3otjLk5djdjy2wVFiyG3Q19vqB78Ug7EdnAjq1w8iNiEWEAx3iC0ru2Lx3ufKKO2P8AD5p6KqcRURO26tDAN3/At3BWZrVc59auLyhvdmpJYrfDXQVALm7OZS03Ked/oXco+ReArYuHB7hc1yM1Hk18paQu38AtjkcB6B5A/eCrk0s0zxHTa1SUOM0Bjkn29pq5nc885Hbmd6Dc7AAAb9lBXfGxhVflWlMdytUD6irsdT7W+Jg3c6AtLZNh8Pdd8mlRPhR13xaHB6HC8wukNorrY0xUtTUu5YZ4d92gv7Nc0Hl2OwIA2JO61Eeo2KpDUThi05yu4y3OjbWY/VzOL5P7PLRC9x7nw3Agfq8oVH26tcQWB4hjdVLZ77QX29PjLaOlophM0PI6Okc3o1o6E9dz5BVLwH4dcqu/3nUm6RSCF8b6SkleNvHle8OlePUDlDd+27iPIqbYpwlafWq4srLtcbte2MILaaZ7Yonf+uQcx+0K/rbQ0Vst8Fvt1JBSUlOwRwwQsDGRtHYADoAoM4cWv+tbT+bh/UepjxYYZW5nofIy2QOqK+1PjuEMTAS6QMaWvaAO55HuIHmQApLqdpZbs7vFNcq26VdI+np/ADIWNII5i7fr59VP4WCOFkYO4a0N3+S4tPYrov3a6uVWMMfQ6S7Z1mou1xtXjHjLKvB9rZjVDhkGCZZdIbVU0D3+w1NU8Mhmie4u5C89Gua5x77AjbbsVeGXavafY5TxOlyS319VPIyKno6CoZPNK5zg0bBp6Dr1JIG32KJ6mcNenmaXGW6wxVVhuEzi+WS3lojlcd93OjcCNzv1LeXfzUaxPhIw+0XmmuVwyO8XH2aVsrImtZC0uadxzEAnbf0IXa2NlV4cP8+VR+fq7+nKpTx9YfcBX2PUGgie6CCIUFZIwHeFweXxOPoCXPG/ryjzCi2Hfl5VH5+rv6cq2zc6Ciulvnt1xpIaujqGGOaCZgeyRp7gg9CEFV6Na7YVmuL0b7lfbfab6yINraSsmbDvIB7zoy4gOaT1Gx3G+xUV4oNccTtmA3TGMcvNJd71dYHUh9jlEkdNG8bPe57em/KSAAd9zv2C85bwk4Dda+Srst0utjEh3NOwtmhb1/2h3vD9or7MF4VNO7BXx113mr8iljIc2GrLWU+49WNHvfIkj4IbOfwH4hXWLTy55HXwvgN+qI3UzHtILoIg4Nf18nOe/b1AB7FaMXmKOOKJkUTGxxsaGta0bBoHYAeQXpVBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQZhxzRrOqLipm1CqKKjbYnXaqqRIKppf4cjJA08nff3h0WnkRAREQEREBERAREQEREBERAREQEREBERB//Z" alt="Ubiqo">
+  </div>
+  <div class="header-info">
+    <div class="header-title">Catálogo de Instalaciones</div>
+    <div class="header-sub">Combinaciones de SKUs por producto — Uso interno Comercial / Operaciones · v2.1</div>
+  </div>
+  <div class="header-badge">
+    <span class="badge-smart">SMART 4G</span>
+    <span class="badge-stack">STACK 4G</span>
+  </div>
+</div>
+
+<div class="container">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('catalogo',this)">📋 Catálogo completo</button>
+    <button class="tab" onclick="switchTab('wizard',this)">🔍 Guía paso a paso</button>
+  </div>
+
+  <!-- ==================== PANEL CATÁLOGO ==================== -->
+  <div class="panel active" id="panel-catalogo">
+    <div class="filter-bar">
+      <span class="filter-label">Filtrar por:</span>
+      <button class="fbtn fa" onclick="filterT('all',this)">Todos</button>
+      <button class="fbtn" onclick="filterT('smart',this)">Solo SMART 4G</button>
+      <button class="fbtn" onclick="filterT('stack',this)">Solo STACK 4G</button>
+    </div>
+    <div class="legend">
+      <div class="leg"><span class="dot dot-base"></span> Equipo base</div>
+      <div class="leg"><span class="dot dot-acc"></span> Accesorio / Complemento</div>
+      <div class="leg"><span class="dot dot-kit"></span> Kit de instalación</div>
+      <div class="leg"><span class="dot dot-flag"></span> Sin SKU asignado</div>
+    </div>
+
+    <!-- ===== SMART ===== -->
+    <div id="tsmart">
+      <div class="sec-bar">SMART 4G — UBI-VL300 <span class="badge">GPS · Solo instalado en vehículo</span></div>
+      <div class="tbl-wrap"><table>
+        <thead><tr>
+          <th style="width:52px">ID</th>
+          <th style="width:180px">Combinación</th>
+          <th style="width:220px">Nombre comercial / Qué se entrega</th>
+          <th>SKUs requeridos</th>
+          <th style="width:180px">Notas</th>
+        </tr></thead>
+        <tbody>
+          <tr><td class="id-cell"><span class="id-pill">SM-01</span></td>
+            <td><div class="name-cell">Smart base</div><div class="name-sub">Sin accesorios</div></td>
+            <td class="generic-cell"><div class="generic-item"><span class="generic-label">GPS</span></div><div class="generic-desc">Solo el rastreador GPS instalado en el vehículo</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div></td>
+            <td></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">SM-02</span></td>
+            <td><div class="name-cell">Smart + Paro de motor</div><div class="name-sub">Vehículos estándar</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS + dispositivo que apaga o desacelera el motor a distancia</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-PM-NVO</div></td>
+            <td><div class="warn-note" style="margin-top:5px">⚠ Si el vehículo es <strong>Kenworth</strong>, usar <span style="font-family:'Courier New',monospace;font-size:11px">UBI-PARO DE MOTOR KENWORTH</span> en lugar de UBI-PM-NVO. Requiere arnés adicional de agencia.</div></td></tr>
+          <tr><td class="id-cell"><span class="id-pill">SM-03</span></td>
+            <td><div class="name-cell">Smart + Botón SOS</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS + botón de emergencia inalámbrico para el conductor</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-IBS01</div></td>
+            <td></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">SM-04</span></td>
+            <td><div class="name-cell">Smart + Sensor puerta</div><div class="name-sub">Siempre los 3 juntos</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS + kit sensor de apertura/cierre de puerta (tag + clema + pistón)</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2_IO</div><div class="sku-item"><span class="dot dot-flag"></span>Pistón p/sensor puerta (sin SKU)</div></td>
+            <td></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">SM-05</span></td>
+            <td><div class="name-cell">Smart + PM + SOS</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS + paro de motor + botón de emergencia</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-PM-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-IBS01</div></td>
+            <td><div class="warn-note" style="margin-top:5px">⚠ Si el vehículo es <strong>Kenworth</strong>, usar <span style="font-family:'Courier New',monospace;font-size:11px">UBI-PARO DE MOTOR KENWORTH</span> en lugar de UBI-PM-NVO. Requiere arnés adicional de agencia.</div></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">SM-06</span></td>
+            <td><div class="name-cell">Smart + PM + Sensor puerta</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS + paro de motor + sensor de puerta</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-PM-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2_IO</div><div class="sku-item"><span class="dot dot-flag"></span>Pistón p/sensor puerta (sin SKU)</div></td>
+            <td><div class="warn-note" style="margin-top:5px">⚠ Si el vehículo es <strong>Kenworth</strong>, usar <span style="font-family:'Courier New',monospace;font-size:11px">UBI-PARO DE MOTOR KENWORTH</span> en lugar de UBI-PM-NVO. Requiere arnés adicional de agencia.</div></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">SM-07</span></td>
+            <td><div class="name-cell">Smart + SOS + Sensor puerta</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS + botón de emergencia + sensor de puerta</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-IBS01</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2_IO</div><div class="sku-item"><span class="dot dot-flag"></span>Pistón p/sensor puerta (sin SKU)</div></td>
+            <td></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">SM-08</span></td>
+            <td><div class="name-cell">Smart + PM + SOS + Sensor puerta</div><div class="name-sub">Completo no pipa</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS + paro de motor + botón emergencia + sensor de puerta (todo incluido)</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-PM-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-IBS01</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2_IO</div><div class="sku-item"><span class="dot dot-flag"></span>Pistón p/sensor puerta (sin SKU)</div></td>
+            <td><div class="warn-note" style="margin-top:5px">⚠ Si el vehículo es <strong>Kenworth</strong>, usar <span style="font-family:'Courier New',monospace;font-size:11px">UBI-PARO DE MOTOR KENWORTH</span> en lugar de UBI-PM-NVO. Requiere arnés adicional de agencia.</div></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">SM-09</span></td>
+            <td><div class="name-cell">Smart pipa base</div><div class="name-sub">PIC obligatorio en pipas</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS para pipa + módulo PIC (requerido para este tipo de vehículo)</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-PIC-VL300-NVO</div></td>
+            <td></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">SM-10</span></td>
+            <td><div class="name-cell">Smart pipa + PM</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS pipa + PIC + paro de motor</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-PIC-VL300-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-PM-NVO</div></td>
+            <td></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">SM-11</span></td>
+            <td><div class="name-cell">Smart pipa + SOS</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS pipa + PIC + botón de emergencia</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-PIC-VL300-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-IBS01</div></td>
+            <td></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">SM-12</span></td>
+            <td><div class="name-cell">Smart pipa + Sensor puerta</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS pipa + PIC + sensor de puerta</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-PIC-VL300-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2_IO</div><div class="sku-item"><span class="dot dot-flag"></span>Pistón p/sensor puerta (sin SKU)</div></td>
+            <td></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">SM-13</span></td>
+            <td><div class="name-cell">Smart pipa completo</div><div class="name-sub">Poco común — 1 cliente</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS pipa + PIC + paro de motor + botón emergencia + sensor de puerta</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-PIC-VL300-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-PM-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-IBS01</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2_IO</div><div class="sku-item"><span class="dot dot-flag"></span>Pistón p/sensor puerta (sin SKU)</div></td>
+            <td><span class="flag-txt">⚠ Solo 1 cliente lo ha pedido completo</span></td></tr>
+        </tbody>
+      </table></div>
+    </div><!-- /tsmart -->
+
+    <!-- ===== STACK ===== -->
+    <div id="tstack">
+
+      <!-- Nota cargadores -->
+      <div class="info-box">
+        <div class="info-box-title">📦 Regla de cargadores — STACK Portátil (OBLIGATORIO indicar en el ticket)</div>
+        <p>Se incluye <strong>1 cargador turbo (UBI-TCSK-3A) por cada 5 STACK</strong> sin costo adicional.</p>
+        <p>Si el pedido supera esa proporción, los cargadores extra tienen costo. Ejemplo: 6 STACK → 2 cargadores → <strong>1 cargador con costo adicional</strong>.</p>
+        <p>⚠ <strong>Comercial debe especificar obligatoriamente la cantidad de cargadores a entregar al cliente en el ticket de instalación.</strong></p>
+      </div>
+
+      <div class="sec-bar" style="margin-top:16px">STACK 4G — Portátil <span class="badge">UBI-STACK-4G-NVO + Cargador turbo (UBI-TCSK-3A) + Llave T</span></div>
+      <div class="tbl-wrap"><table>
+        <thead><tr>
+          <th style="width:52px">ID</th>
+          <th style="width:180px">Combinación</th>
+          <th style="width:220px">Nombre comercial / Qué se entrega</th>
+          <th>SKUs requeridos</th>
+          <th style="width:160px">Notas</th>
+        </tr></thead>
+        <tbody>
+          <tr><td class="id-cell"><span class="id-pill">SP-01</span></td>
+            <td><div class="name-cell">Portátil base</div><div class="name-sub">Sin complemento</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador portátil + cargador + llave T (para cambiar complementos)</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-TCSK-3A — Cargador turbo</div><div class="sku-item"><span class="dot dot-flag"></span>Llave T (sin SKU)</div></td>
+            <td></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">SP-02</span></td>
+            <td><div class="name-cell">Portátil + STK sin imán</div><div class="name-sub">Con batería de respaldo</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador portátil + cargador + llave T + complemento con batería (sigue reportando cuando el vehículo está apagado)</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-TCSK-3A — Cargador turbo</div><div class="sku-item"><span class="dot dot-flag"></span>Llave T (sin SKU)</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPLEMENT-STACK-NVO — STK</div></td>
+            <td></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">SP-03</span></td>
+            <td><div class="name-cell">Portátil + STK con imán</div><div class="name-sub">Con batería de respaldo + imán</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador portátil + cargador + llave T + complemento con batería e imán (se adhiere a superficies metálicas)</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-TCSK-3A — Cargador turbo</div><div class="sku-item"><span class="dot dot-flag"></span>Llave T (sin SKU)</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPLEMENT-STACK-MAG-NVO — STK C/IMÁN</div></td>
+            <td></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">SP-04</span></td>
+            <td><div class="name-cell">Portátil + SBI con imán</div><div class="name-sub">Sin batería de respaldo + imán</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador portátil + cargador + llave T + complemento sin batería pero con imán</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-TCSK-3A — Cargador turbo</div><div class="sku-item"><span class="dot dot-flag"></span>Llave T (sin SKU)</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPL-STACK-MAG-SB-NVO — SBI C/IMÁN</div></td>
+            <td></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">SP-05</span></td>
+            <td><div class="name-cell">Portátil + ST100 complemento</div><div class="name-sub">Satelital en carcasa de complemento</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador portátil + cargador + llave T + módulo satelital (para zonas sin cobertura celular)</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-TCSK-3A — Cargador turbo</div><div class="sku-item"><span class="dot dot-flag"></span>Llave T (sin SKU)</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-ST100-COMPLEMENTO-NVO — Complemento satelital</div></td>
+            <td></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">SP-06</span></td>
+            <td><div class="name-cell">Portátil + ST100 complemento + SBI c/imán</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador portátil + cargador + llave T + módulo satelital + complemento sin batería con imán</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-TCSK-3A — Cargador turbo</div><div class="sku-item"><span class="dot dot-flag"></span>Llave T (sin SKU)</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-ST100-COMPLEMENTO-NVO — Complemento satelital</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPL-STACK-MAG-SB-NVO — SBI C/IMÁN</div></td>
+            <td></td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="sec-bar" style="margin-top:20px">STACK 4G — Instalado en vehículo <span class="badge">Siempre lleva kit de instalación</span></div>
+      <div class="tbl-wrap"><table>
+        <thead><tr>
+          <th style="width:52px">ID</th>
+          <th style="width:180px">Combinación</th>
+          <th style="width:220px">Nombre comercial / Qué se entrega</th>
+          <th>SKUs requeridos</th>
+          <th style="width:160px">Notas</th>
+        </tr></thead>
+        <tbody>
+          <tr><td class="id-cell"><span class="id-pill">SI-01</span></td>
+            <td><div class="name-cell">Instalado base</div><div class="name-sub">Sin complemento</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador instalado en el vehículo + kit de cables e instalación</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KIT-COMPLEMENTO — Kit instalación</div></td>
+            <td></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">SI-02</span></td>
+            <td><div class="name-cell">Instalado + STK sin imán</div><div class="name-sub">Con batería de respaldo</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador instalado + kit + complemento con batería (reporta aunque apaguen el vehículo)</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPLEMENT-STACK-NVO — STK</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KIT-COMPLEMENTO — Kit instalación</div></td>
+            <td></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">SI-03</span></td>
+            <td><div class="name-cell">Instalado + STK con imán</div><div class="name-sub">El imán ya va incluido en el STK</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador instalado + kit + complemento con batería e imán integrado (no requiere kit con imán adicional)</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPLEMENT-STACK-MAG-NVO — STK C/IMÁN</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KIT-COMPLEMENTO — Kit instalación</div></td>
+            <td><span class="note-txt">El STK C/IMÁN ya incluye el imán. No usar kit c/imán para evitar doble imán.</span></td></tr>
+          <tr><td class="id-cell"><span class="id-pill">SI-04</span></td>
+            <td><div class="name-cell">Instalado + Kit c/imán</div><div class="name-sub">El imán va en el kit</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador instalado + kit de instalación con imán integrado (no agregar complemento adicional)</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KIT-COMPLEMENTO-IMÁN — Kit instalación c/imán</div></td>
+            <td><span class="note-txt">El kit ya tiene imán. No agregar complemento SBI c/imán para evitar doble imán.</span></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">SI-05</span></td>
+            <td><div class="name-cell">Instalado + STK sin imán + Sensor THL</div><div class="name-sub">Sensor temperatura/humedad/luz</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador instalado + complemento con batería + kit sensor + sensor de temperatura, humedad y luz</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPLEMENT-STACK-NVO — STK</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KITINST-SENSOR-STACK — Kit sensor</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-STHLT — Sensor Temp/Hum/Luz</div></td>
+            <td><div class="warn-note">⚠ El equipo NO queda imantado. Se pegará con cinta doble cara o silicón, sin garantía de fijación permanente.</div></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">SI-06</span></td>
+            <td><div class="name-cell">Instalado + STK c/imán + Sensor THL</div><div class="name-sub">Sensor THL con imán</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador instalado + complemento con batería e imán + kit sensor con imán + sensor THL (equipo queda imantado)</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPLEMENT-STACK-MAG-NVO — STK C/IMÁN</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KITINST-SENSOR--MAG-NVO — Kit sensor c/imán</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-STHLT — Sensor Temp/Hum/Luz</div></td>
+            <td></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">SI-07</span></td>
+            <td><div class="name-cell">Instalado + SBI c/imán + Sensor THL</div><div class="name-sub">Sin batería de respaldo</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador instalado + complemento sin batería (con imán para fijación) + kit sensor + sensor THL</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPL-STACK-MAG-SB-NVO — SBI C/IMÁN</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KITINST-SENSOR-STACK — Kit sensor</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-STHLT — Sensor Temp/Hum/Luz</div></td>
+            <td><span class="note-txt">SBI c/imán: garantiza fijación en superficie metálica sin necesidad de batería de respaldo.</span></td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="sec-bar" style="margin-top:20px">STACK 4G — Satelital <span class="badge">UBI-ST100-STACK-NVO · Siempre requiere STK (con o sin batería)</span></div>
+      <div class="tbl-wrap"><table>
+        <thead><tr>
+          <th style="width:52px">ID</th>
+          <th style="width:180px">Combinación</th>
+          <th style="width:220px">Nombre comercial / Qué se entrega</th>
+          <th>SKUs requeridos</th>
+          <th style="width:160px">Notas</th>
+        </tr></thead>
+        <tbody>
+          <tr><td class="id-cell"><span class="id-pill">SS-01</span></td>
+            <td><div class="name-cell">Satelital + STK sin imán</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador satelital + complemento con batería sin imán + kit instalación. El STK puede ser con o sin batería según necesidad del cliente.</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-ST100-STACK-NVO — Stack satelital</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPLEMENT-STACK-NVO — STK</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KIT-COMPLEMENTO — Kit instalación</div></td>
+            <td><span class="note-txt">Puede ir con complemento STK (c/batería) o SBI (sin batería) según lo que pidió el cliente. Ver alternativas en archivo de productos.</span></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">SS-02</span></td>
+            <td><div class="name-cell">Satelital + Kit c/imán</div><div class="name-sub">El imán va en el kit</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador satelital + kit de instalación con imán (el kit provee imán y corriente, no agregar complemento adicional)</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-ST100-STACK-NVO — Stack satelital</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KIT-COMPLEMENTO-IMÁN — Kit instalación c/imán</div></td>
+            <td><span class="note-txt">El kit c/imán ya provee imán y corriente. No agregar complemento STK MAG para evitar doble imán.</span></td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="sec-bar" style="margin-top:20px">STACK 4G — Plafón <span class="badge">Independiente del Stack principal · El plafón NO incluye LED</span></div>
+      <div class="tbl-wrap"><table>
+        <thead><tr>
+          <th style="width:52px">ID</th>
+          <th style="width:180px">Combinación</th>
+          <th style="width:220px">Nombre comercial / Qué se entrega</th>
+          <th>SKUs requeridos</th>
+          <th style="width:160px">Notas</th>
+        </tr></thead>
+        <tbody>
+          <tr><td class="id-cell"><span class="id-pill">PL-01</span></td>
+            <td><div class="name-cell">Plafón Stack (sin LED)</div></td>
+            <td class="generic-cell"><div class="generic-desc">Solo la carcasa del plafón stack. <strong>Sin LED.</strong> Cliente no requiere iluminación.</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-PLAFON — Plafón stack</div></td>
+            <td></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">PL-02</span></td>
+            <td><div class="name-cell">Plafón Stack + 1 LED</div></td>
+            <td class="generic-cell"><div class="generic-desc">Plafón stack + un LED. Instalación básica con iluminación.</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-PLAFON — Plafón stack</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-LED-PLAFON — LED</div></td>
+            <td></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">PL-03</span></td>
+            <td><div class="name-cell">Plafón Stack + 2 LEDs</div><div class="name-sub">Para que se vea uniforme</div></td>
+            <td class="generic-cell"><div class="generic-desc">Plafón stack + dos LEDs. Para que la instalación luzca uniforme y no se note diferencia.</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-PLAFON — Plafón stack</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-LED-PLAFON — LED (1)</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-LED-PLAFON — LED (2)</div></td>
+            <td><span class="note-txt">2 unidades de UBI-LED-PLAFON</span></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">PL-04</span></td>
+            <td><div class="name-cell">Plafón Satelital (sin LED)</div></td>
+            <td class="generic-cell"><div class="generic-desc">Solo el plafón satelital. Sin LED.</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-ST100-PLAFON-NVO — Plafón satelital</div></td>
+            <td></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">PL-05</span></td>
+            <td><div class="name-cell">Plafón Satelital + 1 LED</div></td>
+            <td class="generic-cell"><div class="generic-desc">Plafón satelital + un LED.</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-ST100-PLAFON-NVO — Plafón satelital</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-LED-PLAFON — LED</div></td>
+            <td></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">PL-06</span></td>
+            <td><div class="name-cell">Plafón Satelital + 2 LEDs</div></td>
+            <td class="generic-cell"><div class="generic-desc">Plafón satelital + dos LEDs para uniformidad visual.</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-ST100-PLAFON-NVO — Plafón satelital</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-LED-PLAFON — LED (1)</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-LED-PLAFON — LED (2)</div></td>
+            <td><span class="note-txt">2 unidades de UBI-LED-PLAFON</span></td></tr>
+
+          <tr><td class="id-cell"><span class="id-pill">PL-07</span></td>
+            <td><div class="name-cell">Plafón Stack + Plafón Satelital</div><div class="name-sub">Misma unidad, plafones distintos</div></td>
+            <td class="generic-cell"><div class="generic-desc">Stack en un plafón + satelital en otro plafón de la misma unidad. Sin LED.</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-PLAFON — Plafón stack</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-ST100-PLAFON-NVO — Plafón satelital</div></td>
+            <td><span class="note-txt">Ej. izquierdo y derecho en misma unidad</span></td></tr>
+
+
+          <tr><td class="id-cell"><span class="id-pill">PL-08</span></td>
+            <td><div class="name-cell">Plafón Dummy</div><div class="name-sub">Falso plafón</div></td>
+            <td class="generic-cell"><div class="generic-desc">Instalación de plafón falso (sin equipo activo). Solo la carcasa visible.</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-PLAFON-DUMMY — Plafón Dummy</div></td>
+            <td><span class="note-txt">Instalación de falso plafón.</span></td></tr>
+          <tr><td class="id-cell"><span class="id-pill">PL-09</span></td>
+            <td><div class="name-cell">Plafón Stack + Plafón Satelital + LEDs</div><div class="name-sub">Instalación completa con uniformidad</div></td>
+            <td class="generic-cell"><div class="generic-desc">Stack + satelital en plafones distintos de la misma unidad + dos LEDs para uniformidad visual.</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-PLAFON — Plafón stack</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-ST100-PLAFON-NVO — Plafón satelital</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-LED-PLAFON — LED (1)</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-LED-PLAFON — LED (2)</div></td>
+            <td><span class="note-txt">2 unidades de UBI-LED-PLAFON</span></td></tr>
+        </tbody>
+      </table></div>
+
+    </div><!-- /tstack -->
+
+    <div class="flags-box">
+      <div class="flags-title">⚠ SKUs pendientes de asignar — actualizar cuando estén disponibles</div>
+      <ul>
+        <li><strong>Llave T</strong> — sin SKU asignado. Se referencia por nombre genérico en todos los portátiles.</li>
+        <li><strong>Pistón p/sensor puerta</strong> — sin SKU asignado. Aplica en SM-04, SM-06, SM-07, SM-12, SM-13, SM-08.</li>
+      </ul>
+    </div>
+  </div><!-- /panel-catalogo -->
+
+  <!-- ==================== PANEL WIZARD ==================== -->
+  <div class="panel" id="panel-wizard">
+    <div class="wiz-wrap">
+      <div class="breadcrumb" id="wbreadcrumb"></div>
+
+      <div class="wscreen active" id="w0">
+        <div class="wiz-title">¿Qué producto se vendió?</div>
+        <div class="opts">
+          <div class="opt" onclick="wgo('SMART 4G','w1_smart')">
+            <div class="opt-title">SMART 4G <span style="font-size:10px;font-weight:bold;padding:2px 8px;border-radius:99px;background:#dbeafe;color:#1d4ed8;margin-left:6px">GPS</span></div>
+            <div class="opt-sub">UBI-VL300 — Solo instalado en vehículo</div>
+          </div>
+          <div class="opt" onclick="wgo('STACK 4G','w1_stack')">
+            <div class="opt-title">STACK 4G <span style="font-size:10px;font-weight:bold;padding:2px 8px;border-radius:99px;background:#e8f5e7;color:#2a6e25;margin-left:6px">Rastreador</span></div>
+            <div class="opt-sub">UBI-STACK-4G-NVO — Portátil o instalado</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wscreen" id="w1_smart">
+        <button class="back-btn" onclick="wback()">← Atrás</button>
+        <div class="wiz-title">SMART 4G — ¿El vehículo es una pipa?</div>
+        <div class="opts">
+          <div class="opt" onclick="wgo('Pipa','w2_pipa')"><div class="opt-title">Sí, es pipa</div><div class="opt-sub">PIC obligatorio</div></div>
+          <div class="opt" onclick="wgo('Otro vehículo','w2_nopipa')"><div class="opt-title">No, otro tipo de vehículo</div><div class="opt-sub">Sin PIC</div></div>
+        </div>
+      </div>
+
+      <div class="wscreen" id="w2_nopipa">
+        <button class="back-btn" onclick="wback()">← Atrás</button>
+        <div class="wiz-title">SMART 4G — ¿Qué accesorios se vendieron?</div>
+        <div class="opts">
+          <div class="opt" onclick="wshow('SM-01')"><div class="opt-title">Sin accesorios</div></div>
+          <div class="opt" onclick="wshow('SM-02')"><div class="opt-title">+ Paro de motor</div></div>
+          <div class="opt" onclick="wshow('SM-03')"><div class="opt-title">+ Botón SOS</div></div>
+          <div class="opt" onclick="wshow('SM-04')"><div class="opt-title">+ Sensor puerta</div></div>
+          <div class="opt" onclick="wshow('SM-05')"><div class="opt-title">+ PM + SOS</div></div>
+          <div class="opt" onclick="wshow('SM-06')"><div class="opt-title">+ PM + Sensor puerta</div></div>
+          <div class="opt" onclick="wshow('SM-07')"><div class="opt-title">+ SOS + Sensor puerta</div></div>
+          <div class="opt" onclick="wshow('SM-08')"><div class="opt-title">+ PM + SOS + Sensor puerta</div><div class="opt-sub">Completo</div></div>
+        </div>
+      </div>
+
+      <div class="wscreen" id="w2_pipa">
+        <button class="back-btn" onclick="wback()">← Atrás</button>
+        <div class="wiz-title">SMART pipa — ¿Accesorios adicionales?</div>
+        <div class="opts">
+          <div class="opt" onclick="wshow('SM-09')"><div class="opt-title">Sin accesorios</div></div>
+          <div class="opt" onclick="wshow('SM-10')"><div class="opt-title">+ PM</div></div>
+          <div class="opt" onclick="wshow('SM-11')"><div class="opt-title">+ SOS</div></div>
+          <div class="opt" onclick="wshow('SM-12')"><div class="opt-title">+ Sensor puerta</div></div>
+          <div class="opt" onclick="wshow('SM-13')"><div class="opt-title">+ PM + SOS + Sensor puerta</div><div class="opt-sub">Poco común</div></div>
+        </div>
+      </div>
+
+      <div class="wscreen" id="w1_stack">
+        <button class="back-btn" onclick="wback()">← Atrás</button>
+        <div class="wiz-title">STACK 4G — ¿Cuál es la modalidad?</div>
+        <div class="opts">
+          <div class="opt" onclick="wgo('Portátil','w2_port')"><div class="opt-title">Portátil</div><div class="opt-sub">Con cargador turbo y llave T</div></div>
+          <div class="opt" onclick="wgo('Instalado','w2_inst')"><div class="opt-title">Instalado en vehículo</div><div class="opt-sub">Siempre lleva kit de instalación</div></div>
+          <div class="opt" onclick="wgo('Satelital','w2_sat')"><div class="opt-title">Stack satelital</div><div class="opt-sub">ST100 — requiere STK</div></div>
+          <div class="opt" onclick="wgo('Plafón','w2_plafon')"><div class="opt-title">Plafón</div><div class="opt-sub">Stack y/o satelital en plafón</div></div>
+        </div>
+      </div>
+
+      <div class="wscreen" id="w2_port">
+        <button class="back-btn" onclick="wback()">← Atrás</button>
+        <div class="wiz-title">Stack portátil — ¿Lleva complemento?</div>
+        <div class="opts">
+          <div class="opt" onclick="wshow('SP-01')"><div class="opt-title">Sin complemento</div></div>
+          <div class="opt" onclick="wshow('SP-02')"><div class="opt-title">STK sin imán</div><div class="opt-sub">Con batería de respaldo</div></div>
+          <div class="opt" onclick="wshow('SP-03')"><div class="opt-title">STK con imán</div><div class="opt-sub">Con batería + imán</div></div>
+          <div class="opt" onclick="wshow('SP-04')"><div class="opt-title">SBI con imán</div><div class="opt-sub">Sin batería + con imán</div></div>
+          <div class="opt" onclick="wshow('SP-05')"><div class="opt-title">ST100 complemento</div><div class="opt-sub">Satelital en carcasa</div></div>
+          <div class="opt" onclick="wshow('SP-06')"><div class="opt-title">ST100 + SBI c/imán</div><div class="opt-sub">Satelital + complemento c/imán</div></div>
+        </div>
+      </div>
+
+      <div class="wscreen" id="w2_inst">
+        <button class="back-btn" onclick="wback()">← Atrás</button>
+        <div class="wiz-title">Stack instalado — ¿Lleva complemento y/o sensor?</div>
+        <div class="opts">
+          <div class="opt" onclick="wshow('SI-01')"><div class="opt-title">Solo kit base</div><div class="opt-sub">Sin complemento extra</div></div>
+          <div class="opt" onclick="wshow('SI-02')"><div class="opt-title">+ STK sin imán</div><div class="opt-sub">Con batería de respaldo</div></div>
+          <div class="opt" onclick="wshow('SI-03')"><div class="opt-title">+ STK c/imán</div><div class="opt-sub">Imán incluido en STK</div></div>
+          <div class="opt" onclick="wshow('SI-04')"><div class="opt-title">Kit c/imán</div><div class="opt-sub">Imán en el kit</div></div>
+          <div class="opt" onclick="wshow('SI-05')"><div class="opt-title">STK sin imán + Sensor THL</div><div class="opt-sub">⚠ Sin imán</div></div>
+          <div class="opt" onclick="wshow('SI-06')"><div class="opt-title">STK c/imán + Sensor THL</div><div class="opt-sub">Con imán integrado</div></div>
+          <div class="opt" onclick="wshow('SI-07')"><div class="opt-title">SBI c/imán + Sensor THL</div><div class="opt-sub">Sin batería, con imán</div></div>
+        </div>
+      </div>
+
+      <div class="wscreen" id="w2_sat">
+        <button class="back-btn" onclick="wback()">← Atrás</button>
+        <div class="wiz-title">Stack satelital — ¿Con imán?</div>
+        <div class="opts">
+          <div class="opt" onclick="wshow('SS-01')"><div class="opt-title">STK sin imán</div><div class="opt-sub">Con o sin batería según cliente</div></div>
+          <div class="opt" onclick="wshow('SS-02')"><div class="opt-title">Kit c/imán</div><div class="opt-sub">Imán en el kit</div></div>
+        </div>
+      </div>
+
+      <div class="wscreen" id="w2_plafon">
+        <button class="back-btn" onclick="wback()">← Atrás</button>
+        <div class="wiz-title">Plafón — ¿Qué combinación?</div>
+        <div class="opts">
+          <div class="opt" onclick="wshow('PL-01')"><div class="opt-title">Stack, sin LED</div></div>
+          <div class="opt" onclick="wshow('PL-02')"><div class="opt-title">Stack + 1 LED</div></div>
+          <div class="opt" onclick="wshow('PL-03')"><div class="opt-title">Stack + 2 LEDs</div><div class="opt-sub">Para uniformidad</div></div>
+          <div class="opt" onclick="wshow('PL-04')"><div class="opt-title">Satelital, sin LED</div></div>
+          <div class="opt" onclick="wshow('PL-05')"><div class="opt-title">Satelital + 1 LED</div></div>
+          <div class="opt" onclick="wshow('PL-06')"><div class="opt-title">Satelital + 2 LEDs</div></div>
+          <div class="opt" onclick="wshow('PL-07')"><div class="opt-title">Stack + Satelital, sin LED</div><div class="opt-sub">Misma unidad</div></div>
+          <div class="opt" onclick="wshow('PL-09')"><div class="opt-title">Stack + Satelital + LEDs</div><div class="opt-sub">Completo con uniformidad</div></div>
+          <div class="opt" onclick="wshow('PL-08')"><div class="opt-title">Plafón Dummy</div><div class="opt-sub">Falso plafón</div></div>
+        </div>
+      </div>
+
+      <div class="wscreen" id="w_result">
+        <button class="back-btn" onclick="wback()">← Atrás</button>
+        <div class="result-card" id="wresult-content"></div>
+        <div class="legend" style="margin-top:14px">
+          <div class="leg"><span class="dot dot-base"></span> Equipo base</div>
+          <div class="leg"><span class="dot dot-acc"></span> Accesorio / Complemento</div>
+          <div class="leg"><span class="dot dot-kit"></span> Kit de instalación</div>
+          <div class="leg"><span class="dot dot-flag"></span> Sin SKU asignado</div>
+        </div>
+        <button class="restart-btn" onclick="wrestart()">↺ Nueva consulta</button>
+      </div>
+    </div>
+  </div><!-- /panel-wizard -->
+</div><!-- /container -->
+
+<div class="footer">
+  <span>Ubiqo — Catálogo de Instalaciones STACK y SMART 4G · Uso interno</span>
+  <span>Versión 2.1 · Operaciones</span>
+</div>
+
+<script>
+const GEN = {
+  'SM-01':'GPS instalado en vehículo, sin accesorios',
+  'SM-02':'GPS + paro de motor (apaga a distancia)',
+  'SM-03':'GPS + paro de motor Kenworth (arnés especial)',
+  'SM-03':'GPS + botón SOS inalámbrico',
+  'SM-04':'GPS + kit sensor puerta (tag + clema + pistón)',
+  'SM-05':'GPS + paro de motor + botón SOS',
+  'SM-06':'GPS + paro de motor + sensor puerta',
+  'SM-07':'GPS + botón SOS + sensor puerta',
+  'SM-08':'GPS + paro de motor + botón SOS + sensor puerta (todo)',
+  'SM-09':'GPS pipa + módulo PIC (obligatorio en pipas)',
+  'SM-10':'GPS pipa + PIC + paro de motor',
+  'SM-11':'GPS pipa + PIC + botón SOS',
+  'SM-12':'GPS pipa + PIC + sensor puerta',
+  'SM-13':'GPS pipa + PIC + paro de motor + SOS + sensor puerta',
+  'SP-01':'Rastreador portátil + cargador turbo + llave T',
+  'SP-02':'Portátil + cargador + llave T + complemento CON batería de respaldo',
+  'SP-03':'Portátil + cargador + llave T + complemento CON batería + imán',
+  'SP-04':'Portátil + cargador + llave T + complemento sin batería + imán',
+  'SP-05':'Portátil + cargador + llave T + módulo satelital',
+  'SP-06':'Portátil + cargador + llave T + satelital + complemento sin batería c/imán',
+  'SI-01':'Rastreador instalado + kit de instalación (sin complemento extra)',
+  'SI-02':'Instalado + kit + complemento CON batería de respaldo',
+  'SI-03':'Instalado + kit + complemento CON batería e imán integrado',
+  'SI-04':'Instalado + kit (el kit da corriente, no se agrega SBI)',
+  'SI-04':'Instalado + kit con imán (no agregar complemento adicional)',
+  'SI-05':'Instalado + complemento c/batería + kit sensor + sensor THL (SIN imán)',
+  'SI-06':'Instalado + complemento c/batería e imán + kit sensor c/imán + sensor THL',
+  'SI-07':'Instalado + complemento sin batería c/imán + kit sensor + sensor THL',
+  'SS-01':'Satelital + complemento STK (con o sin batería) + kit instalación',
+  'SS-02':'Satelital + kit c/imán (el kit da imán y corriente)',
+  'PL-01':'Plafón stack solo, SIN LED',
+  'PL-02':'Plafón stack + 1 LED',
+  'PL-03':'Plafón stack + 2 LEDs (para que se vea uniforme)',
+  'PL-04':'Plafón satelital solo, SIN LED',
+  'PL-05':'Plafón satelital + 1 LED',
+  'PL-06':'Plafón satelital + 2 LEDs',
+  'PL-07':'Plafón stack + plafón satelital, SIN LED',
+  'PL-09':'Plafón stack + plafón satelital + 2 LEDs',
+  'PL-08':'Falso plafón — solo la carcasa visible, sin equipo activo'
+};
+const RES = {
+  'SM-01':{id:'SM-01',name:'Smart base',skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'}]},
+  'SM-02':{id:'SM-02',name:'Smart + Paro de motor',skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'},{t:'acc',s:'UBI-PM-NVO',n:'Paro motor'}],warn:'⚠ Si el vehículo es Kenworth, usar UBI-PARO DE MOTOR KENWORTH en lugar de UBI-PM-NVO. Requiere arnés adicional de agencia.'},
+  'SM-03':{id:'SM-03',name:'Smart + Botón SOS',skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'},{t:'acc',s:'UBI-IBS01',n:'Botón SOS'}]},
+  'SM-04':{id:'SM-04',name:'Smart + Sensor puerta',skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'},{t:'acc',s:'UBI-iBS02M2',n:'Tag sensor puerta'},{t:'acc',s:'UBI-iBS02M2_IO',n:'Clema sensor puerta'},{t:'flag',s:'Pistón p/sensor puerta (sin SKU)',n:''}]},
+  'SM-05':{id:'SM-05',name:'Smart + PM + SOS',skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'},{t:'acc',s:'UBI-PM-NVO',n:'Paro motor'},{t:'acc',s:'UBI-IBS01',n:'Botón SOS'}],warn:'⚠ Si el vehículo es Kenworth, usar UBI-PARO DE MOTOR KENWORTH en lugar de UBI-PM-NVO. Requiere arnés adicional de agencia.'},
+  'SM-06':{id:'SM-06',name:'Smart + PM + Sensor puerta',skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'},{t:'acc',s:'UBI-PM-NVO',n:'Paro motor'},{t:'acc',s:'UBI-iBS02M2',n:'Tag sensor puerta'},{t:'acc',s:'UBI-iBS02M2_IO',n:'Clema sensor puerta'},{t:'flag',s:'Pistón p/sensor puerta (sin SKU)',n:''}],warn:'⚠ Si el vehículo es Kenworth, usar UBI-PARO DE MOTOR KENWORTH en lugar de UBI-PM-NVO. Requiere arnés adicional de agencia.'},
+  'SM-07':{id:'SM-07',name:'Smart + SOS + Sensor puerta',skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'},{t:'acc',s:'UBI-IBS01',n:'Botón SOS'},{t:'acc',s:'UBI-iBS02M2',n:'Tag sensor puerta'},{t:'acc',s:'UBI-iBS02M2_IO',n:'Clema sensor puerta'},{t:'flag',s:'Pistón p/sensor puerta (sin SKU)',n:''}]},
+  'SM-08':{id:'SM-08',name:'Smart + PM + SOS + Sensor puerta',skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'},{t:'acc',s:'UBI-PM-NVO',n:'Paro motor'},{t:'acc',s:'UBI-IBS01',n:'Botón SOS'},{t:'acc',s:'UBI-iBS02M2',n:'Tag sensor puerta'},{t:'acc',s:'UBI-iBS02M2_IO',n:'Clema sensor puerta'},{t:'flag',s:'Pistón p/sensor puerta (sin SKU)',n:''}],warn:'⚠ Si el vehículo es Kenworth, usar UBI-PARO DE MOTOR KENWORTH en lugar de UBI-PM-NVO. Requiere arnés adicional de agencia.'},
+  'SM-09':{id:'SM-09',name:'Smart pipa base',skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'},{t:'acc',s:'UBI-PIC-VL300-NVO',n:'PIC'}]},
+  'SM-10':{id:'SM-10',name:'Smart pipa + PM',skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'},{t:'acc',s:'UBI-PIC-VL300-NVO',n:'PIC'},{t:'acc',s:'UBI-PM-NVO',n:'Paro motor'}]},
+  'SM-11':{id:'SM-11',name:'Smart pipa + SOS',skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'},{t:'acc',s:'UBI-PIC-VL300-NVO',n:'PIC'},{t:'acc',s:'UBI-IBS01',n:'Botón SOS'}]},
+  'SM-12':{id:'SM-12',name:'Smart pipa + Sensor puerta',skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'},{t:'acc',s:'UBI-PIC-VL300-NVO',n:'PIC'},{t:'acc',s:'UBI-iBS02M2',n:'Tag sensor puerta'},{t:'acc',s:'UBI-iBS02M2_IO',n:'Clema sensor puerta'},{t:'flag',s:'Pistón p/sensor puerta (sin SKU)',n:''}]},
+  'SM-13':{id:'SM-13',name:'Smart pipa completo',skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'},{t:'acc',s:'UBI-PIC-VL300-NVO',n:'PIC'},{t:'acc',s:'UBI-PM-NVO',n:'Paro motor'},{t:'acc',s:'UBI-IBS01',n:'Botón SOS'},{t:'acc',s:'UBI-iBS02M2',n:'Tag sensor puerta'},{t:'acc',s:'UBI-iBS02M2_IO',n:'Clema sensor puerta'},{t:'flag',s:'Pistón p/sensor puerta (sin SKU)',n:''}],note:'Poco común — solo 1 cliente'},
+  'SP-01':{id:'SP-01',name:'Stack portátil base',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-TCSK-3A',n:'Cargador turbo'},{t:'flag',s:'Llave T (sin SKU)',n:''}]},
+  'SP-02':{id:'SP-02',name:'Portátil + STK sin imán',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-TCSK-3A',n:'Cargador turbo'},{t:'flag',s:'Llave T (sin SKU)',n:''},{t:'acc',s:'UBI-COMPLEMENT-STACK-NVO',n:'STK'}]},
+  'SP-03':{id:'SP-03',name:'Portátil + STK con imán',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-TCSK-3A',n:'Cargador turbo'},{t:'flag',s:'Llave T (sin SKU)',n:''},{t:'acc',s:'UBI-COMPLEMENT-STACK-MAG-NVO',n:'STK C/IMÁN'}]},
+  'SP-04':{id:'SP-04',name:'Portátil + SBI con imán',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-TCSK-3A',n:'Cargador turbo'},{t:'flag',s:'Llave T (sin SKU)',n:''},{t:'acc',s:'UBI-COMPL-STACK-MAG-SB-NVO',n:'SBI C/IMÁN'}]},
+  'SP-05':{id:'SP-05',name:'Portátil + ST100 complemento',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-TCSK-3A',n:'Cargador turbo'},{t:'flag',s:'Llave T (sin SKU)',n:''},{t:'acc',s:'UBI-ST100-COMPLEMENTO-NVO',n:'Complemento satelital'}]},
+  'SP-06':{id:'SP-06',name:'Portátil + ST100 + SBI c/imán',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-TCSK-3A',n:'Cargador turbo'},{t:'flag',s:'Llave T (sin SKU)',n:''},{t:'acc',s:'UBI-ST100-COMPLEMENTO-NVO',n:'Complemento satelital'},{t:'acc',s:'UBI-COMPL-STACK-MAG-SB-NVO',n:'SBI C/IMÁN'}]},
+  'SI-01':{id:'SI-01',name:'Stack instalado base',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'kit',s:'UBI-KIT-COMPLEMENTO',n:'Kit instalación'}]},
+  'SI-02':{id:'SI-02',name:'Instalado + STK sin imán',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-COMPLEMENT-STACK-NVO',n:'STK'},{t:'kit',s:'UBI-KIT-COMPLEMENTO',n:'Kit instalación'}]},
+  'SI-03':{id:'SI-03',name:'Instalado + STK c/imán',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-COMPLEMENT-STACK-MAG-NVO',n:'STK C/IMÁN'},{t:'kit',s:'UBI-KIT-COMPLEMENTO',n:'Kit instalación'}],note:'El STK C/IMÁN ya incluye el imán. Se usa el kit normal, no kit c/imán.'},
+  'SI-04':{id:'SI-04',name:'Instalado + Kit c/imán',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'kit',s:'UBI-KIT-COMPLEMENTO-IMÁN',n:'Kit instalación c/imán'}],note:'El kit ya tiene imán. No agregar complemento SBI adicional.'},
+  'SI-05':{id:'SI-05',name:'Instalado + STK sin imán + Sensor THL',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-COMPLEMENT-STACK-NVO',n:'STK'},{t:'kit',s:'UBI-KITINST-SENSOR-STACK',n:'Kit sensor'},{t:'acc',s:'UBI-STHLT',n:'Sensor Temp/Hum/Luz'}],warn:'⚠ El equipo NO queda imantado. Se pegará con cinta doble cara o silicón, SIN garantía de fijación permanente.'},
+  'SI-06':{id:'SI-06',name:'Instalado + STK c/imán + Sensor THL',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-COMPLEMENT-STACK-MAG-NVO',n:'STK C/IMÁN'},{t:'kit',s:'UBI-KITINST-SENSOR--MAG-NVO',n:'Kit sensor c/imán'},{t:'acc',s:'UBI-STHLT',n:'Sensor Temp/Hum/Luz'}]},
+  'SI-07':{id:'SI-07',name:'Instalado + SBI c/imán + Sensor THL',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-COMPL-STACK-MAG-SB-NVO',n:'SBI C/IMÁN'},{t:'kit',s:'UBI-KITINST-SENSOR-STACK',n:'Kit sensor'},{t:'acc',s:'UBI-STHLT',n:'Sensor Temp/Hum/Luz'}]},
+  'SS-01':{id:'SS-01',name:'Satelital + STK sin imán',skus:[{t:'base',s:'UBI-ST100-STACK-NVO',n:'Stack satelital'},{t:'acc',s:'UBI-COMPLEMENT-STACK-NVO',n:'STK'},{t:'kit',s:'UBI-KIT-COMPLEMENTO',n:'Kit instalación'}],note:'El STK puede ser con o sin batería según necesidad del cliente.'},
+  'SS-02':{id:'SS-02',name:'Satelital + Kit c/imán',skus:[{t:'base',s:'UBI-ST100-STACK-NVO',n:'Stack satelital'},{t:'kit',s:'UBI-KIT-COMPLEMENTO-IMÁN',n:'Kit instalación c/imán'}],note:'El kit c/imán ya provee imán y corriente. No agregar complemento STK MAG.'},
+  'PL-01':{id:'PL-01',name:'Plafón Stack (sin LED)',skus:[{t:'base',s:'UBI-STACK-PLAFON',n:'Plafón stack'}]},
+  'PL-02':{id:'PL-02',name:'Plafón Stack + 1 LED',skus:[{t:'base',s:'UBI-STACK-PLAFON',n:'Plafón stack'},{t:'acc',s:'UBI-LED-PLAFON',n:'LED'}]},
+  'PL-03':{id:'PL-03',name:'Plafón Stack + 2 LEDs',skus:[{t:'base',s:'UBI-STACK-PLAFON',n:'Plafón stack'},{t:'acc',s:'UBI-LED-PLAFON',n:'LED (1)'},{t:'acc',s:'UBI-LED-PLAFON',n:'LED (2)'}],note:'2 unidades de UBI-LED-PLAFON'},
+  'PL-04':{id:'PL-04',name:'Plafón Satelital (sin LED)',skus:[{t:'base',s:'UBI-ST100-PLAFON-NVO',n:'Plafón satelital'}]},
+  'PL-05':{id:'PL-05',name:'Plafón Satelital + 1 LED',skus:[{t:'base',s:'UBI-ST100-PLAFON-NVO',n:'Plafón satelital'},{t:'acc',s:'UBI-LED-PLAFON',n:'LED'}]},
+  'PL-06':{id:'PL-06',name:'Plafón Satelital + 2 LEDs',skus:[{t:'base',s:'UBI-ST100-PLAFON-NVO',n:'Plafón satelital'},{t:'acc',s:'UBI-LED-PLAFON',n:'LED (1)'},{t:'acc',s:'UBI-LED-PLAFON',n:'LED (2)'}],note:'2 unidades de UBI-LED-PLAFON'},
+  'PL-07':{id:'PL-07',name:'Plafón Stack + Plafón Satelital',skus:[{t:'base',s:'UBI-STACK-PLAFON',n:'Plafón stack'},{t:'acc',s:'UBI-ST100-PLAFON-NVO',n:'Plafón satelital'}],note:'Misma unidad, plafones distintos (ej. izquierdo y derecho)'},
+  'PL-08':{id:'PL-08',name:'Plafón Dummy',skus:[{t:'base',s:'UBI-PLAFON-DUMMY',n:'Plafón Dummy'}],note:'Instalación de falso plafón.'},
+  'PL-09':{id:'PL-09',name:'Plafón Stack + Satelital + 2 LEDs',skus:[{t:'base',s:'UBI-STACK-PLAFON',n:'Plafón stack'},{t:'acc',s:'UBI-ST100-PLAFON-NVO',n:'Plafón satelital'},{t:'acc',s:'UBI-LED-PLAFON',n:'LED (1)'},{t:'acc',s:'UBI-LED-PLAFON',n:'LED (2)'}],note:'2 unidades de UBI-LED-PLAFON'}
+};
+const DC={base:'dot-base',acc:'dot-acc',kit:'dot-kit',flag:'dot-flag'};
+
+function switchTab(t,btn){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-'+t).classList.add('active');
+}
+function filterT(type,btn){
+  document.querySelectorAll('.fbtn').forEach(b=>b.className='fbtn');
+  if(type==='all'){btn.className='fbtn fa';document.getElementById('tsmart').style.display='';document.getElementById('tstack').style.display='';}
+  else if(type==='smart'){btn.className='fbtn fs';document.getElementById('tsmart').style.display='';document.getElementById('tstack').style.display='none';}
+  else{btn.className='fbtn fk';document.getElementById('tsmart').style.display='none';document.getElementById('tstack').style.display='';}
+}
+let wh=['w0'],wl=[];
+function wgo(label,sid){wl.push(label);wh.push(sid);wss(sid);wcrumb();}
+function wback(){if(wh.length>1){wh.pop();wl.pop();wss(wh[wh.length-1]);wcrumb();}}
+function wrestart(){wh=['w0'];wl=[];wss('w0');wcrumb();}
+function wss(id){document.querySelectorAll('.wscreen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function wcrumb(){
+  const bc=document.getElementById('wbreadcrumb');
+  const steps=['Inicio',...wl];
+  bc.innerHTML=steps.map((s,i)=>{const last=i===steps.length-1;return'<span class="crumb'+(last?' cur':'')+'">'+s+'</span>'+(last?'':'<span class="crumb-sep"> › </span>');}).join('');
+}
+function wshow(id){
+  const r=RES[id];
+  const g=GEN[id]||'';
+  let h='<div class="result-id">'+r.id+'</div><div class="result-name">'+r.name+'</div>';
+  if(g) h+='<div class="result-generic">'+g+'</div>';
+  h+='<ul class="sku-list">';
+  r.skus.forEach(s=>{
+    h+='<li><span class="dot '+DC[s.t]+'"></span><span class="sku-code">'+s.s+'</span>';
+    if(s.n) h+='<span class="sku-name">— '+s.n+'</span>';
+    h+='</li>';
+  });
+  h+='</ul>';
+  if(r.note) h+='<div class="result-note">ℹ️ '+r.note+'</div>';
+  if(r.warn) h+='<div class="result-warn">'+r.warn+'</div>';
+  if(r.flag) h+='<div class="result-flag">⚠ '+r.flag+'</div>';
+  document.getElementById('wresult-content').innerHTML=h;
+  wh.push('w_result');wl.push(r.name);wss('w_result');wcrumb();
+}
+wcrumb();
+</script>
+</body>
+</html>
