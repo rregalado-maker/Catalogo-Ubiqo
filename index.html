@@ -129,11 +129,24 @@
   </div>
   <div class="header-badge">
     <span class="badge-smart">SMART 4G</span>
-    <span class="badge-stack">STACK 4G</span>
+    <span class="badge-stack">STACK</span>
   </div>
 </div>
 
 <div class="container">
+  
+  <div style="margin:16px 0 0;padding:14px 20px;background:#1a1a1a;border-radius:8px;color:#fff;">
+    <div style="font-size:14px;font-weight:bold;margin-bottom:8px;">📋 Instrucciones para levantar el ticket de instalación</div>
+    <div style="font-size:12px;line-height:1.8;color:#e5e5e5;">
+      <b style="color:#4ade80;">1. Identifica la combinación</b> — Busca en este catálogo el equipo que vendiste y selecciona el ID que corresponde (ejemplo: SM-02, SI-03, SP-01).<br>
+      <b style="color:#4ade80;">2. Copia todos los SKUs</b> — En el ticket debes escribir <u>cada SKU por separado</u>, exactamente como aparece en este catálogo. Almacén surte únicamente lo que está escrito — si un SKU no está en el ticket, no se entrega.<br>
+      <b style="color:#4ade80;">3. Especifica accesorios adicionales</b> — Si el cliente compró paro de motor, botón SOS, sensor de puerta u otro accesorio, inclúyelo en el ticket con su SKU. No asumas que se deduce del equipo base.<br>
+      <b style="color:#4ade80;">4. Indica cantidad de equipos</b> — Si son varios vehículos, especifica cuántas unidades de cada SKU se requieren.<br>
+      <b style="color:#4ade80;">5. Cargadores STACK</b> — Se incluye 1 cargador turbo por cada 5 STACK. Si el pedido requiere más, indícalo en el ticket para que se considere el costo adicional.<br>
+      <b style="color:#fbbf24;">⚠ Recuerda:</b> Un ticket incompleto retrasa la instalación y puede generar costos adicionales al cliente.
+    </div>
+  </div>
+
   <div class="tabs">
     <button class="tab active" onclick="switchTab('catalogo',this)">📋 Catálogo completo</button>
     <button class="tab" onclick="switchTab('wizard',this)">🔍 Guía paso a paso</button>
@@ -145,7 +158,8 @@
       <span class="filter-label">Filtrar por:</span>
       <button class="fbtn fa" onclick="filterT('all',this)">Todos</button>
       <button class="fbtn" onclick="filterT('smart',this)">Solo SMART 4G</button>
-      <button class="fbtn" onclick="filterT('stack',this)">Solo STACK 4G</button>
+      <button class="fbtn" onclick="filterT('stack',this)">Solo STACK</button>
+      <button class="fbtn" onclick="filterT('smartone',this)">Satelital Solar / SmartOne</button>
     </div>
     <div class="legend">
       <div class="leg"><span class="dot dot-base"></span> Equipo base</div>
@@ -157,6 +171,8 @@
     <!-- ===== SMART ===== -->
     <div id="tsmart">
       <div class="sec-bar">SMART 4G — UBI-VL300 <span class="badge">GPS · Solo instalado en vehículo</span></div>
+      <div style="margin:0 0 0;padding:9px 14px;background:#fffbeb;border-left:4px solid #f59e0b;border-radius:0 6px 6px 0;font-size:12px;color:#92400e;">🚛 <strong>¿Tu cliente tiene pipa?</strong> Si el vehículo es una pipa (camión cisterna), usa las combinaciones SM-09 a SM-13. El módulo PIC es obligatorio en pipas y siempre debe incluirse en el ticket.</div>
+      <div style="margin:0 0 12px;padding:7px 14px;background:#eff6ff;border-left:4px solid #3b82f6;border-radius:0 6px 6px 0;font-size:12px;color:#1e40af;">💡 El SMART 4G puede combinarse con un módulo satelital (<span style="font-family:'Courier New',monospace">UBI-SMARTONE-SAT</span> o <span style="font-family:'Courier New',monospace">UBI-SMARTONE-SOL</span>) si el cliente requiere cobertura dual celular + satelital.</div>
       <div class="tbl-wrap"><table>
         <thead><tr>
           <th style="width:52px">ID</th>
@@ -168,78 +184,78 @@
         <tbody>
           <tr><td class="id-cell"><span class="id-pill">SM-01</span></td>
             <td><div class="name-cell">Smart base</div><div class="name-sub">Sin accesorios</div></td>
-            <td class="generic-cell"><div class="generic-item"><span class="generic-label">GPS</span></div><div class="generic-desc">Solo el rastreador GPS instalado en el vehículo</div></td>
+            <td class="generic-cell"><div class="generic-item"><span class="generic-label">GPS</span></div><div class="generic-desc">Equipo GPS que rastrea la ubicación del vehículo en tiempo real. Se instala de forma fija en la unidad.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div></td>
             <td></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">SM-02</span></td>
             <td><div class="name-cell">Smart + Paro de motor</div><div class="name-sub">Vehículos estándar</div></td>
-            <td class="generic-cell"><div class="generic-desc">GPS + dispositivo que apaga o desacelera el motor a distancia</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS + dispositivo que permite apagar o desacelerar el motor del vehículo a distancia desde la plataforma. ⚠ Si el vehículo es Kenworth, ver nota.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-PM-NVO</div></td>
             <td><div class="warn-note" style="margin-top:5px">⚠ Si el vehículo es <strong>Kenworth</strong>, usar <span style="font-family:'Courier New',monospace;font-size:11px">UBI-PARO DE MOTOR KENWORTH</span> en lugar de UBI-PM-NVO. Requiere arnés adicional de agencia.</div></td></tr>
           <tr><td class="id-cell"><span class="id-pill">SM-03</span></td>
             <td><div class="name-cell">Smart + Botón SOS</div></td>
-            <td class="generic-cell"><div class="generic-desc">GPS + botón de emergencia inalámbrico para el conductor</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS + botón inalámbrico que el conductor puede presionar en caso de emergencia para generar una alerta inmediata en la plataforma.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-IBS01</div></td>
             <td></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">SM-04</span></td>
             <td><div class="name-cell">Smart + Sensor puerta</div><div class="name-sub">Siempre los 3 juntos</div></td>
-            <td class="generic-cell"><div class="generic-desc">GPS + kit sensor de apertura/cierre de puerta (tag + clema + pistón)</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS + sensor que detecta cuándo se abre o cierra la puerta del vehículo. Incluye 3 piezas que van juntas: tag, clema y pistón. No se puede instalar si falta alguna.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2_IO</div><div class="sku-item"><span class="dot dot-flag"></span>Pistón p/sensor puerta (sin SKU)</div></td>
             <td></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">SM-05</span></td>
             <td><div class="name-cell">Smart + PM + SOS</div></td>
-            <td class="generic-cell"><div class="generic-desc">GPS + paro de motor + botón de emergencia</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS + paro de motor a distancia + botón de emergencia para el conductor.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-PM-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-IBS01</div></td>
             <td><div class="warn-note" style="margin-top:5px">⚠ Si el vehículo es <strong>Kenworth</strong>, usar <span style="font-family:'Courier New',monospace;font-size:11px">UBI-PARO DE MOTOR KENWORTH</span> en lugar de UBI-PM-NVO. Requiere arnés adicional de agencia.</div></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">SM-06</span></td>
             <td><div class="name-cell">Smart + PM + Sensor puerta</div></td>
-            <td class="generic-cell"><div class="generic-desc">GPS + paro de motor + sensor de puerta</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS + paro de motor a distancia + sensor de apertura/cierre de puerta.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-PM-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2_IO</div><div class="sku-item"><span class="dot dot-flag"></span>Pistón p/sensor puerta (sin SKU)</div></td>
             <td><div class="warn-note" style="margin-top:5px">⚠ Si el vehículo es <strong>Kenworth</strong>, usar <span style="font-family:'Courier New',monospace;font-size:11px">UBI-PARO DE MOTOR KENWORTH</span> en lugar de UBI-PM-NVO. Requiere arnés adicional de agencia.</div></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">SM-07</span></td>
             <td><div class="name-cell">Smart + SOS + Sensor puerta</div></td>
-            <td class="generic-cell"><div class="generic-desc">GPS + botón de emergencia + sensor de puerta</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS + botón de emergencia para el conductor + sensor de apertura/cierre de puerta.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-IBS01</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2_IO</div><div class="sku-item"><span class="dot dot-flag"></span>Pistón p/sensor puerta (sin SKU)</div></td>
             <td></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">SM-08</span></td>
             <td><div class="name-cell">Smart + PM + SOS + Sensor puerta</div><div class="name-sub">Completo no pipa</div></td>
-            <td class="generic-cell"><div class="generic-desc">GPS + paro de motor + botón emergencia + sensor de puerta (todo incluido)</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS con todos los accesorios disponibles: paro de motor, botón de emergencia y sensor de puerta. Es la instalación más completa para vehículo no pipa.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-PM-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-IBS01</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2_IO</div><div class="sku-item"><span class="dot dot-flag"></span>Pistón p/sensor puerta (sin SKU)</div></td>
             <td><div class="warn-note" style="margin-top:5px">⚠ Si el vehículo es <strong>Kenworth</strong>, usar <span style="font-family:'Courier New',monospace;font-size:11px">UBI-PARO DE MOTOR KENWORTH</span> en lugar de UBI-PM-NVO. Requiere arnés adicional de agencia.</div></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">SM-09</span></td>
             <td><div class="name-cell">Smart pipa base</div><div class="name-sub">PIC obligatorio en pipas</div></td>
-            <td class="generic-cell"><div class="generic-desc">GPS para pipa + módulo PIC (requerido para este tipo de vehículo)</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS instalado en pipa. El módulo PIC es obligatorio en este tipo de vehículo — sin él el equipo no funciona correctamente. Siempre deben ir juntos.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-PIC-VL300-NVO</div></td>
             <td></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">SM-10</span></td>
             <td><div class="name-cell">Smart pipa + PM</div></td>
-            <td class="generic-cell"><div class="generic-desc">GPS pipa + PIC + paro de motor</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS pipa (con PIC obligatorio) + paro de motor a distancia.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-PIC-VL300-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-PM-NVO</div></td>
             <td></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">SM-11</span></td>
             <td><div class="name-cell">Smart pipa + SOS</div></td>
-            <td class="generic-cell"><div class="generic-desc">GPS pipa + PIC + botón de emergencia</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS pipa (con PIC obligatorio) + botón de emergencia para el conductor.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-PIC-VL300-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-IBS01</div></td>
             <td></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">SM-12</span></td>
             <td><div class="name-cell">Smart pipa + Sensor puerta</div></td>
-            <td class="generic-cell"><div class="generic-desc">GPS pipa + PIC + sensor de puerta</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS pipa (con PIC obligatorio) + sensor de apertura/cierre de puerta.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-PIC-VL300-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2_IO</div><div class="sku-item"><span class="dot dot-flag"></span>Pistón p/sensor puerta (sin SKU)</div></td>
             <td></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">SM-13</span></td>
             <td><div class="name-cell">Smart pipa completo</div><div class="name-sub">Poco común — 1 cliente</div></td>
-            <td class="generic-cell"><div class="generic-desc">GPS pipa + PIC + paro de motor + botón emergencia + sensor de puerta</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS pipa con todos los accesorios: PIC (obligatorio) + paro de motor + botón de emergencia + sensor de puerta. Instalación más completa para pipa.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-VL300</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-PIC-VL300-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-PM-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-IBS01</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-iBS02M2_IO</div><div class="sku-item"><span class="dot dot-flag"></span>Pistón p/sensor puerta (sin SKU)</div></td>
             <td><span class="flag-txt">⚠ Solo 1 cliente lo ha pedido completo</span></td></tr>
         </tbody>
@@ -257,7 +273,7 @@
         <p>⚠ <strong>Comercial debe especificar obligatoriamente la cantidad de cargadores a entregar al cliente en el ticket de instalación.</strong></p>
       </div>
 
-      <div class="sec-bar" style="margin-top:16px">STACK 4G — Portátil <span class="badge">UBI-STACK-4G-NVO + Cargador turbo (UBI-TCSK-3A) + Llave T</span></div>
+      <div class="sec-bar" style="margin-top:16px">STACK — Portátil <span class="badge">UBI-STACK-4G-NVO + Cargador turbo (UBI-TCSK-3A) + Llave T</span></div>
       <div class="tbl-wrap"><table>
         <thead><tr>
           <th style="width:52px">ID</th>
@@ -269,43 +285,44 @@
         <tbody>
           <tr><td class="id-cell"><span class="id-pill">SP-01</span></td>
             <td><div class="name-cell">Portátil base</div><div class="name-sub">Sin complemento</div></td>
-            <td class="generic-cell"><div class="generic-desc">Rastreador portátil + cargador + llave T (para cambiar complementos)</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador que NO se instala fijo — va suelto en el vehículo. Incluye cargador turbo para alimentarlo y llave T para cambiar accesorios. Sin batería de respaldo.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-TCSK-3A — Cargador turbo</div><div class="sku-item"><span class="dot dot-flag"></span>Llave T (sin SKU)</div></td>
             <td></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">SP-02</span></td>
             <td><div class="name-cell">Portátil + STK sin imán</div><div class="name-sub">Con batería de respaldo</div></td>
-            <td class="generic-cell"><div class="generic-desc">Rastreador portátil + cargador + llave T + complemento con batería (sigue reportando cuando el vehículo está apagado)</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador portátil + cargador + llave T + batería de respaldo interna. El equipo sigue reportando aunque el vehículo esté apagado. Sin imán — no se adhiere a superficies.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-TCSK-3A — Cargador turbo</div><div class="sku-item"><span class="dot dot-flag"></span>Llave T (sin SKU)</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPLEMENT-STACK-NVO — STK</div></td>
             <td></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">SP-03</span></td>
             <td><div class="name-cell">Portátil + STK con imán</div><div class="name-sub">Con batería de respaldo + imán</div></td>
-            <td class="generic-cell"><div class="generic-desc">Rastreador portátil + cargador + llave T + complemento con batería e imán (se adhiere a superficies metálicas)</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador portátil + cargador + llave T + batería de respaldo + imán. Se adhiere a superficies metálicas del vehículo. Sigue reportando aunque el vehículo esté apagado.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-TCSK-3A — Cargador turbo</div><div class="sku-item"><span class="dot dot-flag"></span>Llave T (sin SKU)</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPLEMENT-STACK-MAG-NVO — STK C/IMÁN</div></td>
             <td></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">SP-04</span></td>
             <td><div class="name-cell">Portátil + SBI con imán</div><div class="name-sub">Sin batería de respaldo + imán</div></td>
-            <td class="generic-cell"><div class="generic-desc">Rastreador portátil + cargador + llave T + complemento sin batería pero con imán</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador portátil + cargador + llave T + imán para adherirse a superficies metálicas. Sin batería de respaldo — deja de reportar si el vehículo se apaga.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-TCSK-3A — Cargador turbo</div><div class="sku-item"><span class="dot dot-flag"></span>Llave T (sin SKU)</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPL-STACK-MAG-SB-NVO — SBI C/IMÁN</div></td>
             <td></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">SP-05</span></td>
             <td><div class="name-cell">Portátil + ST100 complemento</div><div class="name-sub">Satelital en carcasa de complemento</div></td>
-            <td class="generic-cell"><div class="generic-desc">Rastreador portátil + cargador + llave T + módulo satelital (para zonas sin cobertura celular)</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador portátil + cargador + llave T + módulo satelital. Funciona en zonas donde no hay señal celular. Ideal para rutas remotas o internacionales.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-TCSK-3A — Cargador turbo</div><div class="sku-item"><span class="dot dot-flag"></span>Llave T (sin SKU)</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-ST100-COMPLEMENTO-NVO — Complemento satelital</div></td>
             <td></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">SP-06</span></td>
             <td><div class="name-cell">Portátil + ST100 complemento + SBI c/imán</div></td>
-            <td class="generic-cell"><div class="generic-desc">Rastreador portátil + cargador + llave T + módulo satelital + complemento sin batería con imán</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador portátil + cargador + llave T + módulo satelital + imán para fijarse en superficies metálicas. Para zonas sin cobertura celular con fijación magnética.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-TCSK-3A — Cargador turbo</div><div class="sku-item"><span class="dot dot-flag"></span>Llave T (sin SKU)</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-ST100-COMPLEMENTO-NVO — Complemento satelital</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPL-STACK-MAG-SB-NVO — SBI C/IMÁN</div></td>
             <td></td></tr>
         </tbody>
       </table></div>
+      <div style="margin:6px 0 0;padding:7px 14px;background:#e8f5e7;border-left:4px solid #3C9A35;border-radius:0 6px 6px 0;font-size:12px;color:#2a6e25;">(Este equipo puede ser híbrido, se puede agregar debajo de las combinaciones y de acuerdo a eso se solicita el kit correspondiente faltante para atender el híbrido.)</div>
 
-      <div class="sec-bar" style="margin-top:20px">STACK 4G — Instalado en vehículo <span class="badge">Siempre lleva kit de instalación</span></div>
+      <div class="sec-bar" style="margin-top:20px">STACK — Instalado en vehículo <span class="badge">Siempre lleva kit de instalación</span></div>
       <div class="tbl-wrap"><table>
         <thead><tr>
           <th style="width:52px">ID</th>
@@ -317,48 +334,49 @@
         <tbody>
           <tr><td class="id-cell"><span class="id-pill">SI-01</span></td>
             <td><div class="name-cell">Instalado base</div><div class="name-sub">Sin complemento</div></td>
-            <td class="generic-cell"><div class="generic-desc">Rastreador instalado en el vehículo + kit de cables e instalación</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador fijo instalado en el vehículo, conectado directamente a la corriente. Incluye el kit de cables necesarios para la instalación eléctrica.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KIT-COMPLEMENTO — Kit instalación</div></td>
             <td></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">SI-02</span></td>
             <td><div class="name-cell">Instalado + STK sin imán</div><div class="name-sub">Con batería de respaldo</div></td>
-            <td class="generic-cell"><div class="generic-desc">Rastreador instalado + kit + complemento con batería (reporta aunque apaguen el vehículo)</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador instalado + cables de instalación + batería de respaldo interna. Si alguien apaga el vehículo, el equipo sigue reportando gracias a la batería.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPLEMENT-STACK-NVO — STK</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KIT-COMPLEMENTO — Kit instalación</div></td>
             <td></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">SI-03</span></td>
             <td><div class="name-cell">Instalado + STK con imán</div><div class="name-sub">El imán ya va incluido en el STK</div></td>
-            <td class="generic-cell"><div class="generic-desc">Rastreador instalado + kit + complemento con batería e imán integrado (no requiere kit con imán adicional)</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador instalado + cables de instalación + batería de respaldo con imán ya integrado. El imán viene incluido en el complemento — no se agrega kit con imán por separado.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPLEMENT-STACK-MAG-NVO — STK C/IMÁN</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KIT-COMPLEMENTO — Kit instalación</div></td>
             <td><span class="note-txt">El STK C/IMÁN ya incluye el imán. No usar kit c/imán para evitar doble imán.</span></td></tr>
           <tr><td class="id-cell"><span class="id-pill">SI-04</span></td>
-            <td><div class="name-cell">Instalado + Kit c/imán</div><div class="name-sub">El imán va en el kit</div></td>
-            <td class="generic-cell"><div class="generic-desc">Rastreador instalado + kit de instalación con imán integrado (no agregar complemento adicional)</div></td>
-            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KIT-COMPLEMENTO-IMÁN — Kit instalación c/imán</div></td>
-            <td><span class="note-txt">El kit ya tiene imán. No agregar complemento SBI c/imán para evitar doble imán.</span></td></tr>
+            <td><div class="name-cell">Instalado + STK S/imán + Kit c/imán</div><div class="name-sub">El imán va en el kit</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador instalado + batería de respaldo (sin imán) + kit de instalación que incluye imán. El imán viene en el kit, no en la batería — no agregar dos imanes.</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO — STACK</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPLEMENT-STACK-NVO — STK S/IMÁN</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KIT-COMPLEMENTO-IMÁN — KIT C/IMÁN</div></td>
+            <td><span class="note-txt">El kit ya tiene imán. El STK va sin imán para evitar doble imán.</span><div class="warn-note" style="margin-top:5px">💡 Si requieren equipo <strong>híbrido (STACK + Satelital)</strong>, agregar: <span style="font-family:'Courier New',monospace;font-size:11px">UBI-ST100-COMPLEMENTO-NVO</span> (Módulo ST100 en carcasa complemento).</div></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">SI-05</span></td>
             <td><div class="name-cell">Instalado + STK sin imán + Sensor THL</div><div class="name-sub">Sensor temperatura/humedad/luz</div></td>
-            <td class="generic-cell"><div class="generic-desc">Rastreador instalado + complemento con batería + kit sensor + sensor de temperatura, humedad y luz</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador instalado + batería de respaldo + sensor THL. El sensor THL mide temperatura, humedad y luz dentro de la caja. Ideal para cajas refrigeradas con Thermo King. El equipo NO queda imantado — se fija con cinta o silicón.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPLEMENT-STACK-NVO — STK</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KITINST-SENSOR-STACK — Kit sensor</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-STHLT — Sensor Temp/Hum/Luz</div></td>
             <td><div class="warn-note">⚠ El equipo NO queda imantado. Se pegará con cinta doble cara o silicón, sin garantía de fijación permanente.</div></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">SI-06</span></td>
-            <td><div class="name-cell">Instalado + STK c/imán + Sensor THL</div><div class="name-sub">Sensor THL con imán</div></td>
-            <td class="generic-cell"><div class="generic-desc">Rastreador instalado + complemento con batería e imán + kit sensor con imán + sensor THL (equipo queda imantado)</div></td>
-            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPLEMENT-STACK-MAG-NVO — STK C/IMÁN</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KITINST-SENSOR--MAG-NVO — Kit sensor c/imán</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-STHLT — Sensor Temp/Hum/Luz</div></td>
+            <td><div class="name-cell">Instalado + Kit sensor c/imán + Sensor THL</div><div class="name-sub">Sin complemento adicional</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador instalado + kit sensor con imán + sensor THL para medir temperatura, humedad y luz. Para cajas refrigeradas con Thermo King. El imán está en el kit.</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO — STACK</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KITINST-SENSOR--MAG-NVO — Kit sensor c/imán</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-STHLT — Sensor Temp/Hum/Luz</div></td>
             <td></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">SI-07</span></td>
-            <td><div class="name-cell">Instalado + SBI c/imán + Sensor THL</div><div class="name-sub">Sin batería de respaldo</div></td>
-            <td class="generic-cell"><div class="generic-desc">Rastreador instalado + complemento sin batería (con imán para fijación) + kit sensor + sensor THL</div></td>
-            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPL-STACK-MAG-SB-NVO — SBI C/IMÁN</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KITINST-SENSOR-STACK — Kit sensor</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-STHLT — Sensor Temp/Hum/Luz</div></td>
-            <td><span class="note-txt">SBI c/imán: garantiza fijación en superficie metálica sin necesidad de batería de respaldo.</span></td></tr>
+            <td><div class="name-cell">Instalado + STK s/imán + Kit sensor s/imán + Sensor THL</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador instalado + batería de respaldo + kit sensor sin imán + sensor THL. Para cajas refrigeradas. ⚠ El equipo NO queda imantado — se fija con cinta doble cara o silicón, sin garantía de fijación permanente.as. ⚠ El equipo NO queda imantado — se fija con cinta doble cara o silicón, sin garantía de fijación permanente.</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-4G-NVO — STACK</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPLEMENT-STACK-NVO — STK S/IMÁN</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KITINST-SENSOR-STACK — Kit sensor s/imán</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-STHLT — Sensor Temp/Hum/Luz</div></td>
+            <td><div class="warn-note">⚠ El equipo NO queda imantado. Se pegará con cinta doble cara o silicón, SIN garantía de fijación permanente.</div></td></tr>
         </tbody>
       </table></div>
+      <div style="margin:6px 0 0;padding:7px 14px;background:#e8f5e7;border-left:4px solid #3C9A35;border-radius:0 6px 6px 0;font-size:12px;color:#2a6e25;">(Este equipo puede ser híbrido, se puede agregar debajo de las combinaciones y de acuerdo a eso se solicita el kit correspondiente faltante para atender el híbrido.)</div>
 
-      <div class="sec-bar" style="margin-top:20px">STACK 4G — Satelital <span class="badge">UBI-ST100-STACK-NVO · Siempre requiere STK (con o sin batería)</span></div>
+      <div class="sec-bar" style="margin-top:20px">STACK — Satelital <span class="badge">UBI-ST100-STACK-NVO · Siempre requiere STK (con o sin batería)</span></div>
       <div class="tbl-wrap"><table>
         <thead><tr>
           <th style="width:52px">ID</th>
@@ -369,20 +387,26 @@
         </tr></thead>
         <tbody>
           <tr><td class="id-cell"><span class="id-pill">SS-01</span></td>
-            <td><div class="name-cell">Satelital + STK sin imán</div></td>
-            <td class="generic-cell"><div class="generic-desc">Rastreador satelital + complemento con batería sin imán + kit instalación. El STK puede ser con o sin batería según necesidad del cliente.</div></td>
-            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-ST100-STACK-NVO — Stack satelital</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPLEMENT-STACK-NVO — STK</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KIT-COMPLEMENTO — Kit instalación</div></td>
-            <td><span class="note-txt">Puede ir con complemento STK (c/batería) o SBI (sin batería) según lo que pidió el cliente. Ver alternativas en archivo de productos.</span></td></tr>
-
+            <td><div class="name-cell">Satelital + STK + Kit s/imán</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador satelital instalado en el vehículo + batería de respaldo + kit de instalación sin imán. Para zonas sin señal celular.</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-ST100-STACK-NVO — Stack satelital</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPLEMENT-STACK-NVO — STK</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KIT-COMPLEMENTO — Kit s/imán</div></td>
+            <td><span class="note-txt">El STK puede ser con o sin batería según necesidad del cliente.</span></td></tr>
           <tr><td class="id-cell"><span class="id-pill">SS-02</span></td>
-            <td><div class="name-cell">Satelital + Kit c/imán</div><div class="name-sub">El imán va en el kit</div></td>
-            <td class="generic-cell"><div class="generic-desc">Rastreador satelital + kit de instalación con imán (el kit provee imán y corriente, no agregar complemento adicional)</div></td>
-            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-ST100-STACK-NVO — Stack satelital</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KIT-COMPLEMENTO-IMÁN — Kit instalación c/imán</div></td>
-            <td><span class="note-txt">El kit c/imán ya provee imán y corriente. No agregar complemento STK MAG para evitar doble imán.</span></td></tr>
+            <td><div class="name-cell">Satelital + STK + Kit c/imán</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador satelital + batería de respaldo + kit de instalación con imán. El imán viene en el kit. Para zonas sin señal celular con fijación magnética.</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-ST100-STACK-NVO — Stack satelital</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPLEMENT-STACK-NVO — STK</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KIT-COMPLEMENTO-IMÁN — Kit c/imán</div></td>
+            <td></td></tr>
+          <tr><td class="id-cell"><span class="id-pill">SS-03</span></td>
+            <td><div class="name-cell">Satelital + STK c/imán + Kit s/imán</div></td>
+            <td class="generic-cell"><div class="generic-desc">Rastreador satelital + batería de respaldo con imán integrado + kit de instalación sin imán. El imán viene en el complemento, no en el kit.</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-ST100-STACK-NVO — Stack satelital</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-COMPLEMENT-STACK-MAG-NVO — STK C/IMÁN</div><div class="sku-item"><span class="dot dot-kit"></span>UBI-KIT-COMPLEMENTO — Kit s/imán</div></td>
+            <td></td></tr>
         </tbody>
       </table></div>
+      <div style="margin:6px 0 0;padding:7px 14px;background:#e8f5e7;border-left:4px solid #3C9A35;border-radius:0 6px 6px 0;font-size:12px;color:#2a6e25;">(Este equipo puede ser híbrido, se puede agregar debajo de las combinaciones y de acuerdo a eso se solicita el kit correspondiente faltante para atender el híbrido.)</div>
 
-      <div class="sec-bar" style="margin-top:20px">STACK 4G — Plafón <span class="badge">Independiente del Stack principal · El plafón NO incluye LED</span></div>
+      <div class="sec-bar" style="margin-top:20px">STACK — Plafón <span class="badge">Independiente del Stack principal · El plafón NO incluye LED</span></div>
+      <div style="margin:0 0 0;padding:9px 14px;background:#fffbeb;border-left:4px solid #f59e0b;border-radius:0 6px 6px 0;font-size:12px;color:#92400e;">📦 <strong>¿Cuándo aplica el plafón?</strong> Se instala en cajas (secas, refrigeradas, dollys) cuyo plafón trasero sea <strong>circular</strong>. Si el plafón es rectangular o cuadrado, se instala Stack normal sin carcasa de plafón. El sensor THL (temperatura/humedad/luz) aplica cuando la caja tiene <strong>Thermo King</strong> — mide la temperatura interior de la caja refrigerada.</div>
       <div class="tbl-wrap"><table>
         <thead><tr>
           <th style="width:52px">ID</th>
@@ -394,61 +418,98 @@
         <tbody>
           <tr><td class="id-cell"><span class="id-pill">PL-01</span></td>
             <td><div class="name-cell">Plafón Stack (sin LED)</div></td>
-            <td class="generic-cell"><div class="generic-desc">Solo la carcasa del plafón stack. <strong>Sin LED.</strong> Cliente no requiere iluminación.</div></td>
+            <td class="generic-cell"><div class="generic-desc">Carcasa de plafón trasero circular para instalar el rastreador Stack. Sin foco LED. Para cajas secas, refrigeradas o dollys donde el cliente no requiere iluminación adicional.<strong>Sin LED.</strong> Cliente no requiere iluminación.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-PLAFON — Plafón stack</div></td>
             <td></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">PL-02</span></td>
             <td><div class="name-cell">Plafón Stack + 1 LED</div></td>
-            <td class="generic-cell"><div class="generic-desc">Plafón stack + un LED. Instalación básica con iluminación.</div></td>
+            <td class="generic-cell"><div class="generic-desc">Carcasa de plafón circular + 1 foco LED. Para cajas donde el plafón trasero es circular y el cliente requiere iluminación. Se instala en el plafón trasero de la caja.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-PLAFON — Plafón stack</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-LED-PLAFON — LED</div></td>
             <td></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">PL-03</span></td>
             <td><div class="name-cell">Plafón Stack + 2 LEDs</div><div class="name-sub">Para que se vea uniforme</div></td>
-            <td class="generic-cell"><div class="generic-desc">Plafón stack + dos LEDs. Para que la instalación luzca uniforme y no se note diferencia.</div></td>
+            <td class="generic-cell"><div class="generic-desc">Carcasa de plafón circular + 2 focos LED. Se usa cuando hay 2 plafones traseros circulares y el cliente quiere que ambos luzcan igual — para que no se note la diferencia entre el plafón con equipo y el que no tiene.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-PLAFON — Plafón stack</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-LED-PLAFON — LED (1)</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-LED-PLAFON — LED (2)</div></td>
             <td><span class="note-txt">2 unidades de UBI-LED-PLAFON</span></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">PL-04</span></td>
             <td><div class="name-cell">Plafón Satelital (sin LED)</div></td>
-            <td class="generic-cell"><div class="generic-desc">Solo el plafón satelital. Sin LED.</div></td>
+            <td class="generic-cell"><div class="generic-desc">Carcasa de plafón circular para instalar el módulo satelital. Sin foco LED. Para cajas donde se requiere cobertura satelital.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-ST100-PLAFON-NVO — Plafón satelital</div></td>
             <td></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">PL-05</span></td>
             <td><div class="name-cell">Plafón Satelital + 1 LED</div></td>
-            <td class="generic-cell"><div class="generic-desc">Plafón satelital + un LED.</div></td>
+            <td class="generic-cell"><div class="generic-desc">Carcasa de plafón circular para módulo satelital + 1 foco LED.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-ST100-PLAFON-NVO — Plafón satelital</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-LED-PLAFON — LED</div></td>
             <td></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">PL-06</span></td>
             <td><div class="name-cell">Plafón Satelital + 2 LEDs</div></td>
-            <td class="generic-cell"><div class="generic-desc">Plafón satelital + dos LEDs para uniformidad visual.</div></td>
+            <td class="generic-cell"><div class="generic-desc">Carcasa de plafón circular para módulo satelital + 2 focos LED. Para uniformidad visual cuando hay 2 plafones.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-ST100-PLAFON-NVO — Plafón satelital</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-LED-PLAFON — LED (1)</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-LED-PLAFON — LED (2)</div></td>
             <td><span class="note-txt">2 unidades de UBI-LED-PLAFON</span></td></tr>
 
           <tr><td class="id-cell"><span class="id-pill">PL-07</span></td>
             <td><div class="name-cell">Plafón Stack + Plafón Satelital</div><div class="name-sub">Misma unidad, plafones distintos</div></td>
-            <td class="generic-cell"><div class="generic-desc">Stack en un plafón + satelital en otro plafón de la misma unidad. Sin LED.</div></td>
+            <td class="generic-cell"><div class="generic-desc">Stack en un plafón circular + módulo satelital en otro plafón circular de la misma caja. Sin focos LED. Para cajas que requieren rastreo celular y satelital al mismo tiempo.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-PLAFON — Plafón stack</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-ST100-PLAFON-NVO — Plafón satelital</div></td>
             <td><span class="note-txt">Ej. izquierdo y derecho en misma unidad</span></td></tr>
 
 
           <tr><td class="id-cell"><span class="id-pill">PL-08</span></td>
             <td><div class="name-cell">Plafón Dummy</div><div class="name-sub">Falso plafón</div></td>
-            <td class="generic-cell"><div class="generic-desc">Instalación de plafón falso (sin equipo activo). Solo la carcasa visible.</div></td>
+            <td class="generic-cell"><div class="generic-desc">Carcasa de plafón circular sin equipo adentro. Se usa para mantener la apariencia uniforme de la caja cuando hay un plafón vacío junto a uno con equipo. Solo es la carcasa, no rastrea nada.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-PLAFON-DUMMY — Plafón Dummy</div></td>
             <td><span class="note-txt">Instalación de falso plafón.</span></td></tr>
           <tr><td class="id-cell"><span class="id-pill">PL-09</span></td>
             <td><div class="name-cell">Plafón Stack + Plafón Satelital + LEDs</div><div class="name-sub">Instalación completa con uniformidad</div></td>
-            <td class="generic-cell"><div class="generic-desc">Stack + satelital en plafones distintos de la misma unidad + dos LEDs para uniformidad visual.</div></td>
+            <td class="generic-cell"><div class="generic-desc">Stack en un plafón + satelital en otro plafón de la misma caja + 2 focos LED para uniformidad visual. Instalación más completa para cajas con plafones circulares.</div></td>
             <td><div class="sku-item"><span class="dot dot-base"></span>UBI-STACK-PLAFON — Plafón stack</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-ST100-PLAFON-NVO — Plafón satelital</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-LED-PLAFON — LED (1)</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-LED-PLAFON — LED (2)</div></td>
             <td><span class="note-txt">2 unidades de UBI-LED-PLAFON</span></td></tr>
         </tbody>
       </table></div>
 
     </div><!-- /tstack -->
+
+    <!-- ===== SMARTONE ===== -->
+    <div id="tsmartone">
+      <div class="sec-bar" style="margin-top:24px">SATELITAL SOLAR / SMARTONE <span class="badge">GPS Satelital · Sin cobertura celular requerida</span></div>
+      <div style="margin:0 0 0;padding:9px 14px;background:#eff6ff;border-left:4px solid #3b82f6;border-radius:0 6px 6px 0;font-size:12px;color:#1e40af;">💡 Este equipo puede instalarse solo o en combinación con <strong>SMART 4G (UBI-VL300)</strong> si el cliente requiere cobertura dual celular + satelital. Indicar ambos equipos en el ticket si aplica.</div>
+      <div class="tbl-wrap" style="margin-top:1px"><table>
+        <thead><tr>
+          <th style="width:52px">ID</th>
+          <th style="width:180px">Combinación</th>
+          <th style="width:220px">Nombre comercial / Qué se entrega</th>
+          <th>SKUs requeridos</th>
+          <th style="width:160px">Notas</th>
+        </tr></thead>
+        <tbody>
+          <tr><td class="id-cell"><span class="id-pill" style="background:#1d4ed8">SMO-01</span></td>
+            <td><div class="name-cell">SmartOne Satelital Exterior</div><div class="name-sub">Instalado en vehículo</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS satelital que se instala de forma fija en el exterior del vehículo. Funciona sin señal celular — ideal para rutas remotas, internacionales o zonas montañosas.</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-SMARTONE-SAT — Módulo Satelital Exterior</div></td>
+            <td></td></tr>
+          <tr><td class="id-cell"><span class="id-pill" style="background:#1d4ed8">SMO-02</span></td>
+            <td><div class="name-cell">SmartOne Solar</div></td>
+            <td class="generic-cell"><div class="generic-desc">GPS satelital con panel solar integrado. Se fija con cinta doble cara, remaches o silicón — NO se usa imán ya que afecta el funcionamiento del equipo. No requiere cables ni instalación eléctrica. Se carga solo con la luz solar. Ideal para remolques, dollys o unidades sin conexión eléctrica.</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-SMARTONE-SOL — Módulo Satelital Solar</div></td>
+            <td><span class="note-txt">⚠ NO usar imán — afecta el reporte del equipo. Fijar con cinta doble cara, remaches o silicón. No requiere corriente del vehículo.</span></td></tr>
+          <tr><td class="id-cell"><span class="id-pill" style="background:#1d4ed8">SMO-03</span></td>
+            <td><div class="name-cell">SmartOne Exterior + SMART 4G</div><div class="name-sub">Cobertura dual celular + satelital</div></td>
+            <td class="generic-cell"><div class="generic-desc">SmartOne Exterior + SMART 4G instalados juntos en el mismo vehículo. Cobertura dual: usa celular cuando hay señal y satelital cuando no hay. Si el cliente compró accesorios adicionales (PM, SOS, sensor), especificarlos en el ticket.</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-SMARTONE-SAT — Módulo Satelital Exterior</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-VL300 — SMART 4G</div></td>
+            <td><div class="note-txt" style="margin-top:4px">💡 Al combinarse con SMART 4G, se pueden agregar accesorios como Paro de Motor, Botón SOS y Sensor de Puerta. Consultar sección SMART 4G para los SKUs correspondientes.</div></td></tr>
+          <tr><td class="id-cell"><span class="id-pill" style="background:#1d4ed8">SMO-04</span></td>
+            <td><div class="name-cell">SmartOne Solar + SMART 4G</div><div class="name-sub">Cobertura dual celular + satelital</div></td>
+            <td class="generic-cell"><div class="generic-desc">SmartOne Solar + SMART 4G instalados juntos. Cobertura dual celular + satelital. El SmartOne Solar no requiere cables. Si el cliente compró accesorios adicionales (PM, SOS, sensor), especificarlos en el ticket.</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-SMARTONE-SOL — Módulo Satelital Solar</div><div class="sku-item"><span class="dot dot-acc"></span>UBI-VL300 — SMART 4G</div></td>
+            <td><div class="note-txt" style="margin-top:4px">💡 Al combinarse con SMART 4G, se pueden agregar accesorios como Paro de Motor, Botón SOS y Sensor de Puerta. Consultar sección SMART 4G para los SKUs correspondientes.</div></td></tr>
+        </tbody>
+      </table></div>
+    </div><!-- /tsmartone -->
 
     <div class="flags-box">
       <div class="flags-title">⚠ SKUs pendientes de asignar — actualizar cuando estén disponibles</div>
@@ -471,10 +532,25 @@
             <div class="opt-title">SMART 4G <span style="font-size:10px;font-weight:bold;padding:2px 8px;border-radius:99px;background:#dbeafe;color:#1d4ed8;margin-left:6px">GPS</span></div>
             <div class="opt-sub">UBI-VL300 — Solo instalado en vehículo</div>
           </div>
-          <div class="opt" onclick="wgo('STACK 4G','w1_stack')">
-            <div class="opt-title">STACK 4G <span style="font-size:10px;font-weight:bold;padding:2px 8px;border-radius:99px;background:#e8f5e7;color:#2a6e25;margin-left:6px">Rastreador</span></div>
+          <div class="opt" onclick="wgo('STACK','w1_stack')">
+            <div class="opt-title">STACK <span style="font-size:10px;font-weight:bold;padding:2px 8px;border-radius:99px;background:#e8f5e7;color:#2a6e25;margin-left:6px">Rastreador</span></div>
             <div class="opt-sub">UBI-STACK-4G-NVO — Portátil o instalado</div>
           </div>
+          <div class="opt" onclick="wgo('Satelital Solar/SmartOne','w1_smartone')">
+            <div class="opt-title">Satelital Solar / SmartOne <span style="font-size:10px;font-weight:bold;padding:2px 8px;border-radius:99px;background:#eff6ff;color:#1d4ed8;margin-left:6px">Satelital</span></div>
+            <div class="opt-sub">UBI-SMARTONE-SAT / UBI-SMARTONE-SOL</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wscreen" id="w1_smartone">
+        <button class="back-btn" onclick="wback()">← Atrás</button>
+        <div class="wiz-title">Satelital Solar / SmartOne — ¿Qué combinación?</div>
+        <div class="opts">
+          <div class="opt" onclick="wshow('SMO-01')"><div class="opt-title">SmartOne Exterior solo</div><div class="opt-sub">Instalado en vehículo</div></div>
+          <div class="opt" onclick="wshow('SMO-02')"><div class="opt-title">SmartOne Solar solo</div><div class="opt-sub">Magnético, sin cableado</div></div>
+          <div class="opt" onclick="wshow('SMO-03')"><div class="opt-title">SmartOne Exterior + SMART 4G</div><div class="opt-sub">Cobertura dual</div></div>
+          <div class="opt" onclick="wshow('SMO-04')"><div class="opt-title">SmartOne Solar + SMART 4G</div><div class="opt-sub">Cobertura dual + solar</div></div>
         </div>
       </div>
 
@@ -516,7 +592,7 @@
 
       <div class="wscreen" id="w1_stack">
         <button class="back-btn" onclick="wback()">← Atrás</button>
-        <div class="wiz-title">STACK 4G — ¿Cuál es la modalidad?</div>
+        <div class="wiz-title">STACK — ¿Cuál es la modalidad?</div>
         <div class="opts">
           <div class="opt" onclick="wgo('Portátil','w2_port')"><div class="opt-title">Portátil</div><div class="opt-sub">Con cargador turbo y llave T</div></div>
           <div class="opt" onclick="wgo('Instalado','w2_inst')"><div class="opt-title">Instalado en vehículo</div><div class="opt-sub">Siempre lleva kit de instalación</div></div>
@@ -609,10 +685,10 @@ const GEN = {
   'SM-07':'GPS + botón SOS + sensor puerta',
   'SM-08':'GPS + paro de motor + botón SOS + sensor puerta (todo)',
   'SM-09':'GPS pipa + módulo PIC (obligatorio en pipas)',
-  'SM-10':'GPS pipa + PIC + paro de motor',
+  'SM-10':'GPS pipa (con PIC obligatorio) + paro de motor a distancia.',
   'SM-11':'GPS pipa + PIC + botón SOS',
   'SM-12':'GPS pipa + PIC + sensor puerta',
-  'SM-13':'GPS pipa + PIC + paro de motor + SOS + sensor puerta',
+  'SM-13':'GPS pipa (con PIC obligatorio) + paro de motor a distancia. + SOS + sensor puerta',
   'SP-01':'Rastreador portátil + cargador turbo + llave T',
   'SP-02':'Portátil + cargador + llave T + complemento CON batería de respaldo',
   'SP-03':'Portátil + cargador + llave T + complemento CON batería + imán',
@@ -640,6 +716,11 @@ const GEN = {
   'PL-08':'Falso plafón — solo la carcasa visible, sin equipo activo'
 };
 const RES = {
+  
+  'SMO-01':{id:'SMO-01',name:'SmartOne Satelital Exterior',skus:[{t:'base',s:'UBI-SMARTONE-SAT',n:'Módulo Satelital Exterior'}]},
+  'SMO-02':{id:'SMO-02',name:'SmartOne Solar',skus:[{t:'base',s:'UBI-SMARTONE-SOL',n:'Módulo Satelital Solar'}],note:'⚠ NO usar imán — afecta el reporte del equipo. Fijar con cinta doble cara, remaches o silicón. No requiere corriente del vehículo.'},
+  'SMO-03':{id:'SMO-03',name:'SmartOne Exterior + SMART 4G',skus:[{t:'base',s:'UBI-SMARTONE-SAT',n:'Módulo Satelital Exterior'},{t:'acc',s:'UBI-VL300',n:'SMART 4G'}],note:'Al combinarse con SMART 4G, se pueden agregar accesorios como Paro de Motor, Botón SOS y Sensor de Puerta. Consultar sección SMART 4G para los SKUs correspondientes.'},
+  'SMO-04':{id:'SMO-04',name:'SmartOne Solar + SMART 4G',skus:[{t:'base',s:'UBI-SMARTONE-SOL',n:'Módulo Satelital Solar'},{t:'acc',s:'UBI-VL300',n:'SMART 4G'}],note:'Al combinarse con SMART 4G, se pueden agregar accesorios como Paro de Motor, Botón SOS y Sensor de Puerta. Consultar sección SMART 4G para los SKUs correspondientes.'},
   'SM-01':{id:'SM-01',name:'Smart base',skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'}]},
   'SM-02':{id:'SM-02',name:'Smart + Paro de motor',skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'},{t:'acc',s:'UBI-PM-NVO',n:'Paro motor'}],warn:'⚠ Si el vehículo es Kenworth, usar UBI-PARO DE MOTOR KENWORTH en lugar de UBI-PM-NVO. Requiere arnés adicional de agencia.'},
   'SM-03':{id:'SM-03',name:'Smart + Botón SOS',skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'},{t:'acc',s:'UBI-IBS01',n:'Botón SOS'}]},
@@ -653,21 +734,21 @@ const RES = {
   'SM-11':{id:'SM-11',name:'Smart pipa + SOS',skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'},{t:'acc',s:'UBI-PIC-VL300-NVO',n:'PIC'},{t:'acc',s:'UBI-IBS01',n:'Botón SOS'}]},
   'SM-12':{id:'SM-12',name:'Smart pipa + Sensor puerta',skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'},{t:'acc',s:'UBI-PIC-VL300-NVO',n:'PIC'},{t:'acc',s:'UBI-iBS02M2',n:'Tag sensor puerta'},{t:'acc',s:'UBI-iBS02M2_IO',n:'Clema sensor puerta'},{t:'flag',s:'Pistón p/sensor puerta (sin SKU)',n:''}]},
   'SM-13':{id:'SM-13',name:'Smart pipa completo',skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'},{t:'acc',s:'UBI-PIC-VL300-NVO',n:'PIC'},{t:'acc',s:'UBI-PM-NVO',n:'Paro motor'},{t:'acc',s:'UBI-IBS01',n:'Botón SOS'},{t:'acc',s:'UBI-iBS02M2',n:'Tag sensor puerta'},{t:'acc',s:'UBI-iBS02M2_IO',n:'Clema sensor puerta'},{t:'flag',s:'Pistón p/sensor puerta (sin SKU)',n:''}],note:'Poco común — solo 1 cliente'},
-  'SP-01':{id:'SP-01',name:'Stack portátil base',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-TCSK-3A',n:'Cargador turbo'},{t:'flag',s:'Llave T (sin SKU)',n:''}]},
-  'SP-02':{id:'SP-02',name:'Portátil + STK sin imán',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-TCSK-3A',n:'Cargador turbo'},{t:'flag',s:'Llave T (sin SKU)',n:''},{t:'acc',s:'UBI-COMPLEMENT-STACK-NVO',n:'STK'}]},
-  'SP-03':{id:'SP-03',name:'Portátil + STK con imán',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-TCSK-3A',n:'Cargador turbo'},{t:'flag',s:'Llave T (sin SKU)',n:''},{t:'acc',s:'UBI-COMPLEMENT-STACK-MAG-NVO',n:'STK C/IMÁN'}]},
-  'SP-04':{id:'SP-04',name:'Portátil + SBI con imán',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-TCSK-3A',n:'Cargador turbo'},{t:'flag',s:'Llave T (sin SKU)',n:''},{t:'acc',s:'UBI-COMPL-STACK-MAG-SB-NVO',n:'SBI C/IMÁN'}]},
-  'SP-05':{id:'SP-05',name:'Portátil + ST100 complemento',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-TCSK-3A',n:'Cargador turbo'},{t:'flag',s:'Llave T (sin SKU)',n:''},{t:'acc',s:'UBI-ST100-COMPLEMENTO-NVO',n:'Complemento satelital'}]},
-  'SP-06':{id:'SP-06',name:'Portátil + ST100 + SBI c/imán',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-TCSK-3A',n:'Cargador turbo'},{t:'flag',s:'Llave T (sin SKU)',n:''},{t:'acc',s:'UBI-ST100-COMPLEMENTO-NVO',n:'Complemento satelital'},{t:'acc',s:'UBI-COMPL-STACK-MAG-SB-NVO',n:'SBI C/IMÁN'}]},
-  'SI-01':{id:'SI-01',name:'Stack instalado base',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'kit',s:'UBI-KIT-COMPLEMENTO',n:'Kit instalación'}]},
-  'SI-02':{id:'SI-02',name:'Instalado + STK sin imán',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-COMPLEMENT-STACK-NVO',n:'STK'},{t:'kit',s:'UBI-KIT-COMPLEMENTO',n:'Kit instalación'}]},
-  'SI-03':{id:'SI-03',name:'Instalado + STK c/imán',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-COMPLEMENT-STACK-MAG-NVO',n:'STK C/IMÁN'},{t:'kit',s:'UBI-KIT-COMPLEMENTO',n:'Kit instalación'}],note:'El STK C/IMÁN ya incluye el imán. Se usa el kit normal, no kit c/imán.'},
-  'SI-04':{id:'SI-04',name:'Instalado + Kit c/imán',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'kit',s:'UBI-KIT-COMPLEMENTO-IMÁN',n:'Kit instalación c/imán'}],note:'El kit ya tiene imán. No agregar complemento SBI adicional.'},
-  'SI-05':{id:'SI-05',name:'Instalado + STK sin imán + Sensor THL',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-COMPLEMENT-STACK-NVO',n:'STK'},{t:'kit',s:'UBI-KITINST-SENSOR-STACK',n:'Kit sensor'},{t:'acc',s:'UBI-STHLT',n:'Sensor Temp/Hum/Luz'}],warn:'⚠ El equipo NO queda imantado. Se pegará con cinta doble cara o silicón, SIN garantía de fijación permanente.'},
-  'SI-06':{id:'SI-06',name:'Instalado + STK c/imán + Sensor THL',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-COMPLEMENT-STACK-MAG-NVO',n:'STK C/IMÁN'},{t:'kit',s:'UBI-KITINST-SENSOR--MAG-NVO',n:'Kit sensor c/imán'},{t:'acc',s:'UBI-STHLT',n:'Sensor Temp/Hum/Luz'}]},
-  'SI-07':{id:'SI-07',name:'Instalado + SBI c/imán + Sensor THL',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-COMPL-STACK-MAG-SB-NVO',n:'SBI C/IMÁN'},{t:'kit',s:'UBI-KITINST-SENSOR-STACK',n:'Kit sensor'},{t:'acc',s:'UBI-STHLT',n:'Sensor Temp/Hum/Luz'}]},
+  'SP-01':{id:'SP-01',name:'Stack portátil base',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK'},{t:'acc',s:'UBI-TCSK-3A',n:'Cargador turbo'},{t:'flag',s:'Llave T (sin SKU)',n:''}]},
+  'SP-02':{id:'SP-02',name:'Portátil + STK sin imán',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK'},{t:'acc',s:'UBI-TCSK-3A',n:'Cargador turbo'},{t:'flag',s:'Llave T (sin SKU)',n:''},{t:'acc',s:'UBI-COMPLEMENT-STACK-NVO',n:'STK'}]},
+  'SP-03':{id:'SP-03',name:'Portátil + STK con imán',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK'},{t:'acc',s:'UBI-TCSK-3A',n:'Cargador turbo'},{t:'flag',s:'Llave T (sin SKU)',n:''},{t:'acc',s:'UBI-COMPLEMENT-STACK-MAG-NVO',n:'STK C/IMÁN'}]},
+  'SP-04':{id:'SP-04',name:'Portátil + SBI con imán',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK'},{t:'acc',s:'UBI-TCSK-3A',n:'Cargador turbo'},{t:'flag',s:'Llave T (sin SKU)',n:''},{t:'acc',s:'UBI-COMPL-STACK-MAG-SB-NVO',n:'SBI C/IMÁN'}]},
+  'SP-05':{id:'SP-05',name:'Portátil + ST100 complemento',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK'},{t:'acc',s:'UBI-TCSK-3A',n:'Cargador turbo'},{t:'flag',s:'Llave T (sin SKU)',n:''},{t:'acc',s:'UBI-ST100-COMPLEMENTO-NVO',n:'Complemento satelital'}]},
+  'SP-06':{id:'SP-06',name:'Portátil + ST100 + SBI c/imán',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK'},{t:'acc',s:'UBI-TCSK-3A',n:'Cargador turbo'},{t:'flag',s:'Llave T (sin SKU)',n:''},{t:'acc',s:'UBI-ST100-COMPLEMENTO-NVO',n:'Complemento satelital'},{t:'acc',s:'UBI-COMPL-STACK-MAG-SB-NVO',n:'SBI C/IMÁN'}]},
+  'SI-01':{id:'SI-01',name:'Stack instalado base',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK'},{t:'kit',s:'UBI-KIT-COMPLEMENTO',n:'Kit instalación'}]},
+  'SI-02':{id:'SI-02',name:'Instalado + STK sin imán',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK'},{t:'acc',s:'UBI-COMPLEMENT-STACK-NVO',n:'STK'},{t:'kit',s:'UBI-KIT-COMPLEMENTO',n:'Kit instalación'}]},
+  'SI-03':{id:'SI-03',name:'Instalado + STK c/imán',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK'},{t:'acc',s:'UBI-COMPLEMENT-STACK-MAG-NVO',n:'STK C/IMÁN'},{t:'kit',s:'UBI-KIT-COMPLEMENTO',n:'Kit instalación'}],note:'El STK C/IMÁN ya incluye el imán. Se usa el kit normal, no kit c/imán.'},
+  'SI-04':{id:'SI-04',name:'Instalado + STK S/imán + Kit c/imán',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK'},{t:'acc',s:'UBI-COMPLEMENT-STACK-NVO',n:'STK S/IMÁN'},{t:'kit',s:'UBI-KIT-COMPLEMENTO-IMÁN',n:'KIT C/IMÁN'}],note:'El kit ya tiene imán. El STK va sin imán para evitar doble imán.'},
+  'SI-05':{id:'SI-05',name:'Instalado + STK sin imán + Sensor THL',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK'},{t:'acc',s:'UBI-COMPLEMENT-STACK-NVO',n:'STK'},{t:'kit',s:'UBI-KITINST-SENSOR-STACK',n:'Kit sensor'},{t:'acc',s:'UBI-STHLT',n:'Sensor Temp/Hum/Luz'}],warn:'⚠ El equipo NO queda imantado. Se pegará con cinta doble cara o silicón, SIN garantía de fijación permanente.'},
+  'SI-06':{id:'SI-06',name:'Instalado + STK c/imán + Sensor THL',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK'},{t:'acc',s:'UBI-COMPLEMENT-STACK-MAG-NVO',n:'STK C/IMÁN'},{t:'kit',s:'UBI-KITINST-SENSOR--MAG-NVO',n:'Kit sensor c/imán'},{t:'acc',s:'UBI-STHLT',n:'Sensor Temp/Hum/Luz'}]},
+  'SI-07':{id:'SI-07',name:'Instalado + SBI c/imán + Sensor THL',skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK'},{t:'acc',s:'UBI-COMPL-STACK-MAG-SB-NVO',n:'SBI C/IMÁN'},{t:'kit',s:'UBI-KITINST-SENSOR-STACK',n:'Kit sensor'},{t:'acc',s:'UBI-STHLT',n:'Sensor Temp/Hum/Luz'}]},
   'SS-01':{id:'SS-01',name:'Satelital + STK sin imán',skus:[{t:'base',s:'UBI-ST100-STACK-NVO',n:'Stack satelital'},{t:'acc',s:'UBI-COMPLEMENT-STACK-NVO',n:'STK'},{t:'kit',s:'UBI-KIT-COMPLEMENTO',n:'Kit instalación'}],note:'El STK puede ser con o sin batería según necesidad del cliente.'},
-  'SS-02':{id:'SS-02',name:'Satelital + Kit c/imán',skus:[{t:'base',s:'UBI-ST100-STACK-NVO',n:'Stack satelital'},{t:'kit',s:'UBI-KIT-COMPLEMENTO-IMÁN',n:'Kit instalación c/imán'}],note:'El kit c/imán ya provee imán y corriente. No agregar complemento STK MAG.'},
+  'SS-02':{id:'SS-02',name:'Satelital + STK + Kit c/imán',skus:[{t:'base',s:'UBI-ST100-STACK-NVO',n:'Stack satelital'},{t:'acc',s:'UBI-COMPLEMENT-STACK-NVO',n:'STK S/IMÁN'},{t:'kit',s:'UBI-KIT-COMPLEMENTO-IMÁN',n:'Kit instalación c/imán'}],note:'El kit c/imán provee el imán. El STK va sin imán para evitar doble imán.'},
   'PL-01':{id:'PL-01',name:'Plafón Stack (sin LED)',skus:[{t:'base',s:'UBI-STACK-PLAFON',n:'Plafón stack'}]},
   'PL-02':{id:'PL-02',name:'Plafón Stack + 1 LED',skus:[{t:'base',s:'UBI-STACK-PLAFON',n:'Plafón stack'},{t:'acc',s:'UBI-LED-PLAFON',n:'LED'}]},
   'PL-03':{id:'PL-03',name:'Plafón Stack + 2 LEDs',skus:[{t:'base',s:'UBI-STACK-PLAFON',n:'Plafón stack'},{t:'acc',s:'UBI-LED-PLAFON',n:'LED (1)'},{t:'acc',s:'UBI-LED-PLAFON',n:'LED (2)'}],note:'2 unidades de UBI-LED-PLAFON'},
@@ -687,10 +768,14 @@ function switchTab(t,btn){
   document.getElementById('panel-'+t).classList.add('active');
 }
 function filterT(type,btn){
-  document.querySelectorAll('.fbtn').forEach(b=>b.className='fbtn');
-  if(type==='all'){btn.className='fbtn fa';document.getElementById('tsmart').style.display='';document.getElementById('tstack').style.display='';}
-  else if(type==='smart'){btn.className='fbtn fs';document.getElementById('tsmart').style.display='';document.getElementById('tstack').style.display='none';}
-  else{btn.className='fbtn fk';document.getElementById('tsmart').style.display='none';document.getElementById('tstack').style.display='';}
+  document.querySelectorAll('.fbtn').forEach(b=>{b.className='fbtn';b.style='';});
+  const sm=document.getElementById('tsmart');
+  const sk=document.getElementById('tstack');
+  const so=document.getElementById('tsmartone');
+  if(type==='all'){btn.className='fbtn fa';sm.style.display='';sk.style.display='';if(so)so.style.display='';}
+  else if(type==='smart'){btn.className='fbtn fs';sm.style.display='';sk.style.display='none';if(so)so.style.display='none';}
+  else if(type==='smartone'){btn.className='fbtn';btn.style.cssText='background:#eff6ff;color:#1d4ed8;border-color:#93c5fd;font-weight:bold';sm.style.display='none';sk.style.display='none';if(so)so.style.display='';}
+  else{btn.className='fbtn fk';sm.style.display='none';sk.style.display='';if(so)so.style.display='none';}
 }
 let wh=['w0'],wl=[];
 function wgo(label,sid){wl.push(label);wh.push(sid);wss(sid);wcrumb();}
