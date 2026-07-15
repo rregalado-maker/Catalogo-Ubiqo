@@ -150,6 +150,7 @@
   <div class="tabs">
     <button class="tab active" onclick="switchTab('catalogo',this)">📋 Catálogo completo</button>
     <button class="tab" onclick="switchTab('wizard',this)">🔍 Guía paso a paso</button>
+    <button class="tab" onclick="switchTab('sondeo',this)">📊 Guía de sondeo</button>
   </div>
 
   <!-- ==================== PANEL CATÁLOGO ==================== -->
@@ -666,6 +667,140 @@
       </div>
     </div>
   </div><!-- /panel-wizard -->
+
+  <div class="panel" id="panel-sondeo">
+  <!-- ===== GUÍA DE SONDEO ===== -->
+  <div id="sondeo-section" style="display:none">
+    <div style="background:#1a1a1a;border-radius:8px;padding:16px 20px;margin-bottom:20px;color:#fff;">
+      <div style="font-size:14px;font-weight:bold;margin-bottom:8px;">🎯 ¿Cómo usar esta guía?</div>
+      <div style="font-size:12px;color:#e5e5e5;line-height:1.8;">
+        <b style="color:#4ade80;">Paso 1</b> — Pregunta al cliente qué tipo de vehículo tiene.<br>
+        <b style="color:#4ade80;">Paso 2</b> — Identifica si tiene corriente continua, pin 7/cuartos, o si va sin corriente.<br>
+        <b style="color:#4ade80;">Paso 3</b> — Consulta la tabla y ve al catálogo con el equipo recomendado.<br>
+        <b style="color:#fbbf24;">⚠ Importante:</b> Siempre pregunta si el cliente quiere accesorios adicionales (paro de motor, SOS, sensor de puerta, sensor de temperatura). Cada accesorio debe ir en el ticket con su SKU exacto.
+      </div>
+    </div>
+
+    <div style="overflow-x:auto;">
+    <table style="width:100%;border-collapse:collapse;font-size:12px;">
+      <thead>
+        <tr>
+          <th style="background:#2a6e25;color:#fff;padding:10px 12px;text-align:left;width:160px">Tipo de vehículo</th>
+          <th style="background:#2a6e25;color:#fff;padding:10px 12px;text-align:left;width:140px">¿Cómo tiene corriente?</th>
+          <th style="background:#2a6e25;color:#fff;padding:10px 12px;text-align:left;width:180px">Equipo recomendado</th>
+          <th style="background:#2a6e25;color:#fff;padding:10px 12px;text-align:left;">Notas para Comercial</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- VEHICULAR / TRACTO -->
+        <tr style="background:#f9f9f9">
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;font-weight:bold">🚛 Tracto / Tractocamión</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5">Corriente continua</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5"><span style="background:#e8f5e7;color:#2a6e25;font-weight:bold;padding:2px 8px;border-radius:4px">SMART 4G</span><br><span style="color:#555;font-size:11px">Alt: STACK instalado o portátil</span></td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;color:#444">Normalmente lo piden con paro de motor y SOS — ofrecer SM-05. Si pide STACK instalado sin accesorios: SI-01. Alternativa portátil: SP-01.</td>
+        </tr>
+
+        <tr>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;font-weight:bold">🚚 Camión / Tortón / Van / Pick-up / Camión redilas / Volteo</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5">Corriente continua</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5"><span style="background:#e8f5e7;color:#2a6e25;font-weight:bold;padding:2px 8px;border-radius:4px">SMART 4G</span><br><span style="color:#555;font-size:11px">Alt: STACK instalado o portátil</span></td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;color:#444">Preguntar si requiere paro de motor, SOS o sensor de puerta. STACK portátil solo aplica si el cliente no quiere instalación fija.</td>
+        </tr>
+
+        <tr style="background:#f9f9f9">
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;font-weight:bold">🛵 Moto / Bicicleta eléctrica</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5">Corriente continua (batería pequeña)</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5"><span style="background:#dbeafe;color:#1d4ed8;font-weight:bold;padding:2px 8px;border-radius:4px">SMART 4G</span><br><span style="color:#555;font-size:11px">Alt: STACK portátil</span></td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;color:#444"><span style="color:#b45309">⚠ Advertir al cliente:</span> si el vehículo se usa poco, la batería se puede drenar y el equipo deja de reportar. Ofrecer STACK portátil como alternativa si esto es un riesgo.</td>
+        </tr>
+
+        <tr>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;font-weight:bold">🚜 Maquinaria pesada / Tractor agrícola / Grúa</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5">Corriente continua</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5"><span style="background:#e8f5e7;color:#2a6e25;font-weight:bold;padding:2px 8px;border-radius:4px">SMART 4G</span><br><span style="color:#555;font-size:11px">Alt: STACK portátil</span></td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;color:#444"><span style="color:#b45309">⚠ Advertir al cliente:</span> si la maquinaria es de poco uso o queda inactiva por temporadas, la batería se puede drenar. Ofrecer STACK portátil como alternativa más segura.</td>
+        </tr>
+
+        <tr style="background:#f9f9f9">
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;font-weight:bold">🚌 Aforo (transporte de pasajeros)</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5">Corriente continua</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5"><span style="background:#dbeafe;color:#1d4ed8;font-weight:bold;padding:2px 8px;border-radius:4px">SMART 4G</span><br><span style="color:#555;font-size:11px">Alt: STACK instalado</span></td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;color:#444">Camión de pasajeros con dispositivo de registro de acceso. Preguntar si requieren paro de motor o SOS. SMART 4G es la opción principal.</td>
+        </tr>
+
+        <!-- REMOLQUES / CAJAS -->
+        <tr>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;font-weight:bold">📦 Caja seca / Remolque / Plataforma / Jaula / Góndola / Dolly</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5">Pin 7 o cuartos (solo cuando va enganchado)</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5"><span style="background:#e8f5e7;color:#2a6e25;font-weight:bold;padding:2px 8px;border-radius:4px">STACK Plafón</span><br><span style="color:#555;font-size:11px">Alt: STACK portátil</span></td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;color:#444"><span style="color:#b45309">⚠ Importante:</span> cuando el remolque se desenganche y quede sin corriente, la batería se drena y deja de reportar. Si el cliente necesita reportar sin estar enganchado, ofrecer STACK portátil. Preguntar si el plafón trasero es <b>circular</b> — si es rectangular, usar STACK instalado sin plafón.</td>
+        </tr>
+
+        <tr style="background:#f9f9f9">
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;font-weight:bold">❄️ Caja refrigerada / Tortón refrigerado</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5">Pin 7 o cuartos + Thermo King</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5"><span style="background:#e8f5e7;color:#2a6e25;font-weight:bold;padding:2px 8px;border-radius:4px">STACK Plafón + Sensor THL</span><br><span style="color:#555;font-size:11px">Alt: STACK portátil + THL</span></td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;color:#444">Preguntar si tienen <b>Thermo King</b> — si sí, ofrecer sensor THL para medir temperatura interior. Mismo aviso que cajas secas: si se desenganche sin corriente, se drena la batería.</td>
+        </tr>
+
+        <tr>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;font-weight:bold">🚛 Tolva / Camión volteo</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5">Corriente continua</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5"><span style="background:#e8f5e7;color:#2a6e25;font-weight:bold;padding:2px 8px;border-radius:4px">SMART 4G</span><br><span style="color:#555;font-size:11px">Alt: STACK instalado o portátil</span></td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;color:#444">Preguntar si requieren accesorios: paro de motor, SOS. STACK portátil como alternativa si el cliente no quiere instalación fija.</td>
+        </tr>
+
+        <!-- PIPAS -->
+        <tr style="background:#f9f9f9">
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;font-weight:bold">🛢️ Pipa / Gas Express (pipa)</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5">Corriente continua</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5"><span style="background:#dbeafe;color:#1d4ed8;font-weight:bold;padding:2px 8px;border-radius:4px">SMART 4G + PIC</span></td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;color:#444"><span style="color:#ef4444;font-weight:bold">PIC obligatorio en pipas — sin PIC el equipo no funciona.</span> Ver combinaciones SM-09 a SM-13. Preguntar si requieren paro de motor o SOS.</td>
+        </tr>
+
+        <tr>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;font-weight:bold">🚗 Gas Express (cilindrera / vehículo administrativo)</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5">Corriente continua</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5"><span style="background:#dbeafe;color:#1d4ed8;font-weight:bold;padding:2px 8px;border-radius:4px">SMART 4G</span></td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;color:#444">Vehículos administrativos o camionetas de Gas Express. Solo SMART 4G, sin PIC. Preguntar si requieren accesorios.</td>
+        </tr>
+
+        <!-- SATELITAL -->
+        <tr style="background:#f9f9f9">
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;font-weight:bold">🛢️ Pipa satelital / Zona sin señal celular</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5">Corriente continua</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5"><span style="background:#eff6ff;color:#1d4ed8;font-weight:bold;padding:2px 8px;border-radius:4px">SmartOne SAT + SMART 4G</span><br><span style="color:#555;font-size:11px">Alt: STACK Satelital</span></td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;color:#444">Para rutas remotas, internacionales o zonas sin cobertura celular. Combinar SMART 4G + SmartOne para cobertura dual. Ver sección SATELITAL SOLAR/SMARTONE.</td>
+        </tr>
+
+        <!-- PLAFÓN -->
+        <tr>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;font-weight:bold">💡 Plafón (vehículo con plafón circular trasero)</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5">Pin 7 / cuartos</td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5"><span style="background:#e8f5e7;color:#2a6e25;font-weight:bold;padding:2px 8px;border-radius:4px">STACK Plafón</span></td>
+          <td style="padding:9px 12px;border-bottom:1px solid #e5e5e5;color:#444">Solo cuando el plafón trasero es <b>circular</b>. Preguntar cuántos plafones tiene para definir si se necesita 1 o 2 LEDs. Si es rectangular o cuadrado, usar STACK instalado normal.</td>
+        </tr>
+
+      </tbody>
+    </table>
+    </div>
+
+    <div style="margin-top:16px;padding:12px 16px;background:#fffbeb;border-left:4px solid #f59e0b;border-radius:0 6px 6px 0;font-size:12px;color:#92400e;">
+      <strong>🔑 Preguntas clave que Comercial debe hacer antes de cotizar:</strong><br>
+      <span style="line-height:2">
+        1. ¿Qué tipo de vehículo es? (tracto, caja, pipa, moto, etc.)<br>
+        2. ¿El vehículo tiene corriente continua o funciona con pin 7 / cuartos?<br>
+        3. ¿Cuántos vehículos son? (define cantidad de equipos y cargadores)<br>
+        4. ¿En qué zonas opera? (si hay zonas sin señal, considerar satelital)<br>
+        5. ¿Requiere paro de motor, botón SOS o sensor de puerta?<br>
+        6. ¿Tiene caja refrigerada con Thermo King? (aplica sensor THL)<br>
+        7. ¿El plafón trasero es circular? (define si aplica plafón o STACK normal)
+      </span>
+    </div>
+  </div>
+
+  </div><!-- /panel-sondeo -->
 </div><!-- /container -->
 
 <div class="footer">
@@ -762,6 +897,14 @@ const RES = {
 const DC={base:'dot-base',acc:'dot-acc',kit:'dot-kit',flag:'dot-flag'};
 
 function switchTab(t,btn){
+  if(t==='sondeo'){
+    document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-sondeo').classList.add('active');
+    document.getElementById('sondeo-section').style.display='block';
+    return;
+  }
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   btn.classList.add('active');
