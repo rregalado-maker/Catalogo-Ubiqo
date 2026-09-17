@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Constructor de Orden — Ubiqo</title>
+<style>
+  :root {
+    --green: #3C9A35; --green-dark: #2a6e25; --green-light: #e8f5e7;
+    --white: #ffffff; --gray: #f5f5f5; --gray2: #eeeeee; --border: #d0d0d0;
+    --text: #1a1a1a; --text2: #555; --warn: #f59e0b; --warn-bg: #fffbeb;
+    --red: #ef4444; --red-bg: #fee2e2; --blue: #3b82f6; --blue-bg: #eff6ff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background: #f0f0f0; color: var(--text); font-size: 14px; }
+  .header { background: var(--white); border-bottom: 4px solid var(--green); display: flex; align-items: stretch; }
+  .header-logo { padding: 14px 24px; display: flex; align-items: center; border-right: 1px solid var(--border); }
+  .header-logo img { height: 38px; }
+  .header-info { padding: 14px 20px; }
+  .header-title { font-size: 17px; font-weight: bold; }
+  .header-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .container { max-width: 860px; margin: 24px auto; padding: 0 16px 60px; }
+  .progress-wrap { background: var(--white); border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; border: 1px solid var(--border); }
+  .progress-steps { display: flex; }
+  .p-step { flex: 1; text-align: center; position: relative; }
+  .p-step:not(:last-child)::after { content: ''; position: absolute; top: 16px; left: 60%; width: 80%; height: 2px; background: var(--gray2); z-index: 0; }
+  .p-step.done:not(:last-child)::after { background: var(--green); }
+  .p-num { width: 32px; height: 32px; border-radius: 50%; background: var(--gray2); color: var(--text2); display: inline-flex; align-items: center; justify-content: center; font-weight: bold; font-size: 13px; position: relative; z-index: 1; margin-bottom: 5px; }
+  .p-step.active .p-num { background: var(--green); color: var(--white); }
+  .p-step.done .p-num { background: var(--green-dark); color: var(--white); }
+  .p-label { font-size: 11px; color: var(--text2); line-height: 1.3; }
+  .p-step.active .p-label { color: var(--green-dark); font-weight: bold; }
+  .p-step.done .p-label { color: var(--green-dark); }
+  .card { background: var(--white); border-radius: 10px; padding: 24px; margin-bottom: 16px; border: 1px solid var(--border); }
+  .card-title { font-size: 16px; font-weight: bold; margin-bottom: 6px; }
+  .card-sub { font-size: 12px; color: var(--text2); margin-bottom: 18px; line-height: 1.5; }
+  .opts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+  .opt-btn { border: 2px solid var(--border); border-radius: 10px; padding: 14px 12px; cursor: pointer; background: var(--white); text-align: center; transition: all .15s; position: relative; }
+  .opt-btn:hover { border-color: var(--green); background: var(--green-light); }
+  .opt-btn.selected { border-color: var(--green); background: var(--green-light); }
+  .opt-btn.selected::after { content: '✓'; position: absolute; top: 8px; right: 10px; color: var(--green); font-weight: bold; }
+  .opt-icon { font-size: 28px; margin-bottom: 6px; }
+  .opt-title { font-size: 13px; font-weight: bold; }
+  .opt-sub { font-size: 11px; color: var(--text2); margin-top: 3px; line-height: 1.4; }
+  .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .check-item { border: 2px solid var(--border); border-radius: 8px; padding: 10px 12px; cursor: pointer; display: flex; align-items: flex-start; gap: 10px; transition: all .15s; }
+  .check-item:hover { border-color: var(--green); background: var(--green-light); }
+  .check-item.checked { border-color: var(--green); background: var(--green-light); }
+  .check-box { width: 22px; height: 22px; border: 2px solid var(--border); border-radius: 4px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--green); font-weight: bold; margin-top: 1px; }
+  .check-item.checked .check-box { background: var(--green); border-color: var(--green); color: white; }
+  .check-info { flex: 1; }
+  .check-title { font-size: 13px; font-weight: bold; }
+  .check-sub { font-size: 11px; color: var(--text2); margin-top: 2px; }
+  .qty-wrap { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
+  .qty-ctrl { display: flex; align-items: center; border: 2px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .qty-btn { width: 36px; height: 36px; background: var(--gray); border: none; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+  .qty-btn:hover { background: var(--green-light); color: var(--green); }
+  .qty-num { width: 52px; text-align: center; font-size: 16px; font-weight: bold; border: none; background: var(--white); }
+  .qty-num:focus { outline: none; }
+  .alert { padding: 10px 14px; border-radius: 8px; font-size: 12px; margin-bottom: 14px; line-height: 1.6; }
+  .alert-warn { background: var(--warn-bg); border-left: 4px solid var(--warn); color: #92400e; }
+  .alert-info { background: var(--blue-bg); border-left: 4px solid var(--blue); color: #1e40af; }
+  .alert-red { background: var(--red-bg); border-left: 4px solid var(--red); color: #991b1b; }
+  .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+  .btn { padding: 10px 24px; border-radius: 8px; border: none; font-size: 14px; font-weight: bold; cursor: pointer; font-family: Arial, sans-serif; }
+  .btn-back { background: var(--gray2); color: var(--text2); border: 1px solid var(--border); }
+  .btn-back:hover { background: var(--border); }
+  .btn-next { background: var(--green); color: var(--white); }
+  .btn-next:hover { background: var(--green-dark); }
+  .btn-next:disabled { background: var(--gray2); color: var(--text2); cursor: not-allowed; }
+  .btn-add { background: var(--blue-bg); color: var(--blue); border: 2px solid var(--blue); }
+  .btn-add:hover { background: var(--blue); color: var(--white); }
+  .ticket { background: var(--white); border-radius: 10px; border: 2px solid var(--green); overflow: hidden; margin-bottom: 12px; }
+  .ticket-header { background: var(--green); color: var(--white); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+  .ticket-title { font-size: 14px; font-weight: bold; }
+  .ticket-qty { background: rgba(255,255,255,.2); padding: 3px 12px; border-radius: 99px; font-size: 12px; font-weight: bold; }
+  .ticket-body { padding: 14px 16px; }
+  .sku-row { display: flex; align-items: flex-start; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--gray2); font-size: 12px; }
+  .sku-row:last-child { border-bottom: none; }
+  .sku-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+  .dot-base { background: #3b82f6; }
+  .dot-acc { background: var(--green); }
+  .dot-kit { background: var(--warn); }
+  .dot-flag { background: var(--red); }
+  .sku-code { font-family: 'Courier New', monospace; font-weight: bold; }
+  .sku-name { color: var(--text2); font-size: 11px; }
+  .ticket-remove { font-size: 11px; color: #fca5a5; cursor: pointer; background: none; border: none; font-family: Arial; padding: 0; }
+  .ticket-remove:hover { color: var(--white); text-decoration: underline; }
+  .copy-box { background: #1a1a1a; border-radius: 8px; padding: 14px 16px; margin-top: 12px; }
+  .copy-box-title { color: #aaa; font-size: 11px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: .06em; }
+  .copy-text { font-family: 'Courier New', monospace; font-size: 12px; color: #4ade80; line-height: 2; white-space: pre-wrap; }
+  .btn-copy { margin-top: 10px; background: #333; color: #fff; border: 1px solid #555; padding: 6px 16px; border-radius: 6px; font-size: 12px; cursor: pointer; font-family: Arial; }
+  .btn-copy:hover { background: #555; }
+  .btn-copy.copied { background: var(--green); border-color: var(--green); }
+  .step-indicator { display: inline-block; background: var(--green); color: var(--white); font-size: 11px; font-weight: bold; padding: 2px 10px; border-radius: 99px; margin-bottom: 10px; }
+  .screen { display: none; }
+  .screen.active { display: block; }
+  .qty-acc-wrap { border: 2px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; transition: border-color .15s; }
+  .qty-acc-wrap.active { border-color: var(--green); background: var(--green-light); }
+  .qty-acc-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .qty-acc-info { flex: 1; }
+  .qty-acc-title { font-size: 13px; font-weight: bold; }
+  .qty-acc-sub { font-size: 11px; color: var(--text2); margin-top: 2px; }
+  .qty-acc-ctrl { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .qty-acc-btn { width: 30px; height: 30px; border-radius: 6px; background: var(--gray2); border: 1px solid var(--border); font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text); }
+  .qty-acc-btn:hover { background: var(--green-light); border-color: var(--green); color: var(--green); }
+  .qty-acc-num { font-size: 16px; font-weight: bold; min-width: 28px; text-align: center; color: var(--text); }
+  .qty-acc-badge { font-size: 11px; color: var(--text2); margin-top: 6px; display: none; }
+  .qty-acc-wrap.active .qty-acc-badge { display: block; color: var(--green-dark); }
+  @media (max-width: 600px) {
+    .check-grid { grid-template-columns: 1fr; }
+    .opts-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">
+    <img src="data:image/png;base64,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" alt="Ubiqo">
+  </div>
+  <div class="header-info">
+    <div class="header-title">Constructor de Orden de Instalación</div>
+    <div class="header-sub">Completa los pasos para generar el listado exacto de materiales para almacén</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="progress-wrap">
+    <div class="progress-steps" id="progress-steps">
+      <div class="p-step active" id="ps-1"><div><div class="p-num">1</div></div><div class="p-label">Tipo de<br>vehículo</div></div>
+      <div class="p-step" id="ps-2"><div><div class="p-num">2</div></div><div class="p-label">Equipo<br>principal</div></div>
+      <div class="p-step" id="ps-3"><div><div class="p-num">3</div></div><div class="p-label">Accesorios<br>y cantidad</div></div>
+      <div class="p-step" id="ps-4"><div><div class="p-num">4</div></div><div class="p-label">Resumen<br>del ticket</div></div>
+    </div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="screen active" id="s1">
+    <div class="card">
+      <div class="step-indicator">Paso 1 de 4</div>
+      <div class="card-title">¿En qué tipo de vehículo se va a instalar?</div>
+      <div class="card-sub">Selecciona el tipo de unidad del cliente. Esto define qué equipos aplican.</div>
+      <div class="opts-grid">
+        <div class="opt-btn" onclick="selectVehicle('vehiculo','🚛','Vehículo / Camión','Corriente continua',this)">
+          <div class="opt-icon">🚛</div>
+          <div class="opt-title">Vehículo / Camión</div>
+          <div class="opt-sub">Tracto, tortón, camión, van, pick-up, volteo, redilas, maquinaria, grúa, moto, transporte de pasajeros</div>
+        </div>
+        <div class="opt-btn" onclick="selectVehicle('pipa','🛢️','Pipa','Corriente continua · PIC obligatorio',this)">
+          <div class="opt-icon">🛢️</div>
+          <div class="opt-title">Pipa</div>
+          <div class="opt-sub">Camión cisterna, pipa de gas, Gas Express</div>
+        </div>
+        <div class="opt-btn" onclick="selectVehicle('remolque','📦','Remolque / Caja','Pin 7 o cuartos',this)">
+          <div class="opt-icon">📦</div>
+          <div class="opt-title">Remolque / Caja seca</div>
+          <div class="opt-sub">Caja seca, dolly, plataforma, jaula, góndola, tolva</div>
+        </div>
+        <div class="opt-btn" onclick="selectVehicle('refrigerado','❄️','Caja refrigerada','Pin 7 o cuartos · Thermo King',this)">
+          <div class="opt-icon">❄️</div>
+          <div class="opt-title">Caja refrigerada</div>
+          <div class="opt-sub">Caja con Thermo King o sistema de frío</div>
+        </div>
+        <div class="opt-btn" onclick="selectVehicle('satelital','🛰️','Satelital','Sin cobertura celular',this)">
+          <div class="opt-icon">🛰️</div>
+          <div class="opt-title">Satelital</div>
+          <div class="opt-sub">Zonas sin señal celular. Solar, exterior o Stack satelital</div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-row">
+      <div></div>
+      <button class="btn btn-next" id="btn-next-1" onclick="goStep(2)" disabled>Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="screen" id="s2">
+    <div class="card">
+      <div class="step-indicator">Paso 2 de 4</div>
+      <div class="card-title">¿Qué equipo se vendió al cliente?</div>
+      <div class="card-sub">Selecciona el equipo principal que aparece en la cotización o contrato.</div>
+      <div id="equipo-opts" class="opts-grid"></div>
+    </div>
+    <div class="nav-row">
+      <button class="btn btn-back" onclick="goStep(1)">← Atrás</button>
+      <button class="btn btn-next" id="btn-next-2" onclick="goStep(3)" disabled>Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="screen" id="s3">
+    <div class="card">
+      <div class="step-indicator">Paso 3 de 4</div>
+      <div class="card-title">¿Qué accesorios se vendieron?</div>
+      <div class="card-sub">Marca solo lo que el cliente compró. Si no compró ningún accesorio, continúa sin seleccionar nada.</div>
+      <div id="acc-alert" style="display:none"></div>
+      <div id="acc-opts" class="check-grid"></div>
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--gray2)">
+        <div style="font-size:14px;font-weight:bold">¿Cuántos vehículos con esta misma configuración?</div>
+        <div style="font-size:11px;color:var(--text2);margin:4px 0 10px">Si son vehículos distintos con accesorios diferentes, agrégalos por separado en el siguiente paso.</div>
+        <div class="qty-wrap">
+          <div class="qty-ctrl">
+            <button class="qty-btn" onclick="changeQty(-1)">−</button>
+            <input class="qty-num" type="number" id="qty-input" value="1" min="1" onchange="validateQty()">
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
+          </div>
+          <span style="font-size:13px;color:var(--text2)">vehículo(s) con esta configuración</span>
+        </div>
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="btn btn-back" onclick="goStep(2)">← Atrás</button>
+      <button class="btn btn-next" onclick="addConfig()">Agregar al ticket ✓</button>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="screen" id="s4">
+    <div class="card">
+      <div class="step-indicator">Paso 4 de 4</div>
+      <div class="card-title">📋 Resumen del ticket de instalación</div>
+      <div class="card-sub">Revisa que todo esté correcto. Puedes agregar más configuraciones o eliminar alguna antes de copiar.</div>
+    </div>
+    <div id="configs-list"></div>
+    <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+      <button class="btn btn-add" onclick="addAnother()">+ Agregar otro vehículo / configuración diferente</button>
+      <button class="btn btn-back" onclick="resetAll()" style="font-size:12px">↺ Empezar de nuevo</button>
+    </div>
+    <div class="card">
+      <div class="card-title" style="margin-bottom:12px">📤 Copiar y pegar en el ticket</div>
+      <div class="copy-box">
+        <div class="copy-box-title">Lista de materiales para almacén</div>
+        <div class="copy-text" id="copy-text"></div>
+      </div>
+      <button class="btn-copy" id="btn-copy" onclick="copyTicket()">📋 Copiar al portapapeles</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const VEHICLE_EQUIP = {
+  vehiculo: [
+    { id:'smart-base', icon:'📡', title:'GPS SMART 4G', sub:'Instalado fijo en el vehículo. Para tractos, camiones, maquinaria, motos y transporte de pasajeros.', skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'}], alert:{type:'info',msg:'💡 Para maquinaria o motos de poco uso: si el vehículo queda inactivo por temporadas, considerar STACK portátil. Para transporte de pasajeros con aforo: solo aplica SMART 4G.'} },
+    { id:'stack-inst', icon:'📍', title:'Rastreador STACK instalado', sub:'Se instala fijo, conectado a la corriente del vehículo.', skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'kit',s:'UBI-KIT-COMPLEMENTO',n:'Kit instalación'}] },
+    { id:'stack-port', icon:'🔋', title:'Rastreador STACK portátil', sub:'Va suelto, no se instala fijo. El cargador se incluye automáticamente (1 por cada 5 STACK).', skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'flag',s:'Llave T (sin SKU asignado)',n:''}], cargadorRule:true }
+  ],
+  pipa: [
+    { id:'smart-pipa', icon:'📡', title:'GPS SMART 4G para pipa', sub:'PIC incluido. Es OBLIGATORIO para que funcione en pipa.', skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'},{t:'acc',s:'UBI-PIC-VL300-NVO',n:'Módulo PIC (obligatorio en pipas)'}], alert:{type:'red',msg:'⚠ El módulo PIC es OBLIGATORIO en pipas. Sin él el equipo no funciona. Ya está incluido en esta selección.'} },
+  ],
+  remolque: [
+    { id:'stack-plafon', icon:'💡', title:'Plafón', sub:'Para cajas y remolques con plafón trasero circular.', skus:[{t:'base',s:'UBI-STACK-PLAFON',n:'Plafón Stack'}], alert:{type:'warn',msg:'⚡ Solo reporta cuando el remolque está enganchado y tiene corriente (pin 7 o cuartos). Informa al cliente antes de vender.'} },
+    { id:'stack-inst-rem', icon:'📍', title:'STACK instalado', sub:'Conectado al pin 7 o cuartos del remolque.', skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'kit',s:'UBI-KIT-COMPLEMENTO',n:'Kit instalación'}], alert:{type:'warn',msg:'⚡ Solo reporta cuando el remolque está enganchado y tiene corriente. Informa al cliente antes de vender.'} },
+    { id:'stack-port-rem', icon:'🔋', title:'STACK portátil', sub:'Va suelto, no requiere corriente del remolque. Recomendado si el remolque queda desenganchado.', skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-TCSK-3A',n:'Cargador turbo'},{t:'flag',s:'Llave T (sin SKU asignado)',n:''}] }
+  ],
+  refrigerado: [
+    { id:'stack-inst-thl', icon:'📍', title:'STACK instalado + Sensor de temperatura', sub:'Instalado en la caja, con sensor THL incluido.', skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'kit',s:'UBI-KITINST-SENSOR-STACK',n:'Kit sensor'},{t:'acc',s:'UBI-STHLT',n:'Sensor THL'}] },
+    { id:'stack-port-thl', icon:'🔋', title:'STACK portátil + Sensor de temperatura', sub:'Portátil con sensor THL. No requiere corriente permanente.', skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-TCSK-3A',n:'Cargador turbo'},{t:'flag',s:'Llave T (sin SKU asignado)',n:''},{t:'acc',s:'UBI-STHLT',n:'Sensor THL'}] },
+  ],
+  maquinaria: [
+    { id:'smart-maq', icon:'📡', title:'GPS SMART 4G', sub:'Instalado fijo en la maquinaria.', skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'}], alert:{type:'warn',msg:'⚠ Si la maquinaria tiene poco uso o queda inactiva por temporadas, la batería puede drenarse. Considera STACK portátil como alternativa.'} },
+    { id:'stack-port-maq', icon:'🔋', title:'STACK portátil', sub:'Recomendado si la maquinaria tiene poco uso o queda inactiva.', skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-TCSK-3A',n:'Cargador turbo'},{t:'flag',s:'Llave T (sin SKU asignado)',n:''}] },
+  ],
+  moto: [
+    { id:'smart-moto', icon:'📡', title:'GPS SMART 4G', sub:'Instalado fijo en la moto o bicicleta eléctrica.', skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'}], alert:{type:'warn',msg:'⚠ Si el vehículo tiene poco uso, la batería puede drenarse y el equipo dejará de reportar. Informa al cliente.'} },
+    { id:'stack-port-moto', icon:'🔋', title:'STACK portátil', sub:'Alternativa si el cliente prefiere sin instalación fija.', skus:[{t:'base',s:'UBI-STACK-4G-NVO',n:'STACK 4G'},{t:'acc',s:'UBI-TCSK-3A',n:'Cargador turbo'},{t:'flag',s:'Llave T (sin SKU asignado)',n:''}] },
+  ],
+  satelital: [
+    { id:'sat-solar', icon:'☀️', title:'Satelital Solar', sub:'Sin cables. Se fija con cinta, remaches o silicón. NO usar imán.', skus:[{t:'base',s:'UBI-SMARTONE-SOL',n:'SmartOne Solar'}], alert:{type:'warn',msg:'⚠ NO usar imán — afecta el funcionamiento del equipo. Fijar con cinta doble cara, remaches o silicón.'} },
+    { id:'sat-exterior', icon:'📡', title:'Satelital Exterior', sub:'Se instala fijo en el exterior del vehículo. Para zonas sin señal celular.', skus:[{t:'base',s:'UBI-SMARTONE-SAT',n:'SmartOne Satelital Exterior'}] },
+    { id:'stack-sat', icon:'🛰️', title:'Stack Satelital', sub:'Rastreador satelital. Selecciona la configuración de complemento y kit.', skus:[{t:'base',s:'UBI-ST100-STACK-NVO',n:'Stack Satelital'}] },
+  ],
+  aforo: [
+    { id:'smart-aforo', icon:'📡', title:'GPS SMART 4G', sub:'Único equipo compatible con el dispositivo de aforo.', skus:[{t:'base',s:'UBI-VL300',n:'SMART 4G'}], alert:{type:'info',msg:'ℹ️ Solo el SMART 4G es compatible con el dispositivo de aforo. No aplican otros equipos.'} },
+  ],
+};
+
+const ACC_BY_EQUIP = {
+  'smart-base': [
+    { id:'pm', title:'Paro de motor (vehículo estándar)', sub:'Apaga o desacelera el motor a distancia.', skus:[{t:'acc',s:'UBI-PM-NVO',n:'Paro de motor'}], note:'Si el vehículo es Kenworth, usar la opción de abajo.' },
+    { id:'pm-kw', title:'Paro de motor — Kenworth', sub:'Solo para Kenworth. Requiere arnés adicional de agencia Kenworth.', skus:[{t:'flag',s:'UBI-PARO DE MOTOR KENWORTH',n:'PM Kenworth'}], note:'⚠ El cliente debe comprar arnés con la agencia Kenworth. No incluido en SKU Ubiqo.' },
+    { id:'sos', title:'Botón SOS inalámbrico', sub:'Botón de emergencia para el conductor.', skus:[{t:'acc',s:'UBI-IBS01',n:'Botón SOS'}] },
+    { id:'puerta', title:'Sensor de puerta', sub:'Detecta apertura/cierre. Incluye 3 piezas que siempre van juntas: tag + clema + pistón.', skus:[{t:'acc',s:'UBI-iBS02M2',n:'Tag sensor puerta'},{t:'acc',s:'UBI-iBS02M2_IO',n:'Clema sensor puerta'},{t:'flag',s:'Pistón p/sensor puerta (sin SKU asignado)',n:''}] },
+  ],
+  'smart-pipa': [
+    { id:'pm', title:'Paro de motor', sub:'Apaga o desacelera el motor.', skus:[{t:'acc',s:'UBI-PM-NVO',n:'Paro de motor'}] },
+    { id:'sos', title:'Botón SOS inalámbrico', sub:'Botón de emergencia para el conductor.', skus:[{t:'acc',s:'UBI-IBS01',n:'Botón SOS'}] },
+    { id:'puerta', title:'Sensor de puerta', sub:'Detecta apertura/cierre. Tag + clema + pistón siempre juntos.', skus:[{t:'acc',s:'UBI-iBS02M2',n:'Tag sensor puerta'},{t:'acc',s:'UBI-iBS02M2_IO',n:'Clema sensor puerta'},{t:'flag',s:'Pistón p/sensor puerta (sin SKU asignado)',n:''}] },
+  ],
+  'stack-inst': [
+    { id:'kit-siniman', title:'Kit de instalación sin imán', sub:'Kit base de cables e instalación eléctrica. Sin imán.', skus:[{t:'kit',s:'UBI-KIT-COMPLEMENTO',n:'Kit instalación s/imán'}], replaceKit:true },
+    { id:'bateria', title:'Batería de respaldo (sin imán)', sub:'Reporta aunque el vehículo esté apagado. Puedes agregar hasta 10 bancos.', skus:[{t:'acc',s:'UBI-COMPLEMENT-STACK-NVO',n:'STK — Batería de respaldo'}], qtyAcc:true, maxQty:10 },
+    { id:'bateria-iman', title:'Batería de respaldo con imán', sub:'Con batería e imán integrado. Puedes agregar hasta 10 bancos.', skus:[{t:'acc',s:'UBI-COMPLEMENT-STACK-MAG-NVO',n:'STK C/IMÁN'}], qtyAcc:true, maxQty:10 },
+    { id:'kit-iman', title:'Kit de instalación con imán', sub:'El imán va en el kit de instalación.', skus:[{t:'kit',s:'UBI-KIT-COMPLEMENTO-IMÁN',n:'Kit instalación c/imán'}], replaceKit:true },
+    { id:'satelital-complemento', title:'Complemento satelital (híbrido)', sub:'Agrega módulo satelital en carcasa de complemento. Para zonas sin señal celular.', skus:[{t:'acc',s:'UBI-ST100-COMPLEMENTO-NVO',n:'Complemento Satelital ST100'}] },
+  ],
+  'stack-port': [
+    { id:'bateria-siniman', title:'Complemento con batería (sin imán)', sub:'Reporta aunque el vehículo esté apagado. Puedes agregar hasta 10 bancos.', skus:[{t:'acc',s:'UBI-COMPLEMENT-STACK-NVO',n:'STK — Batería de respaldo'}], qtyAcc:true, maxQty:10 },
+    { id:'bateria-iman', title:'Complemento con batería e imán', sub:'Con batería + imán para pegarse a superficies metálicas. Puedes agregar hasta 10 bancos.', skus:[{t:'acc',s:'UBI-COMPLEMENT-STACK-MAG-NVO',n:'STK C/IMÁN'}], qtyAcc:true, maxQty:10 },
+    { id:'sbi-iman', title:'Complemento con imán (sin batería)', sub:'Solo imán para fijarse, sin batería de respaldo.', skus:[{t:'acc',s:'UBI-COMPL-STACK-MAG-SB-NVO',n:'SBI C/IMÁN'}] },
+    { id:'satelital-complemento-port', title:'Complemento satelital (híbrido)', sub:'Agrega módulo satelital en carcasa de complemento. Para zonas sin señal celular.', skus:[{t:'acc',s:'UBI-ST100-COMPLEMENTO-NVO',n:'Complemento Satelital ST100'}] },
+  ],
+  'stack-plafon': [
+    { id:'led1', title:'1 LED adicional', sub:'Un foco LED para iluminación básica.', skus:[{t:'acc',s:'UBI-LED-PLAFON',n:'LED plafón'}], exclusive:['led2'] },
+    { id:'led2', title:'2 LEDs adicionales', sub:'Para que los dos plafones se vean iguales. Pide 2 unidades del mismo SKU.', skus:[{t:'acc',s:'UBI-LED-PLAFON',n:'LED plafón (1 de 2)'},{t:'acc',s:'UBI-LED-PLAFON',n:'LED plafón (2 de 2)'}], exclusive:['led1'] },
+    { id:'satelital-plafon', title:'Plafón satelital adicional', sub:'Si también se instala módulo satelital en otro plafón.', skus:[{t:'acc',s:'UBI-ST100-PLAFON-NVO',n:'Plafón satelital'}] },
+    { id:'dummy-plafon', title:'Plafón Dummy', sub:'Carcasa sin equipo para el plafón vacío. Mantiene uniformidad visual.', skus:[{t:'acc',s:'UBI-PLAFON-DUMMY',n:'Plafón Dummy'}] },
+  ],
+  'stack-plafon-thl': [
+    { id:'led1', title:'1 LED adicional', sub:'Un foco LED para iluminación básica.', skus:[{t:'acc',s:'UBI-LED-PLAFON',n:'LED plafón'}], exclusive:['led2'] },
+    { id:'led2', title:'2 LEDs adicionales', sub:'Para que los dos plafones se vean iguales.', skus:[{t:'acc',s:'UBI-LED-PLAFON',n:'LED plafón (1 de 2)'},{t:'acc',s:'UBI-LED-PLAFON',n:'LED plafón (2 de 2)'}], exclusive:['led1'] },
+    { id:'kit-iman-thl', title:'Kit sensor con imán', sub:'Reemplaza el kit sensor base por uno con imán para mejor fijación.', skus:[{t:'kit',s:'UBI-KITINST-SENSOR--MAG-NVO',n:'Kit sensor c/imán'}], replaceKit:true },
+    { id:'dummy-plafon-thl', title:'Plafón Dummy', sub:'Carcasa sin equipo para el plafón vacío. Mantiene uniformidad visual.', skus:[{t:'acc',s:'UBI-PLAFON-DUMMY',n:'Plafón Dummy'}] },
+  ],
+  'stack-inst-rem': [
+    { id:'kit-siniman-rem', title:'Kit de instalación sin imán', sub:'Kit base de cables e instalación eléctrica. Sin imán.', skus:[{t:'kit',s:'UBI-KIT-COMPLEMENTO',n:'Kit instalación s/imán'}], replaceKit:true },
+    { id:'bateria', title:'Batería de respaldo (sin imán)', sub:'Puede seguir reportando si pierde corriente. Puedes agregar hasta 10 bancos.', skus:[{t:'acc',s:'UBI-COMPLEMENT-STACK-NVO',n:'STK — Batería de respaldo'}], qtyAcc:true, maxQty:10 },
+    { id:'bateria-iman', title:'Batería de respaldo con imán', sub:'Con batería e imán integrado. Puedes agregar hasta 10 bancos.', skus:[{t:'acc',s:'UBI-COMPLEMENT-STACK-MAG-NVO',n:'STK C/IMÁN'}], qtyAcc:true, maxQty:10 },
+    { id:'kit-iman-rem', title:'Kit de instalación con imán', sub:'El imán va en el kit. Sin batería adicional.', skus:[{t:'kit',s:'UBI-KIT-COMPLEMENTO-IMÁN',n:'Kit instalación c/imán'}], replaceKit:true },
+    { id:'satelital-complemento-rem', title:'Complemento satelital (híbrido)', sub:'Módulo satelital en carcasa de complemento. No recomendado en remolque, pero disponible si el cliente lo solicita.', skus:[{t:'acc',s:'UBI-ST100-COMPLEMENTO-NVO',n:'Complemento Satelital ST100'}] },
+  ],
+  'stack-port-rem': [
+    { id:'bateria-siniman', title:'Complemento con batería (sin imán)', sub:'Para que reporte aunque no haya corriente del remolque.', skus:[{t:'acc',s:'UBI-COMPLEMENT-STACK-NVO',n:'STK — Batería de respaldo'}] },
+    { id:'bateria-iman', title:'Complemento con batería e imán', sub:'Con batería + imán para pegarse al remolque.', skus:[{t:'acc',s:'UBI-COMPLEMENT-STACK-MAG-NVO',n:'STK C/IMÁN'}] },
+    { id:'sbi-iman', title:'Complemento con imán (sin batería)', sub:'Solo imán para fijarse. Sin batería de respaldo.', skus:[{t:'acc',s:'UBI-COMPL-STACK-MAG-SB-NVO',n:'SBI C/IMÁN'}] },
+  ],
+  'stack-inst-thl': [
+    { id:'bateria', title:'Batería de respaldo', sub:'El equipo sigue reportando aunque apaguen la caja.', skus:[{t:'acc',s:'UBI-COMPLEMENT-STACK-NVO',n:'STK — Batería de respaldo'}] },
+    { id:'kit-iman-thl', title:'Kit sensor con imán', sub:'Reemplaza el kit sensor base por uno con imán.', skus:[{t:'kit',s:'UBI-KITINST-SENSOR--MAG-NVO',n:'Kit sensor c/imán'}], replaceKit:true },
+  ],
+  'stack-port-thl': [
+    { id:'bateria-siniman', title:'Complemento con batería (sin imán)', sub:'Batería de respaldo para reportar sin corriente.', skus:[{t:'acc',s:'UBI-COMPLEMENT-STACK-NVO',n:'STK — Batería de respaldo'}] },
+    { id:'bateria-iman', title:'Complemento con batería e imán', sub:'Con batería + imán para mejor fijación.', skus:[{t:'acc',s:'UBI-COMPLEMENT-STACK-MAG-NVO',n:'STK C/IMÁN'}] },
+  ],
+  'stack-port-maq': [
+    { id:'bateria-siniman', title:'Complemento con batería (sin imán)', sub:'Para reportar aunque la maquinaria esté apagada.', skus:[{t:'acc',s:'UBI-COMPLEMENT-STACK-NVO',n:'STK — Batería de respaldo'}] },
+    { id:'bateria-iman', title:'Complemento con batería e imán', sub:'Con batería + imán.', skus:[{t:'acc',s:'UBI-COMPLEMENT-STACK-MAG-NVO',n:'STK C/IMÁN'}] },
+  ],
+  'stack-port-moto': [
+    { id:'bateria-siniman', title:'Complemento con batería', sub:'Para que reporte aunque el vehículo esté apagado.', skus:[{t:'acc',s:'UBI-COMPLEMENT-STACK-NVO',n:'STK — Batería de respaldo'}] },
+  ],
+  'smart-aforo': [], 'smart-moto': [], 'smart-maq': [], 'sat-solar': [], 'sat-exterior': [], 'plafon-dummy': [],
+  'stack-sat': [
+    { id:'stk-siniman', title:'STK sin imán', sub:'Complemento con batería de respaldo. Sin imán. Si eliges este, el kit debe ser sin imán también.', skus:[{t:'acc',s:'UBI-COMPLEMENT-STACK-NVO',n:'STK S/IMÁN'}] },
+    { id:'stk-iman', title:'STK con imán', sub:'Complemento con batería de respaldo e imán. Si eliges este, el kit debe ser sin imán.', skus:[{t:'acc',s:'UBI-COMPLEMENT-STACK-MAG-NVO',n:'STK C/IMÁN'}] },
+    { id:'kit-siniman-sat', title:'Kit de instalación sin imán', sub:'Kit de cables e instalación eléctrica. Sin imán.', skus:[{t:'kit',s:'UBI-KIT-COMPLEMENTO',n:'Kit instalación s/imán'}], replaceKit:true },
+    { id:'kit-iman-sat', title:'Kit de instalación con imán', sub:'Kit de instalación con imán integrado.', skus:[{t:'kit',s:'UBI-KIT-COMPLEMENTO-IMÁN',n:'Kit instalación c/imán'}], replaceKit:true },
+  ],
+};
+
+const DOT = {base:'dot-base',acc:'dot-acc',kit:'dot-kit',flag:'dot-flag'};
+let state = {vehicle:null,vehicleLabel:'',vehicleIcon:'',equip:null,equipData:null,accs:[],accQtys:{},qty:1,configs:[]};
+
+function selectVehicle(id, icon, label, sub, el) {
+  state.vehicle = id; state.vehicleLabel = label; state.vehicleIcon = icon;
+  document.querySelectorAll('#s1 .opt-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('btn-next-1').disabled = false;
+}
+
+function renderEquipOpts() {
+  const opts = VEHICLE_EQUIP[state.vehicle] || [];
+  const cont = document.getElementById('equipo-opts');
+  cont.innerHTML = opts.map(e => `
+    <div class="opt-btn" onclick="selectEquip('${e.id}',this)">
+      <div class="opt-icon">${e.icon}</div>
+      <div class="opt-title">${e.title}</div>
+      <div class="opt-sub">${e.sub}</div>
+    </div>`).join('');
+  document.getElementById('btn-next-2').disabled = true;
+  state.equip = null; state.equipData = null;
+}
+
+function selectEquip(id, el) {
+  state.equip = id;
+  state.equipData = (VEHICLE_EQUIP[state.vehicle]||[]).find(e=>e.id===id);
+  document.querySelectorAll('#equipo-opts .opt-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('btn-next-2').disabled = false;
+}
+
+function renderAccOpts() {
+  state.accs = [];
+  const accs = ACC_BY_EQUIP[state.equip] || [];
+  const cont = document.getElementById('acc-opts');
+  const alertEl = document.getElementById('acc-alert');
+  if (state.equipData && state.equipData.alert) {
+    const a = state.equipData.alert;
+    alertEl.style.display = 'block';
+    alertEl.className = 'alert alert-' + a.type;
+    alertEl.innerHTML = a.msg;
+  } else { alertEl.style.display = 'none'; }
+  if (!accs.length) {
+    cont.innerHTML = '<div style="color:var(--text2);font-size:13px;padding:10px 0;grid-column:1/-1">Este equipo no lleva accesorios adicionales. Continúa para definir la cantidad.</div>';
+    return;
+  }
+  cont.innerHTML = accs.map(a => `
+    <div class="check-item" id="ci-${a.id}" onclick="toggleAcc('${a.id}')">
+      <div class="check-box" id="cb-${a.id}"></div>
+      <div class="check-info">
+        <div class="check-title">${a.title}</div>
+        <div class="check-sub">${a.sub}</div>
+        ${a.note ? '<div style="font-size:11px;color:#92400e;margin-top:3px">⚠ '+a.note+'</div>' : ''}
+      </div>
+    </div>`).join('');
+}
+
+function changeAccQty(id, delta, maxQty) {
+  if(!state.accQtys) state.accQtys = {};
+  let cur = state.accQtys[id] || 0;
+  cur = Math.max(0, Math.min(maxQty, cur + delta));
+  state.accQtys[id] = cur;
+  document.getElementById('qn-'+id).textContent = cur;
+  if(document.getElementById('qs-'+id)) document.getElementById('qs-'+id).textContent = cur;
+  const wrap = document.getElementById('ci-'+id);
+  const badge = document.getElementById('qb-'+id);
+  if(cur > 0) {
+    wrap.classList.add('active');
+    if(badge) badge.style.display='block';
+    if(!state.accs.includes(id)) state.accs.push(id);
+  } else {
+    wrap.classList.remove('active');
+    if(badge) badge.style.display='none';
+    state.accs = state.accs.filter(a=>a!==id);
+  }
+}
+
+function toggleAcc(id) {
+  const accs = ACC_BY_EQUIP[state.equip] || [];
+  const acc = accs.find(a=>a.id===id);
+  if (!acc) return;
+  if (acc.exclusive) {
+    acc.exclusive.forEach(exId => {
+      state.accs = state.accs.filter(a=>a!==exId);
+      const ci=document.getElementById('ci-'+exId); const cb=document.getElementById('cb-'+exId);
+      if(ci){ci.classList.remove('checked');cb.textContent='';}
+    });
+  }
+  accs.forEach(a => {
+    if(a.exclusive && a.exclusive.includes(id) && state.accs.includes(a.id)){
+      state.accs=state.accs.filter(x=>x!==a.id);
+      const ci=document.getElementById('ci-'+a.id); const cb=document.getElementById('cb-'+a.id);
+      if(ci){ci.classList.remove('checked');cb.textContent='';}
+    }
+  });
+  const ci=document.getElementById('ci-'+id); const cb=document.getElementById('cb-'+id);
+  if(state.accs.includes(id)){state.accs=state.accs.filter(a=>a!==id);ci.classList.remove('checked');cb.textContent='';}
+  else{state.accs.push(id);ci.classList.add('checked');cb.textContent='✓';}
+}
+
+function changeQty(d){const i=document.getElementById('qty-input');let v=parseInt(i.value)+d;if(v<1)v=1;i.value=v;state.qty=v;}
+function validateQty(){const i=document.getElementById('qty-input');let v=parseInt(i.value);if(isNaN(v)||v<1)v=1;i.value=v;state.qty=v;}
+
+function buildSkuList(){
+  const skus=[...(state.equipData.skus||[])];
+  const accs=ACC_BY_EQUIP[state.equip]||[];
+  state.accs.forEach(accId=>{
+    const acc=accs.find(a=>a.id===accId);
+    if(!acc) return;
+    if(acc.replaceKit){
+      const ki=skus.findIndex(x=>x.s==='UBI-KIT-COMPLEMENTO'); if(ki>=0) skus.splice(ki,1);
+      const ki2=skus.findIndex(x=>x.s==='UBI-KITINST-SENSOR-STACK'); if(ki2>=0) skus.splice(ki2,1);
+    }
+    const repeat = acc.qtyAcc ? (state.accQtys[accId]||1) : 1;
+    for(let r=0;r<repeat;r++){
+      acc.skus.forEach((s,i)=>skus.push(repeat>1 ? {...s, n:s.n+(repeat>1?' ('+(r+1)+' de '+repeat+')':'')} : s));
+    }
+  });
+  // Regla cargadores: 1 por cada 5 STACK portátil
+  if(state.equipData.cargadorRule){
+    const qty=parseInt(document.getElementById('qty-input').value)||1;
+    const numCargadores=Math.ceil(qty/5);
+    for(let i=0;i<numCargadores;i++){
+      skus.push({t:'acc',s:'UBI-TCSK-3A',n:'Cargador turbo ('+qty+' STACK → '+numCargadores+' cargador'+(numCargadores>1?'es':'')+')'});
+    }
+  }
+  return skus;
+}
+
+function addConfig(){
+  validateQty();
+  const qty=parseInt(document.getElementById('qty-input').value)||1;
+  const skus=buildSkuList();
+  const accNames=(ACC_BY_EQUIP[state.equip]||[]).filter(a=>state.accs.includes(a.id)).map(a=>a.title);
+  state.configs.push({id:Date.now(),vehicleLabel:state.vehicleLabel,vehicleIcon:state.vehicleIcon,equipTitle:state.equipData.title,accNames,skus,qty});
+  goStep(4);
+}
+
+function renderSummary(){
+  const cont=document.getElementById('configs-list');
+  cont.innerHTML=state.configs.map((cfg,i)=>{
+    const skuRows=cfg.skus.map(s=>`
+      <div class="sku-row">
+        <span class="sku-dot ${DOT[s.t]||'dot-flag'}"></span>
+        <div><div class="sku-code">${s.s}</div>${s.n?'<div class="sku-name">— '+s.n+'</div>':''}</div>
+      </div>`).join('');
+    const accLabel=cfg.accNames.length?cfg.accNames.join(' + '):'Sin accesorios adicionales';
+    return `<div class="ticket" id="ticket-${cfg.id}">
+      <div class="ticket-header">
+        <div>
+          <div class="ticket-title">${cfg.vehicleIcon} ${cfg.equipTitle}</div>
+          <div style="font-size:11px;opacity:.8;margin-top:2px">${cfg.vehicleLabel} · ${accLabel}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="ticket-qty">${cfg.qty} unidad${cfg.qty>1?'es':''}</div>
+          <button class="ticket-remove" onclick="removeConfig(${cfg.id})">✕ Quitar</button>
+        </div>
+      </div>
+      <div class="ticket-body">${skuRows}</div>
+    </div>`;
+  }).join('');
+  renderCopyText();
+}
+
+function removeConfig(id){
+  state.configs=state.configs.filter(c=>c.id!==id);
+  if(!state.configs.length){resetAll();return;}
+  renderSummary();
+}
+
+function renderCopyText(){
+  const lines=['══════════════════════════════════','TICKET DE INSTALACIÓN — UBIQO','══════════════════════════════════'];
+  state.configs.forEach((cfg,i)=>{
+    lines.push('');
+    lines.push(`CONFIGURACIÓN ${i+1}: ${cfg.equipTitle}`);
+    lines.push(`Vehículo: ${cfg.vehicleLabel}`);
+    lines.push(`Cantidad: ${cfg.qty} unidad${cfg.qty>1?'es':''}`);
+    lines.push('SKUs para almacén:');
+    cfg.skus.forEach(s=>{lines.push(`  • ${s.s}${s.n?' — '+s.n:''}${s.t==='flag'?' ★ SIN SKU FORMAL — VERIFICAR CON ALMACÉN':''}`);});
+  });
+  lines.push(''); lines.push('══════════════════════════════════');
+  document.getElementById('copy-text').textContent=lines.join('\n');
+}
+
+function copyTicket(){
+  const text=document.getElementById('copy-text').textContent;
+  const btn=document.getElementById('btn-copy');
+  navigator.clipboard.writeText(text).then(()=>{btn.textContent='✓ Copiado!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='📋 Copiar al portapapeles';btn.classList.remove('copied');},2000);}).catch(()=>{
+    const r=document.createRange();r.selectNode(document.getElementById('copy-text'));window.getSelection().removeAllRanges();window.getSelection().addRange(r);document.execCommand('copy');
+    btn.textContent='✓ Copiado!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='📋 Copiar al portapapeles';btn.classList.remove('copied');},2000);
+  });
+}
+
+function addAnother(){
+  state.vehicle=null;state.equip=null;state.equipData=null;state.accs=[];state.accQtys={};state.qty=1;
+  document.querySelectorAll('#s1 .opt-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('btn-next-1').disabled=true;
+  goStep(1);
+}
+
+function resetAll(){
+  state={vehicle:null,vehicleLabel:'',vehicleIcon:'',equip:null,equipData:null,accs:[],accQtys:{},qty:1,configs:[]};
+  document.querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('btn-next-1').disabled=true;
+  goStep(1);
+}
+
+function goStep(n){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+  for(let i=1;i<=4;i++){
+    const ps=document.getElementById('ps-'+i);
+    ps.classList.remove('active','done');
+    if(i<n) ps.classList.add('done');
+    else if(i===n) ps.classList.add('active');
+  }
+  if(n===2) renderEquipOpts();
+  if(n===3){renderAccOpts();document.getElementById('qty-input').value=1;state.qty=1;}
+  if(n===4) renderSummary();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
