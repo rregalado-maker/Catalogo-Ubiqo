@@ -162,6 +162,7 @@
       <button class="fbtn" onclick="filterT('smart',this)">Solo SMART 4G</button>
       <button class="fbtn" onclick="filterT('stack',this)">Solo STACK</button>
       <button class="fbtn" onclick="filterT('smartone',this)">Satelital Solar / SmartOne</button>
+      <button class="fbtn" onclick="filterT('etiqueta',this)">Etiqueta / Activos</button>
     </div>
     <div class="legend">
       <div class="leg"><span class="dot dot-base"></span> Equipo base</div>
@@ -519,6 +520,33 @@
       </table></div>
     </div><!-- /tsmartone -->
 
+    <!-- ===== ETIQUETA / ACTIVOS ===== -->
+    <div id="tetiqueta">
+      <div class="sec-bar" style="margin-top:24px">ETIQUETA / ACTIVOS <span class="badge">Localizadores sin instalación eléctrica · Solo adhesión</span></div>
+      <div style="margin:0 0 0;padding:9px 14px;background:#fffbeb;border-left:4px solid #f59e0b;border-radius:0 6px 6px 0;font-size:12px;color:#92400e;">📌 Estos equipos no requieren instalación eléctrica ni técnico especializado. Se adhieren en cualquier superficie. Ideales para rastreo de activos, maquinaria, remolques o cualquier objeto.</div>
+      <div class="tbl-wrap" style="margin-top:1px"><table>
+        <thead><tr>
+          <th style="width:52px">ID</th>
+          <th style="width:180px">Combinación</th>
+          <th style="width:220px">Nombre comercial / Qué se entrega</th>
+          <th>SKUs requeridos</th>
+          <th style="width:160px">Notas</th>
+        </tr></thead>
+        <tbody>
+          <tr><td class="id-cell"><span class="id-pill" style="background:#7c3aed">ET-01</span></td>
+            <td><div class="name-cell">Etiqueta LL100</div><div class="name-sub">Localizador adhesivo</div></td>
+            <td class="generic-cell"><div class="generic-desc">Localizador en formato etiqueta. Se adhiere en cualquier superficie sin instalación eléctrica. Sin accesorios adicionales.</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-ONE — Etiqueta LL100</div></td>
+            <td></td></tr>
+          <tr><td class="id-cell"><span class="id-pill" style="background:#7c3aed">ET-02</span></td>
+            <td><div class="name-cell">Quadro (SUO)</div><div class="name-sub">Localizador portátil</div></td>
+            <td class="generic-cell"><div class="generic-desc">Localizador portátil compacto. Se lleva donde se necesite sin instalación. Sin accesorios adicionales.</div></td>
+            <td><div class="sku-item"><span class="dot dot-base"></span>UBI-SUO — SUO (Quadro)</div></td>
+            <td></td></tr>
+        </tbody>
+      </table></div>
+    </div><!-- /tetiqueta -->
+
     <div class="flags-box">
       <div class="flags-title">⚠ SKUs pendientes de asignar — actualizar cuando estén disponibles</div>
       <ul>
@@ -828,7 +856,7 @@
         <div style="font-size:14px;font-weight:bold;">📦 Listado completo de SKUs</div>
         <div style="font-size:12px;color:#aaa;margin-top:4px;">Referencia rápida de todos los productos y accesorios del catálogo. ★ = sin SKU asignado aún.</div>
       </div>
-      <div style="background:#3C9A35;color:#fff;font-size:13px;font-weight:bold;padding:6px 16px;border-radius:99px;">27 SKUs</div>
+      <div style="background:#3C9A35;color:#fff;font-size:13px;font-weight:bold;padding:6px 16px;border-radius:99px;">29 SKUs</div>
     </div>
 
     <div style="margin-bottom:20px;">
@@ -1058,6 +1086,32 @@
               <td style="padding:8px 12px;border-bottom:1px solid #eeeeee;font-family:'Courier New',monospace;font-size:11px;color:#b45309;font-weight:bold">Llave T</td>
               <td style="padding:8px 12px;border-bottom:1px solid #eeeeee;font-weight:500;color:#1a1a1a">Llave T</td>
               <td style="padding:8px 12px;border-bottom:1px solid #eeeeee;color:#444">Herramienta para retirar/cambiar complementos del STACK portátil. ★ Sin SKU asignado.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div style="margin-bottom:20px;">
+      <div style="background:#7c3aed;color:#fff;font-size:12px;font-weight:bold;padding:7px 14px;border-radius:6px 6px 0 0;letter-spacing:.04em;text-transform:uppercase;">ETIQUETA / ACTIVOS</div>
+      <div style="border:1px solid #d0d0d0;border-top:none;border-radius:0 0 6px 6px;overflow:hidden;">
+        <table style="width:100%;border-collapse:collapse;font-size:12px;">
+          <thead>
+            <tr>
+              <th style="background:#f5f5f5;color:#555;padding:7px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;width:240px;border-bottom:1px solid #e5e5e5">SKU</th>
+              <th style="background:#f5f5f5;color:#555;padding:7px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;width:200px;border-bottom:1px solid #e5e5e5">Nombre</th>
+              <th style="background:#f5f5f5;color:#555;padding:7px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid #e5e5e5">Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:#fafafa">
+              <td style="padding:8px 12px;border-bottom:1px solid #eeeeee;font-family:'Courier New',monospace;font-size:11px;color:#1a1a1a;font-weight:bold">UBI-ONE</td>
+              <td style="padding:8px 12px;border-bottom:1px solid #eeeeee;font-weight:500">Etiqueta LL100</td>
+              <td style="padding:8px 12px;border-bottom:1px solid #eeeeee;color:#444">Localizador en formato etiqueta. Se adhiere en cualquier superficie sin instalación eléctrica. Sin accesorios.</td>
+            </tr>
+            <tr style="background:#ffffff">
+              <td style="padding:8px 12px;border-bottom:1px solid #eeeeee;font-family:'Courier New',monospace;font-size:11px;color:#1a1a1a;font-weight:bold">UBI-SUO</td>
+              <td style="padding:8px 12px;border-bottom:1px solid #eeeeee;font-weight:500">SUO (Quadro)</td>
+              <td style="padding:8px 12px;border-bottom:1px solid #eeeeee;color:#444">Localizador portátil compacto. Sin instalación. Se lleva donde se necesite. Sin accesorios adicionales.</td>
             </tr>
           </tbody>
         </table>
@@ -1377,6 +1431,8 @@ const GEN = {
 };
 const RES = {
   
+  'ET-01':{id:'ET-01',name:'Etiqueta LL100',skus:[{t:'base',s:'UBI-ONE',n:'Etiqueta LL100'}]},
+  'ET-02':{id:'ET-02',name:'Quadro (SUO)',skus:[{t:'base',s:'UBI-SUO',n:'SUO (Quadro)'}]},
   'SMO-01':{id:'SMO-01',name:'SmartOne Satelital Exterior',skus:[{t:'base',s:'UBI-SMARTONE-SAT',n:'Módulo Satelital Exterior'}]},
   'SMO-02':{id:'SMO-02',name:'SmartOne Solar',skus:[{t:'base',s:'UBI-SMARTONE-SOL',n:'Módulo Satelital Solar'}],note:'⚠ NO usar imán — afecta el reporte del equipo. Fijar con cinta doble cara, remaches o silicón. No requiere corriente del vehículo.'},
   'SMO-03':{id:'SMO-03',name:'SmartOne Exterior + SMART 4G',skus:[{t:'base',s:'UBI-SMARTONE-SAT',n:'Módulo Satelital Exterior'},{t:'acc',s:'UBI-VL300',n:'SMART 4G'}],note:'Al combinarse con SMART 4G, se pueden agregar accesorios como Paro de Motor, Botón SOS y Sensor de Puerta. Consultar sección SMART 4G para los SKUs correspondientes.'},
@@ -1454,10 +1510,12 @@ function filterT(type,btn){
   const sm=document.getElementById('tsmart');
   const sk=document.getElementById('tstack');
   const so=document.getElementById('tsmartone');
-  if(type==='all'){btn.className='fbtn fa';sm.style.display='';sk.style.display='';if(so)so.style.display='';}
-  else if(type==='smart'){btn.className='fbtn fs';sm.style.display='';sk.style.display='none';if(so)so.style.display='none';}
-  else if(type==='smartone'){btn.className='fbtn';btn.style.cssText='background:#eff6ff;color:#1d4ed8;border-color:#93c5fd;font-weight:bold';sm.style.display='none';sk.style.display='none';if(so)so.style.display='';}
-  else{btn.className='fbtn fk';sm.style.display='none';sk.style.display='';if(so)so.style.display='none';}
+  const et=document.getElementById('tetiqueta');
+  if(type==='all'){btn.className='fbtn fa';sm.style.display='';sk.style.display='';if(so)so.style.display='';if(et)et.style.display='';}
+  else if(type==='smart'){btn.className='fbtn fs';sm.style.display='';sk.style.display='none';if(so)so.style.display='none';if(et)et.style.display='none';}
+  else if(type==='smartone'){btn.className='fbtn';btn.style.cssText='background:#eff6ff;color:#1d4ed8;border-color:#93c5fd;font-weight:bold';sm.style.display='none';sk.style.display='none';if(so)so.style.display='';if(et)et.style.display='none';}
+  else if(type==='etiqueta'){btn.className='fbtn';btn.style.cssText='background:#f5f3ff;color:#7c3aed;border-color:#c4b5fd;font-weight:bold';sm.style.display='none';sk.style.display='none';if(so)so.style.display='none';if(et)et.style.display='';}
+  else{btn.className='fbtn fk';sm.style.display='none';sk.style.display='';if(so)so.style.display='none';if(et)et.style.display='none';}
 }
 let wh=['w0'],wl=[];
 function wgo(label,sid){wl.push(label);wh.push(sid);wss(sid);wcrumb();}
