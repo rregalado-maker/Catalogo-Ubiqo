@@ -446,6 +446,12 @@
             style="width:100%;padding:10px 12px;border:2px solid var(--border);border-radius:8px;font-size:13px;font-family:Arial;outline:none">
           <div id="usuario-help" style="font-size:11px;color:var(--text2);margin-top:4px">Es el usuario master de la cuenta del cliente en plataforma; ahí se asignarán los equipos instalados.</div>
         </div>
+        <div style="grid-column:1/-1">
+          <label style="font-size:12px;font-weight:bold;color:var(--text2);display:block;margin-bottom:4px">📝 Comentarios para la instalación <span style="font-size:11px;color:var(--text2);font-weight:normal">(opcional)</span></label>
+          <textarea id="cf-comentarios" rows="3" placeholder="Ej. Conexión a 7.º pin en lugar de cuartos · Acceso a patio solo de 8 a 14 h · Unidades llegan el jueves"
+            style="width:100%;padding:10px 12px;border:2px solid var(--border);border-radius:8px;font-size:13px;font-family:Arial;outline:none;resize:vertical"></textarea>
+          <div style="font-size:11px;color:var(--text2);margin-top:4px">Para cualquier detalle fuera de lo común en la instalación. <strong>Aquí no se piden materiales:</strong> si necesita algo extra, agrégalo como accesorio para que aparezca en el total a surtir.</div>
+        </div>
       </div>
       <div id="client-error" style="display:none;margin-top:14px;padding:10px 14px;background:var(--red-bg);border-left:4px solid var(--red);border-radius:0 6px 6px 0;font-size:12px;color:#991b1b;font-weight:bold">
         ⚠ Debes completar todos los campos antes de continuar.
@@ -916,6 +922,7 @@ function renderCopyText(){
     ...(c.correo?['📧 Correo: '+c.correo]:[]),
     (c.ubicTipo==='ciudades'?'🏙️ Ciudades permitidas (SIN dirección exacta — confirmar punto con el contacto): ':'📍 Ubicación: ')+c.direccion,
     ...(c.usuario?['🖥️ Usuario plataforma: '+c.usuario]:[]),
+    ...(c.comentarios?['','📝 COMENTARIOS PARA LA INSTALACIÓN:',...c.comentarios.split(/\n+/).map(x=>'   '+x.trim()).filter(x=>x.trim())]:[]),
     '══════════════════════════════════'];
   state.configs.forEach((cfg,i)=>{
     lines.push('');
@@ -958,7 +965,7 @@ function logOrder(){
     const c=getClientData();
     const payload={clave:LOG_CLAVE,folio:getFolio(),vendedor:c.vendedor,tipo:c.tipo==='demo'?'Demo':'Cliente',
       empresa:c.empresa,contacto:c.contacto,telefono:c.telefono,correo:c.correo,direccion:(c.ubicTipo==='ciudades'?'Ciudades permitidas: ':'')+c.direccion,usuario:c.usuario,
-      configs:state.configs.map(cfg=>({vehiculo:cfg.vehicleLabel,equipo:cfg.equipTitle,accesorios:[...cfg.accNames,...(cfg.freq?['Configuración: '+cfg.freq.replace(/\s*\n\s*/g,' · ')]:[]),...(cfg.excepciones&&cfg.excepciones.length?['⚠ Fuera de estándar: '+cfg.excepciones.join('; ')+' — Motivo: '+cfg.motivo]:[])].join(' + '),cantidad:cfg.qty,skus:cfg.skus.map(x=>x.s+' ×'+(x.total?x.q:x.q*cfg.qty)).join(', ')}))};
+      configs:state.configs.map(cfg=>({vehiculo:cfg.vehicleLabel,equipo:cfg.equipTitle,accesorios:[...cfg.accNames,...(cfg.freq?['Configuración: '+cfg.freq.replace(/\s*\n\s*/g,' · ')]:[]),...(c.comentarios?['Comentarios: '+c.comentarios.replace(/\s*\n\s*/g,' · ')]:[]),...(cfg.excepciones&&cfg.excepciones.length?['⚠ Fuera de estándar: '+cfg.excepciones.join('; ')+' — Motivo: '+cfg.motivo]:[])].join(' + '),cantidad:cfg.qty,skus:cfg.skus.map(x=>x.s+' ×'+(x.total?x.q:x.q*cfg.qty)).join(', ')}))};
     fetch(LOG_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)}).catch(()=>{});
   }catch(e){}
 }
@@ -986,7 +993,7 @@ function resetAll(){
   document.querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('selected'));
   document.getElementById('btn-next-1').disabled=true;
   // Limpiar datos del cliente (se conserva solo el nombre del vendedor)
-  ['cf-empresa','cf-contacto','cf-telefono','cf-correo','cf-direccion','cf-usuario'].forEach(id=>{const el=document.getElementById(id); if(el){el.value='';el.style.borderColor='var(--border)';}});
+  ['cf-empresa','cf-contacto','cf-telefono','cf-correo','cf-direccion','cf-usuario','cf-comentarios'].forEach(id=>{const el=document.getElementById(id); if(el){el.value='';el.style.borderColor='var(--border)';}});
   ['tipo-cliente','tipo-demo'].forEach(id=>{const el=document.getElementById(id); if(el){el.style.borderColor='var(--border)';el.style.background='var(--white)';}});
   setUbicTipo('dir');
   const cs=document.getElementById('client-summary'); if(cs){cs.style.display='none';cs.innerHTML='';}
@@ -1053,7 +1060,8 @@ function getClientData(){
     correo: (document.getElementById('cf-correo')||{}).value||'',
     direccion: (document.getElementById('cf-direccion')||{}).value||'',
     ubicTipo: window._ubicTipo==='ciudades'?'ciudades':'dir',
-    usuario: (document.getElementById('cf-usuario')||{}).value||''
+    usuario: (document.getElementById('cf-usuario')||{}).value||'',
+    comentarios: ((document.getElementById('cf-comentarios')||{}).value||'').trim()
   };
 }
 
@@ -1071,6 +1079,7 @@ function renderClientHeader(){
       <div><span style="color:var(--text2)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#3C9A35" stroke-width="2.5" style="vertical-align:middle;margin-right:4px"><path d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2a1 1 0 011-.25 11.4 11.4 0 003.57.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57a1 1 0 01-.25 1z"/></svg>Teléfono:</span> <strong>${c.telefono}</strong></div>
       ${c.correo?`<div><span style="color:var(--text2)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#3C9A35" stroke-width="2.5" style="vertical-align:middle;margin-right:4px"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>Correo:</span> <strong>${c.correo}</strong></div>`:''}
       <div style="grid-column:1/-1"><span style="color:var(--text2)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#3C9A35" stroke-width="2.5" style="vertical-align:middle;margin-right:4px"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>${c.ubicTipo==='ciudades'?'Ciudades permitidas (sin dirección exacta):':'Ubicación:'}</span> <strong>${c.direccion}</strong></div>
+      ${c.comentarios?`<div style="grid-column:1/-1;padding:8px 10px;background:var(--warn-bg);border-left:3px solid var(--warn);border-radius:0 6px 6px 0"><span style="color:#92400e;font-weight:bold">📝 Comentarios para la instalación:</span><br><span style="white-space:pre-line">${c.comentarios.replace(/</g,'&lt;')}</span></div>`:''}
       ${c.usuario?`<div style="grid-column:1/-1"><span style="color:var(--text2)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#3C9A35" stroke-width="2.5" style="vertical-align:middle;margin-right:4px"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Usuario plataforma:</span> <strong>${c.usuario}</strong></div>`:''}
     </div>`;
   }
