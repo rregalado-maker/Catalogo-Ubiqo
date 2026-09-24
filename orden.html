@@ -555,6 +555,7 @@ const ACC_BY_EQUIP = {
   ],
   'stack-inst-thl': [
     { id:'bateria', title:'Batería de respaldo', sub:'El equipo sigue reportando aunque apaguen la caja.', skus:[{t:'acc',s:'UBI-COMPLEMENT-STACK-NVO',n:'STK — Batería de respaldo'}] },
+    { id:'bateria-iman-thl', title:'STK con imán', sub:'Complemento con batería de respaldo e imán integrado.', skus:[{t:'acc',s:'UBI-COMPLEMENT-STACK-MAG-NVO',n:'STK C/IMÁN'}] },
     { id:'kit-iman-thl', title:'Kit sensor con imán', sub:'Reemplaza el kit sensor base por uno con imán.', skus:[{t:'kit',s:'UBI-KITINST-SENSOR--MAG-NVO',n:'Kit sensor c/imán'}], replaceKit:true },
   ],
   'stack-port-thl': [
@@ -584,8 +585,9 @@ const STD_BAT=20, HARD_MAX=50;
 Object.values(ACC_BY_EQUIP).forEach(list=>list.forEach(a=>{
   const s=a.skus.map(x=>x.s);
   const clean=t=>t.replace(/\s*Puedes agregar hasta 10 bancos\.?/,'').trim();
-  if(s.includes(SKU_BAT)){a.batKind='plain';a.qtyAcc=true;a.maxQty=HARD_MAX;a.sub=clean(a.sub)+' Indica cuántos por equipo (normalmente hasta 20).';}
-  else if(s.includes(SKU_BAT_MAG)){a.batKind='mag';a.qtyAcc=true;a.maxQty=HARD_MAX;a.sub=clean(a.sub)+' Normalmente va 1 por equipo; los demás se piden sin imán.';}
+  // Nombres homologados en TODAS las configuraciones (pantalla y ticket de almacén)
+  if(s.includes(SKU_BAT)){a.batKind='plain';a.qtyAcc=true;a.maxQty=HARD_MAX;a.title='Complemento con batería (sin imán)';a.sub='Batería de respaldo para reportar sin corriente. Indica cuántos por equipo (normalmente hasta 20).';a.skus.forEach(x=>{if(x.s===SKU_BAT)x.n='Complemento con batería (sin imán)';});}
+  else if(s.includes(SKU_BAT_MAG)){a.batKind='mag';a.qtyAcc=true;a.maxQty=HARD_MAX;a.title='Complemento con batería e imán';a.sub='Con batería + imán para mejor fijación. Normalmente va 1 por equipo; los demás se piden sin imán.';a.skus.forEach(x=>{if(x.s===SKU_BAT_MAG)x.n='Complemento con batería e imán';});}
   if(s.some(x=>SKU_MAG_SRC.includes(x))) a.magSrc=true;
 }));
 // Accesorios sueltos: todos los accesorios de todas las configuraciones (sin repetir SKU) + cargador y sensor THL.
