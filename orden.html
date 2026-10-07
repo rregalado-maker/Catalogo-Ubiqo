@@ -541,6 +541,8 @@ function batPorVehiculo(){
   const mag=L.filter(a=>a.batKind==='mag').reduce((t,a)=>t+qtyOf(a),0);
   return {plain, mag, total: plain+mag};
 }
+const INSTAL_POR_SKU={'UBI-SMARTONE-SOL':'Satelital Solar: NO usar imán; fijar con cinta doble cara, remaches o silicón.','UBI-PARO DE MOTOR KENWORTH':'Paro de motor Kenworth: el cliente debe comprar el arnés con la agencia Kenworth (no incluido en SKU Ubiqo).'};
+function indicacionesInstal(skus){const o=[]; skus.forEach(x=>{const t=INSTAL_POR_SKU[x.s]; if(t&&!o.includes(t)) o.push(t);}); return o;}
 function pmTotal(){return accList().filter(a=>a.pmKind).reduce((t,a)=>t+qtyOf(a),0);}
 function itemMax(a){
   if(a.pmKind){ return Math.max(1,MAX_PM-(pmTotal()-qtyOf(a))); }
@@ -807,7 +809,7 @@ function addConfig(){
   const skus=buildSkuList();
   const accNames=(ACC_BY_EQUIP[state.equip]||[]).filter(a=>state.accs.includes(a.id)).map(a=>a.title+(a.qtyAcc?' ×'+(state.accQtys[a.id]||1):''));
   const bat=batPorVehiculo().total;
-  state.configs.push({id:Date.now(),vehicleLabel:state.vehicleLabel,vehicleIcon:state.vehicleIcon,equipTitle:state.equipData.title,accNames,skus,qty,bat,freq,excepciones,motivo:excepciones.length?motivo:'',validado,hibrido:(hibOn()&&!isSueltos())?(document.getElementById('hib-check').checked?'si':'no'):''});
+  state.configs.push({id:Date.now(),vehicleLabel:state.vehicleLabel,vehicleIcon:state.vehicleIcon,equipTitle:state.equipData.title,accNames,skus,qty,bat,freq,instal:indicacionesInstal(skus),excepciones,motivo:excepciones.length?motivo:'',validado,hibrido:(hibOn()&&!isSueltos())?(document.getElementById('hib-check').checked?'si':'no'):''});
   goStep(4);
   validateClientForm();
 }
@@ -825,6 +827,7 @@ function renderSummary(){
     const per=cfg.skus.filter(s=>!s.total), glob=cfg.skus.filter(s=>s.total);
     const skuRows=`<div style="font-size:11px;font-weight:bold;color:var(--text2);margin-bottom:4px">${suelto?'Piezas:':'Cada equipo lleva:'}</div>`+per.map(row).join('')
       +(glob.length?`<div style="font-size:11px;font-weight:bold;color:var(--text2);margin:8px 0 4px">Además, para toda esta configuración:</div>`+glob.map(row).join(''):'')
+      +(cfg.instal&&cfg.instal.length?`<div style="margin-top:8px;padding:8px 10px;background:var(--warn-bg);border-left:3px solid var(--warn);font-size:11px;color:#92400e"><strong>Indicaciones para instalación:</strong><br>${cfg.instal.join('<br>')}</div>`:'')
       +(cfg.excepciones&&cfg.excepciones.length?`<div style="margin-top:8px;padding:8px 10px;background:var(--warn-bg);border-left:3px solid var(--warn);font-size:11px;color:#92400e"><strong>⚠ Fuera de estándar:</strong> ${cfg.excepciones.join('; ')}<br><strong>Motivo:</strong> ${cfg.motivo.replace(/</g,'&lt;')}${cfg.validado?'<br><strong>Validado con coordinación:</strong> Sí':''}</div>`:'');
     const accLabel=cfg.accNames.length?cfg.accNames.join(' + '):'Sin accesorios adicionales';
     return `<div class="ticket" id="ticket-${cfg.id}">
@@ -887,6 +890,7 @@ function renderCopyText(){
     cfg.skus.filter(s=>!s.total).forEach(s=>lines.push(`  • ${s.q} × ${skuDesc(s)}`));
     const glob=cfg.skus.filter(s=>s.total);
     if(glob.length){lines.push('Además, para toda esta configuración:'); glob.forEach(s=>lines.push(`  • ${s.q} × ${skuDesc(s)}`));}
+    if(cfg.instal&&cfg.instal.length){lines.push('INDICACIONES PARA INSTALACIÓN:'); cfg.instal.forEach(x=>lines.push('   - '+x));}
     if(cfg.excepciones&&cfg.excepciones.length){lines.push('ATENCIÓN - FUERA DE ESTÁNDAR:'); cfg.excepciones.forEach(e=>lines.push('   - '+e+'.')); lines.push('   Motivo: '+cfg.motivo); if(cfg.validado) lines.push('   Validado con Coordinador de Instalaciones / Gerente de Soluciones: SÍ (confirmado por '+getClientData().vendedor+')');}
   });
   lines.push(''); lines.push('══════════════════════════════════');
@@ -916,7 +920,7 @@ function logOrder(){
     const c=getClientData();
     const payload={clave:LOG_CLAVE,folio:getFolio(),vendedor:c.vendedor,tipo:c.tipo==='demo'?'Demo':'Cliente',
       empresa:c.empresa,contacto:c.contacto,telefono:c.telefono,correo:c.correo,direccion:(c.ubicTipo==='ciudades'?'Ciudades permitidas: ':'')+c.direccion,usuario:c.usuario,
-      configs:state.configs.map(cfg=>({vehiculo:cfg.vehicleLabel,equipo:cfg.equipTitle,accesorios:[...cfg.accNames,...(cfg.hibrido?[cfg.hibrido==='si'?'Plataforma: HÍBRIDO':'Plataforma: INDEPENDIENTES']:[]),...(cfg.freq?['Configuración: '+cfg.freq.replace(/\s*\n\s*/g,' · ')]:[]),...(c.comentarios?['Comentarios: '+c.comentarios.replace(/\s*\n\s*/g,' · ')]:[]),...(cfg.excepciones&&cfg.excepciones.length?['⚠ Fuera de estándar: '+cfg.excepciones.join('; ')+' — Motivo: '+cfg.motivo+(cfg.validado?' — Validado con coordinación: SÍ':'')]:[])].join(' + '),cantidad:cfg.qty,skus:cfg.skus.map(x=>x.s+' ×'+(x.total?x.q:x.q*cfg.qty)).join(', ')}))};
+      configs:state.configs.map(cfg=>({vehiculo:cfg.vehicleLabel,equipo:cfg.equipTitle,accesorios:[...cfg.accNames,...((cfg.instal||[]).map(x=>'Instalación: '+x)),...(cfg.hibrido?[cfg.hibrido==='si'?'Plataforma: HÍBRIDO':'Plataforma: INDEPENDIENTES']:[]),...(cfg.freq?['Configuración: '+cfg.freq.replace(/\s*\n\s*/g,' · ')]:[]),...(c.comentarios?['Comentarios: '+c.comentarios.replace(/\s*\n\s*/g,' · ')]:[]),...(cfg.excepciones&&cfg.excepciones.length?['FUERA DE ESTÁNDAR: '+cfg.excepciones.join('; ')+' — Motivo: '+cfg.motivo+(cfg.validado?' — Validado con coordinación: SÍ':'')]:[])].join(' + '),cantidad:cfg.qty,skus:cfg.skus.map(x=>x.s+' ×'+(x.total?x.q:x.q*cfg.qty)).join(', ')}))};
     fetch(LOG_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)}).catch(()=>{});
   }catch(e){}
 }
