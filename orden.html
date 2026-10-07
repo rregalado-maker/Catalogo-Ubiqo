@@ -920,7 +920,17 @@ function logOrder(){
     const c=getClientData();
     const payload={clave:LOG_CLAVE,folio:getFolio(),vendedor:c.vendedor,tipo:c.tipo==='demo'?'Demo':'Cliente',
       empresa:c.empresa,contacto:c.contacto,telefono:c.telefono,correo:c.correo,direccion:(c.ubicTipo==='ciudades'?'Ciudades permitidas: ':'')+c.direccion,usuario:c.usuario,
-      configs:state.configs.map(cfg=>({vehiculo:cfg.vehicleLabel,equipo:cfg.equipTitle,accesorios:[...cfg.accNames,...((cfg.instal||[]).map(x=>'Instalación: '+x)),...(cfg.hibrido?[cfg.hibrido==='si'?'Plataforma: HÍBRIDO':'Plataforma: INDEPENDIENTES']:[]),...(cfg.freq?['Configuración: '+cfg.freq.replace(/\s*\n\s*/g,' · ')]:[]),...(c.comentarios?['Comentarios: '+c.comentarios.replace(/\s*\n\s*/g,' · ')]:[]),...(cfg.excepciones&&cfg.excepciones.length?['FUERA DE ESTÁNDAR: '+cfg.excepciones.join('; ')+' — Motivo: '+cfg.motivo+(cfg.validado?' — Validado con coordinación: SÍ':'')]:[])].join(' + '),cantidad:cfg.qty,skus:cfg.skus.map(x=>x.s+' ×'+(x.total?x.q:x.q*cfg.qty)).join(', ')}))};
+      comentarios:(c.comentarios||'').replace(/\s*\n\s*/g,' · '),
+      ticket:(document.getElementById('copy-text')||{}).textContent||'',
+      configs:state.configs.map(cfg=>({vehiculo:cfg.vehicleLabel,equipo:cfg.equipTitle,
+        accesoriosSolo:cfg.accNames.join(' + '),
+        plataforma:cfg.hibrido?(cfg.hibrido==='si'?'Híbrido':'Independientes'):'',
+        configEquipo:cfg.freq?cfg.freq.replace(/\s*\n\s*/g,' · '):'',
+        fueraEstandar:(cfg.excepciones&&cfg.excepciones.length)?'Sí':'No',
+        detalleExcepcion:(cfg.excepciones||[]).join(' | '),
+        motivo:cfg.motivo||'',
+        instalacion:(cfg.instal||[]).join(' | '),
+        accesorios:[...cfg.accNames,...((cfg.instal||[]).map(x=>'Instalación: '+x)),...(cfg.hibrido?[cfg.hibrido==='si'?'Plataforma: HÍBRIDO':'Plataforma: INDEPENDIENTES']:[]),...(cfg.freq?['Configuración: '+cfg.freq.replace(/\s*\n\s*/g,' · ')]:[]),...(c.comentarios?['Comentarios: '+c.comentarios.replace(/\s*\n\s*/g,' · ')]:[]),...(cfg.excepciones&&cfg.excepciones.length?['FUERA DE ESTÁNDAR: '+cfg.excepciones.join('; ')+' — Motivo: '+cfg.motivo+(cfg.validado?' — Validado con coordinación: SÍ':'')]:[])].join(' + '),cantidad:cfg.qty,skus:cfg.skus.map(x=>x.s+' ×'+(x.total?x.q:x.q*cfg.qty)).join(', ')}))};
     fetch(LOG_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)}).catch(()=>{});
   }catch(e){}
 }
